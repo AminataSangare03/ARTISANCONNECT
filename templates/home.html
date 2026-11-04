@@ -4,27 +4,52 @@
 
 {% block title %}ArtisanConnect Mali - Trouvez les meilleurs artisans a Bamako{% endblock %}
 
+{% block extra_head %}
+<style>
+    .hero-apple-bg {
+        background: radial-gradient(100% 100% at 50% 0%, var(--ac-surface) 0%, var(--ac-bg-secondary) 100%);
+        border-bottom: 1px solid var(--ac-border);
+        transition: var(--ac-transition-theme);
+    }
+    .section-surface-tinted {
+        background-color: var(--ac-bg-secondary);
+        transition: var(--ac-transition-theme);
+    }
+    .img-zoom-parent {
+        overflow: hidden;
+        position: relative;
+    }
+    .img-zoom-parent img {
+        transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-apple-interactive:hover .img-zoom-parent img {
+        transform: scale(1.045);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Hero Section -->
-<section class="py-5" style="background: radial-gradient(100% 100% at 50% 0%, #FFFFFF 0%, #F5EFE6 100%); border-bottom: 1px solid var(--ac-border);">
+<section class="py-5 hero-apple-bg">
     <div class="container py-3 py-lg-4">
         <div class="row align-items-center g-5">
-            <div class="col-lg-6">
-                <div class="d-inline-flex align-items-center gap-2 mb-3 px-3 py-1 bg-white border shadow-sm rounded-pill">
+            <div class="col-lg-6 animate-fade-up">
+                <div class="d-inline-flex align-items-center gap-2 mb-3 px-3 py-1 bg-white border shadow-sm rounded-pill animate-fade-up">
                     <span class="badge rounded-pill" style="background-color: var(--ac-terracotta); color: #FFFFFF; font-size: 0.7rem; letter-spacing: 0.05em;">MALI</span>
                     <span class="small fw-semibold text-muted">Plateforme artisanale certifiee &bull; Bamako</span>
+                    <span class="live-pulse-dot ms-1"></span>
                 </div>
 
-                <h1 class="display-5 fw-extrabold text-dark mb-3" style="line-height: 1.15; letter-spacing: -0.03em;">
+                <h1 class="display-5 fw-extrabold text-dark mb-3 animate-fade-up animate-delay-1" style="line-height: 1.15; letter-spacing: -0.03em;">
                     Le savoir-faire des artisans bamakois a portee de main.
                 </h1>
 
-                <p class="lead text-muted mb-4" style="font-size: 1.1rem; line-height: 1.6;">
-                    Connectez-vous directement avec des artisans verifies dans votre quartier : menuisiers, plombiers, electriciens solaires, couturiers, peintres et techniciens en climatisation a Bamako.
+                <p class="lead text-muted mb-4 animate-fade-up animate-delay-2" style="font-size: 1.1rem; line-height: 1.6;">
+                    Connectez-vous directement avec des artisans qualifies et verifies dans votre quartier : menuisiers, plombiers, electriciens solaires, couturiers, peintres et frigoristes a Bamako.
                 </p>
 
                 <!-- Search Card -->
-                <div class="card-apple p-3 mb-4 shadow-sm" style="border-radius: var(--ac-radius-lg); background: #FFFFFF;">
+                <div class="card-apple p-3 mb-4 shadow-sm animate-fade-up animate-delay-3" style="border-radius: var(--ac-radius-lg);">
                     <form action="{% url 'artisan_list' %}" method="get" class="row g-2">
                         <div class="col-md-5">
                             <label class="form-label small fw-bold text-muted mb-1">
@@ -52,22 +77,21 @@
                 </div>
 
                 <!-- Quick tags -->
-                <div class="d-flex align-items-center gap-2 flex-wrap small text-muted">
+                <div class="d-flex align-items-center gap-2 flex-wrap small text-muted animate-fade-up animate-delay-4">
                     <span class="fw-semibold text-dark">Populaire a Bamako :</span>
                     <a href="{% url 'artisan_list' %}?q=Menuiserie" class="badge bg-white border text-dark text-decoration-none rounded-pill px-3 py-1 shadow-sm">Menuiserie teck</a>
-                    <a href="{% url 'artisan_list' %}?q=Plomberie" class="badge bg-white border text-dark text-decoration-none rounded-pill px-3 py-1 shadow-sm">Plomberie & surpresseur</a>
-                    <a href="{% url 'artisan_list' %}?q=Electricite" class="badge bg-white border text-dark text-decoration-none rounded-pill px-3 py-1 shadow-sm">Energie solaire</a>
+                    <a href="{% url 'artisan_list' %}?q=Plomberie" class="badge bg-white border text-dark text-decoration-none rounded-pill px-3 py-1 shadow-sm">Plomberie sanitaire</a>
+                    <a href="{% url 'artisan_list' %}?q=Electricite" class="badge bg-white border text-dark text-decoration-none rounded-pill px-3 py-1 shadow-sm">Kits solaires</a>
                     <a href="{% url 'artisan_list' %}?q=Climatisation" class="badge bg-white border text-dark text-decoration-none rounded-pill px-3 py-1 shadow-sm">Climatisation split</a>
                 </div>
             </div>
 
-            <!-- Hero Visual Collage -->
-            <div class="col-lg-6">
+            <!-- Hero Visual -->
+            <div class="col-lg-6 animate-scale-in">
                 <div class="position-relative">
-                    <!-- Main Masterpiece Image -->
                     <div class="card-apple overflow-hidden shadow-lg border-0" style="border-radius: var(--ac-radius-xl);">
                         <img src="{% static 'images/generated/hero_atelier.jpg' %}" alt="Maitre artisan ebeniste dans son atelier a Bamako" class="w-100" style="height: 420px; object-fit: cover;">
-                        <div class="position-absolute bottom-0 start-0 end-0 p-4" style="background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(29, 29, 31, 0.85) 100%);">
+                        <div class="position-absolute bottom-0 start-0 end-0 p-4" style="background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(12, 12, 14, 0.88) 100%);">
                             <div class="d-flex justify-content-between align-items-end text-white">
                                 <div>
                                     <span class="badge bg-white text-dark small fw-bold px-2 py-1 mb-1">Maitrise artisanale</span>
@@ -130,14 +154,14 @@
             {% for m in metiers %}
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <a href="{% url 'artisan_list' %}?metier={{ m.id }}" class="card-apple card-apple-interactive text-decoration-none d-block h-100 position-relative">
-                        <div class="position-relative overflow-hidden" style="height: 190px;">
-                            <img src="{% metier_image m %}" alt="{{ m.nom }}" class="w-100 h-100" style="object-fit: cover; transition: transform 0.35s ease;">
+                        <div class="img-zoom-parent position-relative" style="height: 190px;">
+                            <img src="{% metier_image m %}" alt="{{ m.nom }}" class="w-100 h-100" style="object-fit: cover;">
                             <div class="position-absolute top-0 end-0 m-2">
                                 <span class="badge bg-dark bg-opacity-75 text-white fw-bold rounded-pill px-2 py-1 small">
                                     {{ m.artisans_count }} pro{{ m.artisans_count|pluralize }}
                                 </span>
                             </div>
-                            <div class="position-absolute bottom-0 start-0 end-0 p-3" style="background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(29, 29, 31, 0.8) 100%);">
+                            <div class="position-absolute bottom-0 start-0 end-0 p-3" style="background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(12, 12, 14, 0.85) 100%);">
                                 <h3 class="h5 fw-bold text-white mb-0">{{ m.nom }}</h3>
                             </div>
                         </div>
@@ -154,7 +178,7 @@
 </section>
 
 <!-- Featured Artisans with Real Portraits -->
-<section class="py-5" style="background-color: #F4EFE6;">
+<section class="py-5 section-surface-tinted">
     <div class="container py-2">
         <div class="d-flex flex-wrap justify-content-between align-items-end mb-4 gap-2">
             <div>
@@ -299,15 +323,15 @@
     </div>
 </section>
 
-<!-- Call to Action Banner (Featuring Panoramic Bamako Niger River) -->
+<!-- Call to Action Banner (Panoramic Bamako Niger River) -->
 <section class="position-relative overflow-hidden py-5 text-white" style="border-top: 1px solid var(--ac-border);">
     <img src="{% static 'images/generated/cta_bamako.jpg' %}" alt="Vue panoramique de Bamako et du fleuve Niger" class="position-absolute top-0 start-0 w-100 h-100" style="object-fit: cover; z-index: 1;">
-    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, rgba(29, 29, 31, 0.92) 0%, rgba(45, 44, 46, 0.88) 100%); z-index: 2;"></div>
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, rgba(12, 12, 14, 0.92) 0%, rgba(24, 23, 26, 0.88) 100%); z-index: 2;"></div>
 
     <div class="container position-relative py-5 text-center" style="z-index: 3;">
         <span class="badge mb-3 px-3 py-1 bg-white bg-opacity-20 text-white rounded-pill">COMMUNES DE BAMAKO &amp; REGIONS DU MALI</span>
         <h2 class="display-6 fw-bold mb-3 text-white">Pret a concretiser vos projets artisanaux ?</h2>
-        <p class="lead mb-4 mx-auto" style="max-width: 660px; color: rgba(255, 255, 255, 0.85); font-size: 1.15rem;">
+        <p class="lead mb-4 mx-auto" style="max-width: 660px; color: rgba(255, 255, 255, 0.88); font-size: 1.15rem;">
             Particuliers en quete de qualite ou artisans passionnes par leur metier : rejoignez la reference de l artisanat au Mali.
         </p>
         <div class="d-flex justify-content-center gap-3 flex-wrap">

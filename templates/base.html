@@ -1,39 +1,58 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}ArtisanConnect - Le savoir-faire a portee de main | Mali{% endblock %}</title>
+
+    <!-- Theme detection anti-FOUT inline script -->
+    <script>
+        (function() {
+            try {
+                var savedTheme = localStorage.getItem('artisanconnect_theme');
+                var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                var theme = savedTheme ? savedTheme : (prefersDark ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) {}
+        })();
+    </script>
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <!-- Fonts: SF Pro like font stack (Plus Jakarta Sans + System UI) -->
+    <!-- Fonts: Apple SF Pro like font stack (Plus Jakarta Sans + System UI) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            /* Apple & Malian Craft Palette */
+            --ac-transition-theme: background-color 0.28s ease, border-color 0.28s ease, color 0.28s ease, box-shadow 0.28s ease;
+
+            /* Brand Terracotta & Ochre Palette */
             --ac-terracotta: #B85433;
             --ac-terracotta-dark: #943F24;
-            --ac-terracotta-light: rgba(184, 84, 51, 0.08);
+            --ac-terracotta-light: rgba(184, 84, 51, 0.09);
             --ac-terracotta-surface: #FDF9F5;
 
-            --ac-sand: #F7F3EC;
-            --ac-sand-dark: #EFE8DC;
-            --ac-dark: #1D1D1F;
-            --ac-dark-soft: #2D2C2E;
-            --ac-muted: #6E6E73;
+            /* Light Mode Tokens (Default) */
+            --ac-bg: #F7F3EC;
+            --ac-bg-secondary: #EFE8DC;
+            --ac-surface: #FFFFFF;
+            --ac-surface-secondary: #F8F7F4;
+            --ac-card-bg: #FFFFFF;
+            --ac-card-subtle-bg: #F9F8F5;
+            --ac-text: #1D1D1F;
+            --ac-text-muted: #6E6E73;
             --ac-border: rgba(0, 0, 0, 0.08);
             --ac-border-subtle: rgba(0, 0, 0, 0.04);
+            --ac-input-bg: #FFFFFF;
 
             --ac-glass-bg: rgba(255, 255, 255, 0.82);
-            --ac-glass-border: rgba(255, 255, 255, 0.5);
+            --ac-glass-border: rgba(255, 255, 255, 0.6);
 
             --ac-success: #1E824C;
             --ac-success-light: rgba(30, 130, 76, 0.1);
@@ -54,7 +73,57 @@
             --ac-shadow-card: 0 4px 20px -2px rgba(29, 29, 31, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
             --ac-shadow-hover: 0 12px 30px -4px rgba(29, 29, 31, 0.10), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
             --ac-shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.06);
+
+            /* Footer Theme Tokens */
+            --ac-footer-bg: #141312;
+            --ac-footer-text: #E5DFD7;
+            --ac-footer-muted: #8E867E;
+            --ac-footer-border: rgba(255, 255, 255, 0.08);
+            --ac-footer-card-bg: rgba(255, 255, 255, 0.03);
         }
+
+        /* Dark Mode Tokens (Deep OLED Apple Architecture) */
+        [data-theme="dark"] {
+            --ac-terracotta: #D06A46;
+            --ac-terracotta-dark: #DE7B57;
+            --ac-terracotta-light: rgba(208, 106, 70, 0.16);
+            --ac-terracotta-surface: #241A16;
+
+            --ac-bg: #0C0C0E;
+            --ac-bg-secondary: #141417;
+            --ac-surface: #17171A;
+            --ac-surface-secondary: #1E1E22;
+            --ac-card-bg: #17171A;
+            --ac-card-subtle-bg: #1E1E23;
+            --ac-text: #F4F4F6;
+            --ac-text-muted: #9E9EA8;
+            --ac-border: rgba(255, 255, 255, 0.09);
+            --ac-border-subtle: rgba(255, 255, 255, 0.05);
+            --ac-input-bg: #1C1C20;
+
+            --ac-glass-bg: rgba(20, 20, 24, 0.85);
+            --ac-glass-border: rgba(255, 255, 255, 0.09);
+
+            --ac-shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2);
+            --ac-shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.45), 0 2px 6px -1px rgba(0, 0, 0, 0.3);
+            --ac-shadow-hover: 0 14px 34px -4px rgba(0, 0, 0, 0.65), 0 4px 12px -2px rgba(0, 0, 0, 0.4);
+            --ac-shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+
+            --ac-footer-bg: #080809;
+            --ac-footer-text: #E5DFD7;
+            --ac-footer-muted: #7E7871;
+            --ac-footer-border: rgba(255, 255, 255, 0.06);
+            --ac-footer-card-bg: rgba(255, 255, 255, 0.025);
+        }
+
+        /* Dark Mode Global Overrides */
+        [data-theme="dark"] .bg-white { background-color: var(--ac-card-bg) !important; }
+        [data-theme="dark"] .bg-light { background-color: var(--ac-card-subtle-bg) !important; }
+        [data-theme="dark"] .text-dark { color: var(--ac-text) !important; }
+        [data-theme="dark"] .text-muted { color: var(--ac-text-muted) !important; }
+        [data-theme="dark"] .border { border-color: var(--ac-border) !important; }
+        [data-theme="dark"] .border-light-subtle { border-color: var(--ac-border-subtle) !important; }
+        [data-theme="dark"] .border-secondary { border-color: var(--ac-border) !important; }
 
         *, *::before, *::after {
             box-sizing: border-box;
@@ -62,8 +131,8 @@
 
         body {
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--ac-sand);
-            color: var(--ac-dark);
+            background-color: var(--ac-bg);
+            color: var(--ac-text);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             min-height: 100vh;
@@ -71,6 +140,7 @@
             flex-direction: column;
             line-height: 1.55;
             letter-spacing: -0.011em;
+            transition: var(--ac-transition-theme);
         }
 
         /* Tabular figures for amounts & quantities */
@@ -78,7 +148,78 @@
             font-variant-numeric: tabular-nums;
         }
 
-        /* Apple Translucent Glass Navigation */
+        /* ==========================================================================
+           Animations (Apple & Emil Kowalski Principles: spring, subtle, purposeful)
+           ========================================================================== */
+        @keyframes acFadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes acScaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.965);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes acPulseLive {
+            0% {
+                box-shadow: 0 0 0 0 rgba(30, 130, 76, 0.45);
+            }
+            70% {
+                box-shadow: 0 0 0 8px rgba(30, 130, 76, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(30, 130, 76, 0);
+            }
+        }
+
+        .animate-fade-up {
+            animation: acFadeInUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .animate-scale-in {
+            animation: acScaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .animate-delay-1 { animation-delay: 0.08s; }
+        .animate-delay-2 { animation-delay: 0.16s; }
+        .animate-delay-3 { animation-delay: 0.24s; }
+        .animate-delay-4 { animation-delay: 0.32s; }
+
+        .live-pulse-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #10B981;
+            animation: acPulseLive 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            vertical-align: middle;
+        }
+
+        /* Respect accessibility preference */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* ==========================================================================
+           Navbar (Translucent Glass & Theme Switcher)
+           ========================================================================== */
         .navbar-apple {
             position: sticky;
             top: 0;
@@ -88,7 +229,7 @@
             backdrop-filter: blur(20px) saturate(180%);
             border-bottom: 1px solid var(--ac-border);
             padding: 0.75rem 1rem;
-            transition: background-color 0.25s ease, border-color 0.25s ease;
+            transition: var(--ac-transition-theme);
         }
 
         .navbar-brand-wrap {
@@ -108,7 +249,7 @@
         }
 
         .navbar-brand-wrap:hover .navbar-brand-logo {
-            transform: scale(1.03);
+            transform: scale(1.04);
         }
 
         .navbar-brand-text {
@@ -128,13 +269,13 @@
             font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            color: var(--ac-muted);
+            color: var(--ac-text-muted);
             font-weight: 600;
         }
 
         .nav-link {
             font-weight: 600;
-            color: var(--ac-dark);
+            color: var(--ac-text);
             font-size: 0.92rem;
             padding: 0.48rem 0.85rem !important;
             border-radius: var(--ac-radius-pill);
@@ -143,7 +284,7 @@
 
         .nav-link:hover {
             color: var(--ac-terracotta);
-            background: rgba(184, 84, 51, 0.06);
+            background: var(--ac-terracotta-light);
         }
 
         .nav-link.active {
@@ -151,12 +292,47 @@
             background: var(--ac-terracotta-light);
         }
 
-        /* Apple Spring Buttons & Interaction Feedback */
+        /* Theme Toggle Button (Apple Switcher) */
+        .btn-theme-toggle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--ac-card-subtle-bg);
+            border: 1px solid var(--ac-border);
+            color: var(--ac-text);
+            cursor: pointer;
+            padding: 0;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .btn-theme-toggle:hover {
+            transform: scale(1.08) rotate(15deg);
+            border-color: var(--ac-terracotta);
+            color: var(--ac-terracotta);
+        }
+
+        .btn-theme-toggle:active {
+            transform: scale(0.92);
+        }
+
+        /* Show/Hide Icons based on data-theme */
+        [data-theme="light"] .theme-icon-light { display: none; }
+        [data-theme="light"] .theme-icon-dark { display: inline-block; font-size: 0.95rem; }
+
+        [data-theme="dark"] .theme-icon-dark { display: none; }
+        [data-theme="dark"] .theme-icon-light { display: inline-block; font-size: 0.95rem; color: #FBBF24; }
+
+        /* ==========================================================================
+           Buttons (Apple Spring Feedback)
+           ========================================================================== */
         .btn {
             font-weight: 600;
             border-radius: var(--ac-radius-pill);
             padding: 0.55rem 1.3rem;
-            transition: transform 0.16s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.16s ease, background-color 0.16s ease;
+            transition: transform 0.16s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.16s ease, background-color 0.16s ease, border-color 0.16s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -165,7 +341,7 @@
         }
 
         .btn:active {
-            transform: scale(0.972);
+            transform: scale(0.968);
         }
 
         .btn-terracotta {
@@ -195,34 +371,35 @@
         }
 
         .btn-glass {
-            background: rgba(255, 255, 255, 0.85);
-            -webkit-backdrop-filter: blur(12px);
-            backdrop-filter: blur(12px);
+            background: var(--ac-card-bg);
             border: 1px solid var(--ac-border);
-            color: var(--ac-dark);
+            color: var(--ac-text);
         }
 
         .btn-glass:hover {
-            background: #FFFFFF;
-            border-color: rgba(0, 0, 0, 0.15);
-            color: var(--ac-dark);
+            background: var(--ac-card-subtle-bg);
+            border-color: var(--ac-terracotta);
+            color: var(--ac-terracotta);
             box-shadow: var(--ac-shadow-subtle);
         }
 
-        /* Apple Cards & Surfaces */
+        /* ==========================================================================
+           Cards & Glass Surfaces
+           ========================================================================== */
         .card-apple {
-            background: #FFFFFF;
+            background: var(--ac-card-bg);
             border: 1px solid var(--ac-border);
             border-radius: var(--ac-radius-lg);
             box-shadow: var(--ac-shadow-card);
-            transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.28s ease;
             overflow: hidden;
+            color: var(--ac-text);
         }
 
         .card-apple-interactive:hover {
-            transform: translateY(-3px);
+            transform: translateY(-4px);
             box-shadow: var(--ac-shadow-hover);
-            border-color: rgba(184, 84, 51, 0.25);
+            border-color: rgba(184, 84, 51, 0.35);
         }
 
         .card-glass {
@@ -232,33 +409,24 @@
             border: 1px solid var(--ac-glass-border);
             border-radius: var(--ac-radius-lg);
             box-shadow: var(--ac-shadow-glass);
+            color: var(--ac-text);
         }
 
-        /* Badges & Pills */
-        .badge-pill-subtle {
-            font-weight: 600;
-            font-size: 0.78rem;
-            padding: 0.35rem 0.8rem;
-            border-radius: var(--ac-radius-pill);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            letter-spacing: 0.01em;
-        }
-
+        /* Badges & Status Pills */
         .badge-metier {
             background-color: var(--ac-terracotta-light);
-            color: var(--ac-terracotta-dark);
+            color: var(--ac-terracotta);
             font-weight: 700;
             font-size: 0.78rem;
             padding: 0.35rem 0.8rem;
             border-radius: var(--ac-radius-pill);
-            border: 1px solid rgba(184, 84, 51, 0.15);
+            border: 1px solid rgba(184, 84, 51, 0.2);
+            transition: var(--ac-transition-theme);
         }
 
         .badge-location {
-            background-color: rgba(0, 0, 0, 0.04);
-            color: var(--ac-muted);
+            background-color: var(--ac-card-subtle-bg);
+            color: var(--ac-text-muted);
             font-weight: 600;
             font-size: 0.78rem;
             padding: 0.3rem 0.7rem;
@@ -270,6 +438,11 @@
         .badge-status-accepte, .badge-status-confirmee, .badge-status-terminee { background-color: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; }
         .badge-status-en-cours { background-color: #DBEAFE; color: #1E40AF; border: 1px solid #BFDBFE; }
         .badge-status-refuse, .badge-status-annulee, .badge-status-expire { background-color: #FEE2E2; color: #991B1B; border: 1px solid #FECACA; }
+
+        [data-theme="dark"] .badge-status-en-attente { background-color: rgba(254, 243, 199, 0.15); color: #FBBF24; border-color: rgba(251, 191, 36, 0.3); }
+        [data-theme="dark"] .badge-status-accepte, [data-theme="dark"] .badge-status-confirmee, [data-theme="dark"] .badge-status-terminee { background-color: rgba(209, 250, 229, 0.15); color: #34D399; border-color: rgba(52, 211, 153, 0.3); }
+        [data-theme="dark"] .badge-status-en-cours { background-color: rgba(219, 234, 254, 0.15); color: #60A5FA; border-color: rgba(96, 165, 250, 0.3); }
+        [data-theme="dark"] .badge-status-refuse, [data-theme="dark"] .badge-status-annulee, [data-theme="dark"] .badge-status-expire { background-color: rgba(254, 226, 226, 0.15); color: #F87171; border-color: rgba(248, 113, 113, 0.3); }
 
         /* Stars */
         .ac-stars {
@@ -289,7 +462,11 @@
             border-radius: var(--ac-radius-md);
             object-fit: cover;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            border: 2px solid #FFFFFF;
+            border: 2px solid var(--ac-surface);
+            transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .artisan-avatar-img:hover {
+            transform: scale(1.06);
         }
         .artisan-avatar-placeholder {
             width: 56px;
@@ -302,7 +479,7 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 2px 8px rgba(184, 84, 51, 0.2);
-            border: 2px solid #FFFFFF;
+            border: 2px solid var(--ac-surface);
         }
 
         /* Verified Pill */
@@ -310,13 +487,17 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            background: #ECFDF5;
+            background: var(--ac-success-light);
             color: #065F46;
             font-size: 0.72rem;
             font-weight: 700;
             padding: 0.2rem 0.55rem;
             border-radius: var(--ac-radius-pill);
-            border: 1px solid #A7F3D0;
+            border: 1px solid rgba(30, 130, 76, 0.25);
+        }
+        [data-theme="dark"] .badge-verified {
+            color: #34D399;
+            border-color: rgba(52, 211, 153, 0.3);
         }
 
         /* Form Inputs */
@@ -325,16 +506,56 @@
             border: 1px solid var(--ac-border);
             padding: 0.65rem 0.95rem;
             font-size: 0.95rem;
-            background-color: #FFFFFF;
-            transition: all 0.15s ease;
+            background-color: var(--ac-input-bg);
+            color: var(--ac-text);
+            transition: var(--ac-transition-theme);
         }
         .form-control:focus, .form-select:focus {
             border-color: var(--ac-terracotta);
-            box-shadow: 0 0 0 3px rgba(184, 84, 51, 0.15);
+            background-color: var(--ac-input-bg);
+            color: var(--ac-text);
+            box-shadow: 0 0 0 3px rgba(184, 84, 51, 0.18);
             outline: none;
         }
 
-        /* Alert Toast */
+        /* Tables */
+        .table {
+            color: var(--ac-text);
+            border-color: var(--ac-border);
+        }
+        .table-light {
+            background-color: var(--ac-card-subtle-bg);
+            color: var(--ac-text-muted);
+        }
+        [data-theme="dark"] .table-light {
+            background-color: var(--ac-card-subtle-bg) !important;
+            color: var(--ac-text) !important;
+        }
+        [data-theme="dark"] .table-hover tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.04) !important;
+            color: var(--ac-text) !important;
+        }
+
+        /* Dropdowns */
+        .dropdown-menu {
+            background-color: var(--ac-card-bg);
+            border: 1px solid var(--ac-border);
+            color: var(--ac-text);
+            box-shadow: var(--ac-shadow-hover);
+        }
+        .dropdown-item {
+            color: var(--ac-text);
+            transition: background-color 0.15s ease;
+        }
+        .dropdown-item:hover {
+            background-color: var(--ac-terracotta-light);
+            color: var(--ac-terracotta);
+        }
+        .dropdown-divider {
+            border-color: var(--ac-border);
+        }
+
+        /* Alerts */
         .alert {
             border-radius: var(--ac-radius-md);
             border: 1px solid transparent;
@@ -342,21 +563,100 @@
             box-shadow: var(--ac-shadow-subtle);
         }
 
-        /* Footer */
-        footer {
-            background-color: #171513;
-            color: #D3CBC3;
-            padding: 4rem 0 2rem 0;
+        /* ==========================================================================
+           Footer Architecture (Apple Pro Design)
+           ========================================================================== */
+        footer.footer-apple {
+            background-color: var(--ac-footer-bg);
+            color: var(--ac-footer-text);
             margin-top: auto;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid var(--ac-footer-border);
+            transition: var(--ac-transition-theme);
         }
-        footer a {
-            color: #B5ABA2;
-            text-decoration: none;
-            transition: color 0.15s;
+
+        .footer-trust-band {
+            border-bottom: 1px solid var(--ac-footer-border);
+            padding: 2.5rem 0;
+            background: var(--ac-footer-card-bg);
         }
-        footer a:hover {
+
+        .footer-trust-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .footer-trust-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--ac-radius-md);
+            background: rgba(184, 84, 51, 0.15);
+            color: var(--ac-terracotta);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+
+        .footer-main-content {
+            padding: 4rem 0 2rem 0;
+        }
+
+        .footer-heading {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
             color: #FFFFFF;
+            margin-bottom: 1.25rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.55rem;
+        }
+
+        .footer-links a {
+            color: var(--ac-footer-muted);
+            text-decoration: none;
+            font-size: 0.88rem;
+            transition: color 0.15s ease, padding-left 0.15s ease;
+            display: inline-block;
+        }
+
+        .footer-links a:hover {
+            color: #FFFFFF;
+            padding-left: 3px;
+        }
+
+        .footer-badge-pill {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--ac-footer-muted);
+            font-size: 0.74rem;
+            font-weight: 600;
+            padding: 0.3rem 0.65rem;
+            border-radius: var(--ac-radius-pill);
+            border: 1px solid var(--ac-footer-border);
+            display: inline-block;
+            transition: all 0.15s ease;
+        }
+
+        .footer-badge-pill:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #FFFFFF;
+        }
+
+        .footer-bottom-bar {
+            border-top: 1px solid var(--ac-footer-border);
+            padding: 1.5rem 0;
+            font-size: 0.82rem;
+            color: var(--ac-footer-muted);
         }
     </style>
     {% block extra_head %}{% endblock %}
@@ -404,6 +704,12 @@
                     </ul>
 
                     <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <!-- Theme Toggle Button (Light/Dark Mode) -->
+                        <button class="btn-theme-toggle" id="themeToggleBtn" type="button" aria-label="Basculer entre le mode clair et le mode sombre" title="Basculer le theme clair / sombre">
+                            <i class="bi bi-moon-stars-fill theme-icon-dark" aria-hidden="true"></i>
+                            <i class="bi bi-sun-fill theme-icon-light" aria-hidden="true"></i>
+                        </button>
+
                         {% if user.is_authenticated %}
                             {% if user.role == 'CLIENT' or user.is_superuser %}
                                 <a href="{% url 'demande_create' %}" class="btn btn-terracotta btn-sm">
@@ -428,7 +734,7 @@
                                     <i class="bi bi-person-circle me-1 text-muted"></i>
                                     {{ user.first_name|default:user.email }}
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="border-radius: var(--ac-radius-md);">
+                                <ul class="dropdown-menu dropdown-menu-end border-0" style="border-radius: var(--ac-radius-md);">
                                     <li><span class="dropdown-item-text text-muted small">Role : <strong>{{ user.get_role_display }}</strong></span></li>
                                     <li><span class="dropdown-item-text text-muted small">Zone : <strong>Bamako, Mali</strong></span></li>
                                     <li><hr class="dropdown-divider"></li>
@@ -454,7 +760,7 @@
     <div class="container mt-3">
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show animate-fade-up" role="alert">
                     <i class="bi {% if message.tags == 'success' %}bi-check-circle-fill text-success{% elif message.tags == 'error' %}bi-exclamation-triangle-fill text-danger{% else %}bi-info-circle-fill text-primary{% endif %} me-2"></i>
                     {{ message }}
                     <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert" aria-label="Fermer"></button>
@@ -468,79 +774,196 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row g-4 mb-5">
-                <div class="col-lg-4 col-md-6">
-                    <div class="d-flex align-items-center gap-2 mb-3">
-                        <img src="{% static 'images/logo.jpg' %}" alt="Logo ArtisanConnect" style="height: 42px; border-radius: 8px;">
-                        <div>
-                            <span class="fw-bold fs-5 text-white d-block">ArtisanConnect</span>
-                            <span class="small text-muted" style="letter-spacing: 0.05em;">BAMAKO &bull; MALI</span>
+    <!-- Redesigned Apple Pro Footer -->
+    <footer class="footer-apple">
+        <!-- Upper Trust Band -->
+        <div class="footer-trust-band">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="footer-trust-card">
+                            <div class="footer-trust-icon">
+                                <i class="bi bi-patch-check-fill"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold text-white mb-1 small">Artisans verifies</h6>
+                                <p class="small mb-0" style="color: var(--ac-footer-muted); line-height: 1.4;">Identite, quartier et competences controles a Bamako.</p>
+                            </div>
                         </div>
                     </div>
-                    <p class="small text-muted mb-3" style="line-height: 1.6;">
-                        Plateforme officielle de mise en relation et de suivi de prestations artisanales a Bamako et dans les regions du Mali. Artisans qualifies, devis transparents et avis certifies.
-                    </p>
-                    <div class="d-flex align-items-center gap-2 text-white small">
-                        <span class="badge bg-dark border border-secondary text-light">Devise officielle</span>
-                        <strong class="tabular-nums">Franc CFA (XOF / FCFA)</strong>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="footer-trust-card">
+                            <div class="footer-trust-icon">
+                                <i class="bi bi-receipt-cutoff"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold text-white mb-1 small">Devis clairs en FCFA</h6>
+                                <p class="small mb-0" style="color: var(--ac-footer-muted); line-height: 1.4;">Propositions detaillees et chiffres sans frais caches.</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <div class="col-lg-2 col-md-6">
-                    <h6 class="text-white fw-bold mb-3 small text-uppercase" style="letter-spacing: 0.06em;">Navigation</h6>
-                    <ul class="list-unstyled small">
-                        <li class="mb-2"><a href="{% url 'home' %}">Accueil</a></li>
-                        <li class="mb-2"><a href="{% url 'artisan_list' %}">Annuaire Bamako</a></li>
-                        <li class="mb-2"><a href="{% url 'demande_list' %}">Appels a projets</a></li>
-                        <li class="mb-2"><a href="{% url 'demande_create' %}">Publier une mission</a></li>
-                        <li class="mb-2"><a href="{% url 'web_register' %}">Devenir artisan partenaire</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-3 col-md-6">
-                    <h6 class="text-white fw-bold mb-3 small text-uppercase" style="letter-spacing: 0.06em;">Metiers cles au Mali</h6>
-                    <ul class="list-unstyled small">
-                        <li class="mb-1"><a href="{% url 'artisan_list' %}?q=Menuiserie">Menuiserie & Ebenisterie teck / iroko</a></li>
-                        <li class="mb-1"><a href="{% url 'artisan_list' %}?q=Plomberie">Plomberie sanitaire & surpresseurs</a></li>
-                        <li class="mb-1"><a href="{% url 'artisan_list' %}?q=Electricite">Electricite & kits solaires hybrides</a></li>
-                        <li class="mb-1"><a href="{% url 'artisan_list' %}?q=Couture">Couture d apparat & basin riche brode</a></li>
-                        <li class="mb-1"><a href="{% url 'artisan_list' %}?q=Soudure">Ferronnerie, portails blindes & grilles</a></li>
-                        <li class="mb-1"><a href="{% url 'artisan_list' %}?q=Climatisation">Climatisation split inverter & froid</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-3 col-md-6">
-                    <h6 class="text-white fw-bold mb-3 small text-uppercase" style="letter-spacing: 0.06em;">Quartiers de Bamako couverts</h6>
-                    <p class="small text-muted mb-2">Interventions rapides sur les 6 communes du District :</p>
-                    <div class="d-flex flex-wrap gap-1 mb-3">
-                        <span class="badge bg-dark border border-secondary text-secondary small">ACI 2000</span>
-                        <span class="badge bg-dark border border-secondary text-secondary small">Badalabougou</span>
-                        <span class="badge bg-dark border border-secondary text-secondary small">Hippodrome</span>
-                        <span class="badge bg-dark border border-secondary text-secondary small">Faladie SEMA</span>
-                        <span class="badge bg-dark border border-secondary text-secondary small">Korofina</span>
-                        <span class="badge bg-dark border border-secondary text-secondary small">Hamdallaye</span>
-                        <span class="badge bg-dark border border-secondary text-secondary small">Niamakoro</span>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="footer-trust-card">
+                            <div class="footer-trust-icon">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold text-white mb-1 small">Avis 100% certifies</h6>
+                                <p class="small mb-0" style="color: var(--ac-footer-muted); line-height: 1.4;">Evaluations recueillies apres reception reelle des travaux.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="small">
-                        <a href="{% url 'swagger-ui' %}" target="_blank" class="text-white text-decoration-underline d-inline-block me-3">REST API Swagger</a>
-                        <a href="/admin/" target="_blank" class="text-white text-decoration-underline d-inline-block">Console Django</a>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="footer-trust-card">
+                            <div class="footer-trust-icon">
+                                <i class="bi bi-geo-alt-fill"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold text-white mb-1 small">Presence locale au Mali</h6>
+                                <p class="small mb-0" style="color: var(--ac-footer-muted); line-height: 1.4;">Interventions rapides sur les 6 communes du District.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <hr class="border-secondary opacity-25 my-4">
-            <div class="d-flex flex-wrap justify-content-between align-items-center small text-muted">
-                <span>&copy; {% now "Y" %} ArtisanConnect Mali. Le savoir-faire a portee de main.</span>
-                <span>Architecture Full Python & Django REST Framework &bull; Concu selon les principes Apple Design</span>
+        <!-- Main Footer Links Grid -->
+        <div class="footer-main-content">
+            <div class="container">
+                <div class="row g-4">
+                    <!-- Brand Column -->
+                    <div class="col-lg-4 col-md-12">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <img src="{% static 'images/logo.jpg' %}" alt="Logo ArtisanConnect" style="height: 44px; border-radius: var(--ac-radius-sm);">
+                            <div>
+                                <span class="fw-bold fs-5 text-white d-block" style="line-height: 1.1;">ArtisanConnect</span>
+                                <span class="small" style="color: var(--ac-footer-muted); letter-spacing: 0.05em; font-size: 0.7rem;">LE SAVOIR-FAIRE A PORTEE DE MAIN &bull; MALI</span>
+                            </div>
+                        </div>
+                        <p class="small mb-3" style="color: var(--ac-footer-muted); line-height: 1.65; max-width: 360px;">
+                            Plateforme technologique de mise en relation et de suivi operationnel entre particuliers, entreprises et maitres artisans a Bamako.
+                        </p>
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="live-pulse-dot"></span>
+                            <span class="small fw-semibold text-white">Plateforme active &bull; Bamako</span>
+                        </div>
+                        <div class="small" style="color: var(--ac-footer-muted);">
+                            Devise officielle : <strong class="text-white tabular-nums">Franc CFA (XOF)</strong>
+                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <div class="col-lg-2 col-6">
+                        <h6 class="footer-heading">Plateforme</h6>
+                        <ul class="footer-links">
+                            <li><a href="{% url 'home' %}">Accueil</a></li>
+                            <li><a href="{% url 'artisan_list' %}">Annuaire Bamako</a></li>
+                            <li><a href="{% url 'demande_list' %}">Demandes de service</a></li>
+                            <li><a href="{% url 'demande_create' %}">Publier une mission</a></li>
+                            <li><a href="{% url 'web_register' %}?role=ARTISAN">Devenir artisan</a></li>
+                            <li><a href="{% url 'web_login' %}">Connexion</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Key Metiers -->
+                    <div class="col-lg-3 col-6">
+                        <h6 class="footer-heading">Metiers d excellence</h6>
+                        <ul class="footer-links">
+                            <li><a href="{% url 'artisan_list' %}?q=Menuiserie">Menuiserie teck & iroko</a></li>
+                            <li><a href="{% url 'artisan_list' %}?q=Plomberie">Plomberie & surpresseurs</a></li>
+                            <li><a href="{% url 'artisan_list' %}?q=Electricite">Kits solaires & inverseurs</a></li>
+                            <li><a href="{% url 'artisan_list' %}?q=Couture">Stylisme & basin riche</a></li>
+                            <li><a href="{% url 'artisan_list' %}?q=Soudure">Ferronnerie & portails blindes</a></li>
+                            <li><a href="{% url 'artisan_list' %}?q=Climatisation">Climatisation split inverter</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Districts & Tech -->
+                    <div class="col-lg-3 col-md-12">
+                        <h6 class="footer-heading">Communes couvertes</h6>
+                        <div class="d-flex flex-wrap gap-1 mb-4">
+                            <span class="footer-badge-pill">Hamdallaye ACI 2000</span>
+                            <span class="footer-badge-pill">Badalabougou</span>
+                            <span class="footer-badge-pill">Hippodrome</span>
+                            <span class="footer-badge-pill">Faladie SEMA</span>
+                            <span class="footer-badge-pill">Korofina Nord</span>
+                            <span class="footer-badge-pill">Niamakoro</span>
+                            <span class="footer-badge-pill">Sotuba</span>
+                            <span class="footer-badge-pill">Sabalibougou</span>
+                            <span class="footer-badge-pill">Golf Djicoroni</span>
+                        </div>
+
+                        <h6 class="footer-heading">Ressources Developpeur</h6>
+                        <div class="d-flex flex-column gap-1 small">
+                            <a href="{% url 'swagger-ui' %}" target="_blank" class="text-white text-decoration-none d-inline-flex align-items-center gap-1">
+                                <i class="bi bi-box-arrow-up-right me-1" style="font-size: 0.75rem;"></i>Documentation Swagger OpenAPI
+                            </a>
+                            <a href="{% url 'redoc' %}" target="_blank" class="text-white text-decoration-none d-inline-flex align-items-center gap-1">
+                                <i class="bi bi-file-code me-1" style="font-size: 0.75rem;"></i>Documentation ReDoc
+                            </a>
+                            <a href="/admin/" target="_blank" class="text-white text-decoration-none d-inline-flex align-items-center gap-1">
+                                <i class="bi bi-shield-lock me-1" style="font-size: 0.75rem;"></i>Portail Superviseur Django
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Copyright Bar -->
+        <div class="footer-bottom-bar">
+            <div class="container">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <div>
+                        &copy; {% now "Y" %} ArtisanConnect Mali. Tous droits reserves &bull; Le savoir-faire a portee de main.
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <span>Full Python &bull; Django REST Framework</span>
+                        <span class="d-none d-md-inline">&bull;</span>
+                        <span class="d-none d-md-inline">Apple Fluid Design Architecture</span>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>
 
     <!-- Bootstrap 5 Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Theme Switcher & Intersection Scroll Animations Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme toggle logic
+            var themeBtn = document.getElementById('themeToggleBtn');
+            if (themeBtn) {
+                themeBtn.addEventListener('click', function() {
+                    var currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+                    var nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', nextTheme);
+                    try {
+                        localStorage.setItem('artisanconnect_theme', nextTheme);
+                    } catch (e) {}
+                });
+            }
+
+            // Scroll reveal animation observer
+            if ('IntersectionObserver' in window) {
+                var observer = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('animate-fade-up');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.08 });
+
+                document.querySelectorAll('.card-apple, .footer-trust-card').forEach(function(el) {
+                    observer.observe(el);
+                });
+            }
+        });
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
