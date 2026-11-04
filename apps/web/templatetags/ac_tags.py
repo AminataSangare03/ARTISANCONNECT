@@ -12,11 +12,11 @@ register = template.Library()
 # Sert de repli lorsque le metier n'a pas d'image televersee dans MEDIA.
 METIER_VISUALS = {
     'menuiserie': 'hero_atelier',
-    'plomberie': 'hero_client',
-    'electricite': 'metier_climatisation',
-    'électricité': 'metier_climatisation',
-    'couture': 'metier_coiffure',
-    'soudure': 'metier_mecanique',
+    'plomberie': 'metier_plomberie',
+    'electricite': 'metier_electricite',
+    'électricité': 'metier_electricite',
+    'couture': 'metier_couture',
+    'soudure': 'metier_soudure',
     'maconnerie': 'metier_maconnerie',
     'maçonnerie': 'metier_maconnerie',
     'peinture': 'metier_peinture',

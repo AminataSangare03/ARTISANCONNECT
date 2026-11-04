@@ -240,11 +240,11 @@
         }
 
         .navbar-brand-logo {
-            height: 44px;
+            height: 42px;
             width: auto;
-            border-radius: var(--ac-radius-sm);
             object-fit: contain;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            background: transparent !important;
+            box-shadow: none !important;
             transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
@@ -668,7 +668,7 @@
         <nav class="navbar navbar-expand-lg navbar-apple">
             <div class="container">
                 <a class="navbar-brand-wrap" href="{% url 'home' %}">
-                    <img src="{% static 'images/logo.jpg' %}" alt="ArtisanConnect Logo" class="navbar-brand-logo">
+                    <img src="{% static 'images/logo_icon.png' %}" alt="ArtisanConnect Logo" class="navbar-brand-logo">
                     <div class="navbar-brand-text">
                         <span class="navbar-brand-name">ArtisanConnect</span>
                         <span class="navbar-brand-slogan">Le savoir-faire a portee de main &bull; Mali</span>
@@ -835,7 +835,7 @@
                     <!-- Brand Column -->
                     <div class="col-lg-4 col-md-12">
                         <div class="d-flex align-items-center gap-2 mb-3">
-                            <img src="{% static 'images/logo.jpg' %}" alt="Logo ArtisanConnect" style="height: 44px; border-radius: var(--ac-radius-sm);">
+                            <img src="{% static 'images/logo_icon.png' %}" alt="Logo ArtisanConnect" style="height: 42px; width: auto; object-fit: contain; background: transparent;">
                             <div>
                                 <span class="fw-bold fs-5 text-white d-block" style="line-height: 1.1;">ArtisanConnect</span>
                                 <span class="small" style="color: var(--ac-footer-muted); letter-spacing: 0.05em; font-size: 0.7rem;">LE SAVOIR-FAIRE A PORTEE DE MAIN &bull; MALI</span>
