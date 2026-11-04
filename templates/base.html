@@ -264,16 +264,31 @@
         /* ==========================================================================
            Navbar (Translucent Glass & Theme Switcher)
            ========================================================================== */
-        .navbar-apple {
+        header {
+            position: -webkit-sticky;
             position: sticky;
             top: 0;
             z-index: 1030;
+            width: 100%;
+        }
+
+        .navbar-apple {
+            width: 100%;
             background: var(--ac-glass-bg);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             backdrop-filter: blur(20px) saturate(180%);
             border-bottom: 1px solid var(--ac-border);
             padding: 0.75rem 1rem;
-            transition: var(--ac-transition-theme);
+            transition: var(--ac-transition-theme), box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        header.header-scrolled .navbar-apple {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-bottom-color: var(--ac-border-strong);
+        }
+
+        [data-theme="dark"] header.header-scrolled .navbar-apple {
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
         }
 
         .navbar-brand-wrap {
@@ -1617,6 +1632,16 @@
             var updateScrollState = function() {
                 var totalScrollable = document.documentElement.scrollHeight - window.innerHeight;
                 var currentY = window.scrollY || document.documentElement.scrollTop;
+
+                // Sticky Header elevation shadow on scroll
+                var mainHeader = document.querySelector('header');
+                if (mainHeader) {
+                    if (currentY > 8) {
+                        mainHeader.classList.add('header-scrolled');
+                    } else {
+                        mainHeader.classList.remove('header-scrolled');
+                    }
+                }
 
                 // Reading Progress Bar
                 if (scrollProgressBar) {
