@@ -1,55 +1,63 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load ac_tags %}
 
-{% block title %}Mon Espace Client - ArtisanConnect{% endblock %}
+{% block title %}Mon Espace Client - ArtisanConnect Mali{% endblock %}
 
 {% block content %}
 <div class="container py-4">
     <!-- Header -->
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
         <div>
-            <span class="badge-metier">Espace Client</span>
-            <h1 class="h3 fw-bold mt-2 mb-1">Tableau de bord de {{ user.first_name }} {{ user.last_name }}</h1>
-            <p class="text-muted small mb-0">Gerez vos demandes de prestations, comparez vos devis et suivez vos chantiers.</p>
+            <span class="badge mb-2 px-3 py-1" style="background-color: var(--ac-terracotta-light); color: var(--ac-terracotta); font-weight: 700;">ESPACE CLIENT PARTICULIER</span>
+            <h1 class="h3 fw-extrabold text-dark mt-1 mb-1">Tableau de bord de {{ user.first_name }} {{ user.last_name }}</h1>
+            <p class="text-muted small mb-0">Pilotez vos demandes, comparez vos devis et suivez l avancement de vos chantiers a Bamako.</p>
         </div>
         <div>
             <a href="{% url 'demande_create' %}" class="btn btn-terracotta fw-bold">
-                + Nouvelle demande
+                <i class="bi bi-plus-circle"></i>Nouvelle demande
             </a>
         </div>
     </div>
 
-    <!-- Quick summary cards -->
+    <!-- Quick stats cards -->
     <div class="row g-3 mb-4">
         <div class="col-md-4">
-            <div class="card card-custom p-3 border-0 shadow-sm text-center">
-                <div class="fs-3 fw-bold text-dark">{{ demandes.count }}</div>
-                <div class="small text-muted fw-semibold text-uppercase">Demandes publiees</div>
+            <div class="card-apple p-4 text-center bg-white">
+                <div class="fs-2 fw-extrabold tabular-nums text-dark">{{ demandes.count }}</div>
+                <div class="small text-muted fw-bold text-uppercase" style="letter-spacing: 0.05em;">Demandes publiees</div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card card-custom p-3 border-0 shadow-sm text-center">
-                <div class="fs-3 fw-bold" style="color: var(--ac-terracotta);">{{ commandes.count }}</div>
-                <div class="small text-muted fw-semibold text-uppercase">Commandes en cours ou terminees</div>
+            <div class="card-apple p-4 text-center bg-white">
+                <div class="fs-2 fw-extrabold tabular-nums" style="color: var(--ac-terracotta);">{{ commandes.count }}</div>
+                <div class="small text-muted fw-bold text-uppercase" style="letter-spacing: 0.05em;">Commandes de travaux</div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card card-custom p-3 border-0 shadow-sm text-center">
-                <div class="fs-3 fw-bold text-success">
-                    {{ client_profile.ville|default:"Non renseignee" }}
+            <div class="card-apple p-4 text-center bg-white">
+                <div class="fs-2 fw-extrabold text-success">
+                    {{ client_profile.ville|default:"Bamako" }}
                 </div>
-                <div class="small text-muted fw-semibold text-uppercase">Zone de residence</div>
+                <div class="small text-muted fw-bold text-uppercase" style="letter-spacing: 0.05em;">
+                    {{ client_profile.quartier|default:"Zone couverte" }}
+                </div>
             </div>
         </div>
     </div>
 
     <div class="row g-4">
-        <!-- Demandes List -->
         <div class="col-lg-12">
-            <div class="card card-custom p-4 mb-4 border-0 shadow-sm">
+            <!-- Demandes List -->
+            <div class="card-apple p-4 mb-4 bg-white">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="h5 fw-bold mb-0" style="color: var(--ac-terracotta);">Mes demandes de service</h2>
-                    <span class="badge bg-light text-muted border">{{ demandes.count }}</span>
+                    <div>
+                        <h2 class="h5 fw-bold mb-0 text-dark">
+                            <i class="bi bi-folder2-open me-2" style="color: var(--ac-terracotta);"></i>Mes demandes de service
+                        </h2>
+                        <span class="text-muted small">Suivi des appels a projets publies</span>
+                    </div>
+                    <span class="badge bg-light text-muted border rounded-pill px-3 py-1">{{ demandes.count }}</span>
                 </div>
 
                 <div class="table-responsive">
@@ -73,15 +81,20 @@
                                         <a href="{% url 'demande_detail' d.id %}" class="fw-bold text-dark text-decoration-none">
                                             {{ d.titre }}
                                         </a>
+                                        <div class="text-muted" style="font-size: 0.74rem;">{{ d.ville }}{% if d.quartier %}, {{ d.quartier }}{% endif %}</div>
                                     </td>
                                     <td>
-                                        {% if d.budget_indicatif > 0 %}{{ d.budget_indicatif }} FCFA{% else %}<span class="text-muted">-</span>{% endif %}
+                                        {% if d.budget_indicatif > 0 %}
+                                            <strong class="tabular-nums">{{ d.budget_indicatif|fcfa }}</strong>
+                                        {% else %}
+                                            <span class="text-muted">-</span>
+                                        {% endif %}
                                     </td>
                                     <td>
-                                        <span class="badge bg-light text-dark border">{{ d.devis.count }}</span>
+                                        <span class="badge bg-light text-dark border tabular-nums">{{ d.devis.count }}</span>
                                     </td>
                                     <td>
-                                        <span class="badge-status badge-status-{{ d.statut|lower }}">{{ d.get_statut_display }}</span>
+                                        <span class="badge badge-status-{{ d.statut|lower }} rounded-pill">{{ d.get_statut_display }}</span>
                                     </td>
                                     <td class="text-muted">{{ d.created_at|date:"d M Y" }}</td>
                                     <td class="text-end">
@@ -93,7 +106,7 @@
                             {% empty %}
                                 <tr>
                                     <td colspan="7" class="text-center py-4 text-muted">
-                                        Vous n'avez pas encore publie de demande de service.
+                                        Vous n avez pas encore publie de demande de service.
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -103,61 +116,83 @@
             </div>
 
             <!-- Commandes List & Suivi -->
-            <div class="card card-custom p-4 border-0 shadow-sm">
+            <div class="card-apple p-4 bg-white">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="h5 fw-bold mb-0" style="color: var(--ac-terracotta);">Suivi de mes commandes & prestations</h2>
-                    <span class="badge bg-light text-muted border">{{ commandes.count }}</span>
+                    <div>
+                        <h2 class="h5 fw-bold mb-0 text-dark">
+                            <i class="bi bi-tools me-2" style="color: var(--ac-terracotta);"></i>Chantiers & Prestations commandees
+                        </h2>
+                        <span class="text-muted small">Validez la livraison des travaux et donnez votre avis</span>
+                    </div>
+                    <span class="badge bg-light text-muted border rounded-pill px-3 py-1">{{ commandes.count }}</span>
                 </div>
 
                 <div class="d-flex flex-column gap-3">
                     {% for c in commandes %}
                         <div class="p-3 border rounded-3 bg-white">
                             <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-2">
-                                <div>
-                                    <div class="fw-bold fs-6 text-dark">
-                                        Commande #{{ c.id }} - {{ c.devis.demande.titre }}
-                                    </div>
-                                    <div class="small text-muted">
-                                        Artisan : <strong>{{ c.artisan.user.get_full_name|default:c.artisan.user.email }}</strong> ({{ c.artisan.metier.nom }})
-                                        {% if c.artisan.telephone_professionnel %} &bull; Tel : {{ c.artisan.telephone_professionnel }}{% endif %}
+                                <div class="d-flex align-items-center gap-3">
+                                    {% artisan_avatar c.artisan as cmd_avatar %}
+                                    {% if cmd_avatar %}
+                                        <img src="{{ cmd_avatar }}" alt="{{ c.artisan.user.get_full_name }}" class="artisan-avatar-img">
+                                    {% else %}
+                                        <div class="artisan-avatar-placeholder">
+                                            {{ c.artisan.user|initials }}
+                                        </div>
+                                    {% endif %}
+                                    <div>
+                                        <div class="fw-bold fs-6 text-dark">
+                                            Commande #{{ c.id }} &bull; {{ c.devis.demande.titre }}
+                                        </div>
+                                        <div class="small text-muted">
+                                            Artisan : <strong>{{ c.artisan.user.get_full_name|default:c.artisan.user.email }}</strong> ({{ c.artisan.metier.nom }})
+                                            {% if c.artisan.telephone_professionnel %} &bull; Tel : <a href="tel:{{ c.artisan.telephone_professionnel }}" class="text-dark fw-semibold">{{ c.artisan.telephone_professionnel }}</a>{% endif %}
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="text-end">
-                                    <div class="fs-5 fw-bold" style="color: var(--ac-terracotta);">{{ c.devis.montant }} FCFA</div>
-                                    <span class="badge-status badge-status-{{ c.statut|lower }}">{{ c.get_statut_display }}</span>
+                                <div class="text-md-end">
+                                    <div class="fs-5 fw-extrabold tabular-nums" style="color: var(--ac-terracotta);">
+                                        {{ c.devis.montant|fcfa }}
+                                    </div>
+                                    <span class="badge badge-status-{{ c.statut|lower }} rounded-pill">{{ c.get_statut_display }}</span>
                                 </div>
                             </div>
 
                             <div class="d-flex flex-wrap justify-content-between align-items-center pt-2 border-top small text-muted">
                                 <div>
                                     {% if c.date_debut %}Debut : {{ c.date_debut|date:"d M Y a H:i" }}{% endif %}
-                                    {% if c.date_fin_reelle %} &bull; Fin : {{ c.date_fin_reelle|date:"d M Y a H:i" }}{% endif %}
+                                    {% if c.date_fin_reelle %} &bull; Cloture : {{ c.date_fin_reelle|date:"d M Y a H:i" }}{% endif %}
                                 </div>
 
                                 <div class="d-flex gap-2 align-items-center mt-2 mt-md-0">
                                     {% if c.statut == 'TERMINEE' %}
                                         <a href="{% url 'commande_action' c.id 'confirmer' %}" class="btn btn-success btn-sm fw-bold">
-                                            Confirmer la fin des travaux
+                                            <i class="bi bi-check2-circle"></i>Confirmer la fin des travaux
                                         </a>
                                     {% elif c.statut == 'EN_ATTENTE' %}
-                                        <a href="{% url 'commande_action' c.id 'annuler' %}" class="btn btn-outline-danger btn-sm" onclick="return confirm('Etes-vous sur de vouloir annuler cette commande ?');">
+                                        <a href="{% url 'commande_action' c.id 'annuler' %}" class="btn btn-glass btn-sm text-danger" onclick="return confirm('Etes-vous sur de vouloir annuler cette commande ?');">
                                             Annuler
                                         </a>
                                     {% endif %}
                                 </div>
                             </div>
 
-                            <!-- Formulaire de notation si CONFIRMEE -->
+                            <!-- Rating form if CONFIRMEE -->
                             {% if c.statut == 'CONFIRMEE' %}
-                                <div class="mt-3 p-3 bg-light rounded-3">
+                                <div class="mt-3 p-3 bg-light rounded-3 border border-light-subtle">
                                     {% if c.avis %}
                                         <div class="small">
-                                            <span class="fw-bold text-dark">Votre avis laisse a l'artisan :</span>
-                                            <div class="star-filled fw-bold">{{ c.avis.note }}/5 &#9733;</div>
-                                            <p class="mb-0 text-muted">{{ c.avis.commentaire|default:"Aucun commentaire ecrit." }}</p>
+                                            <span class="fw-bold text-dark">Votre avis certifie transmis :</span>
+                                            <div class="mt-1">
+                                                {% stars c.avis.note 'sm' %}
+                                                <span class="fw-bold tabular-nums ms-1">{{ c.avis.note }}/5</span>
+                                            </div>
+                                            <p class="mb-0 text-muted mt-1">{{ c.avis.commentaire|default:"Aucun commentaire ecrit." }}</p>
                                         </div>
                                     {% else %}
-                                        <div class="small fw-bold text-dark mb-2">Attribuer une note et un avis a l'artisan :</div>
+                                        <div class="small fw-bold text-dark mb-2">
+                                            <i class="bi bi-star me-1 text-warning"></i>Attribuer une note et un avis a cet artisan :
+                                        </div>
                                         <form method="post" action="{% url 'client_dashboard' %}" class="row g-2 align-items-center">
                                             {% csrf_token %}
                                             <input type="hidden" name="commande_id" value="{{ c.id }}">
@@ -169,7 +204,7 @@
                                             </div>
                                             <div class="col-md-2">
                                                 <button type="submit" name="submit_avis" class="btn btn-terracotta btn-sm w-100 fw-bold">
-                                                    Publier
+                                                    Publier l avis
                                                 </button>
                                             </div>
                                         </form>
@@ -179,7 +214,8 @@
                         </div>
                     {% empty %}
                         <div class="text-center py-4 text-muted">
-                            <p class="mb-0">Aucune commande pour le moment.</p>
+                            <i class="bi bi-tools fs-2 text-muted mb-2"></i>
+                            <p class="mb-0 small">Aucune commande de travaux enregistree pour le moment.</p>
                         </div>
                     {% endfor %}
                 </div>

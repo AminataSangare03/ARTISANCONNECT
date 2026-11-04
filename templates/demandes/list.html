@@ -1,27 +1,37 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load ac_tags %}
 
-{% block title %}Demandes de service - ArtisanConnect{% endblock %}
+{% block title %}Demandes de service a Bamako - ArtisanConnect{% endblock %}
 
 {% block content %}
 <div class="container py-4">
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
         <div>
-            <h1 class="h3 fw-bold mb-1">Demandes de service en cours</h1>
-            <p class="text-muted small mb-0">Consultez les besoins des clients ou publiez votre propre projet artisanal.</p>
+            <nav aria-label="breadcrumb" class="mb-2">
+                <ol class="breadcrumb small">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-muted">Accueil</a></li>
+                    <li class="breadcrumb-item active text-dark" aria-current="page">Demandes de service</li>
+                </ol>
+            </nav>
+            <h1 class="h3 fw-extrabold text-dark mb-1">Demandes de service a Bamako</h1>
+            <p class="text-muted small mb-0">Consultez les projets de particuliers et d entreprises en quete d artisans qualifies.</p>
         </div>
         <div>
             <a href="{% url 'demande_create' %}" class="btn btn-terracotta fw-bold">
-                + Publier une demande
+                <i class="bi bi-plus-circle"></i>Publier une demande
             </a>
         </div>
     </div>
 
-    <!-- Filters Bar -->
-    <div class="card card-custom p-3 mb-4 border-0 shadow-sm">
+    <!-- Apple Filter Bar -->
+    <div class="card-apple p-3 mb-4 bg-white">
         <form action="{% url 'demande_list' %}" method="get" class="row g-2 align-items-center">
             <div class="col-md-4">
-                <input type="text" name="q" value="{{ current_q }}" class="form-control form-control-sm" placeholder="Recherche par titre, description...">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                    <input type="text" name="q" value="{{ current_q }}" class="form-control form-control-sm border-start-0" placeholder="Titre, besoin, mot-cle...">
+                </div>
             </div>
             <div class="col-md-3">
                 <select name="metier" class="form-select form-select-sm">
@@ -32,11 +42,15 @@
                 </select>
             </div>
             <div class="col-md-3">
-                <input type="text" name="ville" value="{{ current_ville }}" class="form-control form-control-sm" placeholder="Ville ou quartier...">
+                <input type="text" name="ville" value="{{ current_ville }}" class="form-control form-control-sm" placeholder="Quartier a Bamako...">
             </div>
             <div class="col-md-2 d-flex gap-1">
-                <button type="submit" class="btn btn-terracotta btn-sm w-100">Filtrer</button>
-                <a href="{% url 'demande_list' %}" class="btn btn-outline-secondary btn-sm">Reset</a>
+                <button type="submit" class="btn btn-terracotta btn-sm w-100">
+                    <i class="bi bi-funnel"></i>Filtrer
+                </button>
+                <a href="{% url 'demande_list' %}" class="btn btn-glass btn-sm">
+                    Reset
+                </a>
             </div>
         </form>
     </div>
@@ -45,38 +59,42 @@
     <div class="row g-3">
         {% for demande in page_obj %}
             <div class="col-md-6">
-                <div class="card card-custom h-100 p-3 d-flex flex-column">
+                <div class="card-apple card-apple-interactive h-100 p-4 d-flex flex-column bg-white">
                     <div class="d-flex justify-content-between align-items-start mb-2">
                         <span class="badge-metier">{{ demande.metier.nom }}</span>
-                        <span class="badge-status badge-status-{{ demande.statut|lower }}">{{ demande.get_statut_display }}</span>
+                        <span class="badge badge-status-{{ demande.statut|lower }} rounded-pill px-3 py-1">
+                            {{ demande.get_statut_display }}
+                        </span>
                     </div>
 
-                    <h2 class="h6 fw-bold mb-1">
+                    <h2 class="h6 fw-bold mb-2">
                         <a href="{% url 'demande_detail' demande.id %}" class="text-dark text-decoration-none">
                             {{ demande.titre }}
                         </a>
                     </h2>
 
-                    <p class="small text-muted flex-grow-1 mb-2">
+                    <p class="small text-muted flex-grow-1 mb-3" style="font-size: 0.85rem; line-height: 1.5;">
                         {{ demande.description|truncatewords:22 }}
                     </p>
 
-                    <div class="d-flex justify-content-between align-items-center small py-2 border-top text-muted">
+                    <div class="d-flex justify-content-between align-items-center small py-2 px-3 bg-light rounded-3 mb-3 border border-light-subtle">
                         <div>
-                            Localisation : <strong class="text-dark">{{ demande.ville }}{% if demande.quartier %}, {{ demande.quartier }}{% endif %}</strong>
+                            <span class="text-muted d-block" style="font-size: 0.72rem;">Localisation</span>
+                            <strong class="text-dark"><i class="bi bi-geo-alt me-1 text-muted"></i>{{ demande.ville }}{% if demande.quartier %}, {{ demande.quartier }}{% endif %}</strong>
                         </div>
-                        <div>
+                        <div class="text-end">
+                            <span class="text-muted d-block" style="font-size: 0.72rem;">Budget indicatif</span>
                             {% if demande.budget_indicatif > 0 %}
-                                Budget : <strong class="text-dark">{{ demande.budget_indicatif }} FCFA</strong>
+                                <strong class="tabular-nums text-dark">{{ demande.budget_indicatif|fcfa }}</strong>
                             {% else %}
-                                <span>Budget a negocier</span>
+                                <span class="text-muted">A negocier</span>
                             {% endif %}
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-between align-items-center pt-2">
-                        <span class="text-muted small" style="font-size: 0.75rem;">
-                            Publiee le {{ demande.created_at|date:"d M Y" }} par {{ demande.client.user.get_full_name|default:demande.client.user.email }}
+                    <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                        <span class="text-muted small" style="font-size: 0.76rem;">
+                            <i class="bi bi-clock me-1"></i>{{ demande.created_at|date:"d M Y" }} &bull; {{ demande.client.user.get_full_name|default:demande.client.user.email }}
                         </span>
                         <a href="{% url 'demande_detail' demande.id %}" class="btn btn-outline-terracotta btn-sm">
                             Consulter &rarr;
@@ -86,11 +104,14 @@
             </div>
         {% empty %}
             <div class="col-12 py-5 text-center">
-                <div class="card p-5 border-0 shadow-sm text-center">
-                    <h3 class="h5 fw-bold text-dark mb-2">Aucune demande de service correspondante</h3>
-                    <p class="text-muted small mb-3">Soyez le premier a publier une demande pour trouver un artisan disponible !</p>
+                <div class="card-apple p-5 text-center bg-white">
+                    <i class="bi bi-clipboard-x fs-1 text-muted mb-2"></i>
+                    <h3 class="h5 fw-bold text-dark mb-1">Aucune demande de service correspondante</h3>
+                    <p class="text-muted small mb-3">Publiez votre besoin pour recevoir des devis clairs d artisans a Bamako.</p>
                     <div>
-                        <a href="{% url 'demande_create' %}" class="btn btn-terracotta btn-sm">Publier une demande</a>
+                        <a href="{% url 'demande_create' %}" class="btn btn-terracotta btn-sm">
+                            <i class="bi bi-plus-circle me-1"></i>Publier une demande
+                        </a>
                     </div>
                 </div>
             </div>
@@ -99,25 +120,21 @@
 
     <!-- Pagination -->
     {% if page_obj.has_other_pages %}
-        <nav class="mt-4" aria-label="Pagination">
+        <nav aria-label="Pagination demandes" class="mt-4">
             <ul class="pagination pagination-sm justify-content-center">
                 {% if page_obj.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ current_q }}&metier={{ current_metier }}&ville={{ current_ville }}">&laquo; Precedent</a>
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if current_q %}&q={{ current_q }}{% endif %}{% if current_metier %}&metier={{ current_metier }}{% endif %}{% if current_ville %}&ville={{ current_ville }}{% endif %}">&laquo; Precedent</a>
                     </li>
                 {% endif %}
                 {% for num in page_obj.paginator.page_range %}
-                    {% if page_obj.number == num %}
-                        <li class="page-item active"><span class="page-link" style="background-color: var(--ac-terracotta); border-color: var(--ac-terracotta);">{{ num }}</span></li>
-                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                        <li class="page-item">
-                            <a class="page-link text-dark" href="?page={{ num }}&q={{ current_q }}&metier={{ current_metier }}&ville={{ current_ville }}">{{ num }}</a>
-                        </li>
-                    {% endif %}
+                    <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                        <a class="page-link" href="?page={{ num }}{% if current_q %}&q={{ current_q }}{% endif %}{% if current_metier %}&metier={{ current_metier }}{% endif %}{% if current_ville %}&ville={{ current_ville }}{% endif %}">{{ num }}</a>
+                    </li>
                 {% endfor %}
                 {% if page_obj.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ current_q }}&metier={{ current_metier }}&ville={{ current_ville }}">Suivant &raquo;</a>
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if current_q %}&q={{ current_q }}{% endif %}{% if current_metier %}&metier={{ current_metier }}{% endif %}{% if current_ville %}&ville={{ current_ville }}{% endif %}">Suivant &raquo;</a>
                     </li>
                 {% endif %}
             </ul>

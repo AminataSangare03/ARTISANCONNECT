@@ -1,24 +1,24 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Publier une demande de service - ArtisanConnect{% endblock %}
+{% block title %}Publier une demande de service - ArtisanConnect Mali{% endblock %}
 
 {% block content %}
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card card-custom p-4 border-0 shadow-sm">
+            <div class="card-apple p-4 p-lg-5 border-0 bg-white" style="border-radius: var(--ac-radius-xl);">
                 <div class="mb-4">
-                    <span class="badge-metier">Espace Client</span>
-                    <h1 class="h3 fw-bold mt-2 mb-1">Publier une nouvelle demande de service</h1>
-                    <p class="text-muted small">Decrivez precisement votre projet pour recevoir des devis adaptes d'artisans competents.</p>
+                    <span class="badge mb-2 px-3 py-1" style="background-color: var(--ac-terracotta-light); color: var(--ac-terracotta); font-weight: 700;">ESPACE CLIENT &bull; BAMAKO</span>
+                    <h1 class="h3 fw-extrabold mt-1 mb-2 text-dark">Publier une nouvelle demande de travaux</h1>
+                    <p class="text-muted small mb-0">Decrivez precisement votre besoin pour recevoir des devis sur-mesure d artisans bamakois qualifies.</p>
                 </div>
 
                 <form method="post" action="{% url 'demande_create' %}">
                     {% csrf_token %}
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-dark">Corps de metier requis *</label>
+                        <label class="form-label fw-semibold small text-dark">Corps de metier concerne *</label>
                         {{ form.metier }}
                         {% if form.metier.errors %}
                             <div class="text-danger small mt-1">{{ form.metier.errors|striptags }}</div>
@@ -31,34 +31,37 @@
                         {% if form.titre.errors %}
                             <div class="text-danger small mt-1">{{ form.titre.errors|striptags }}</div>
                         {% endif %}
+                        <div class="form-text small">Ex: Remplacement tuyauterie et pose surpresseur Badalabougou</div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-dark">Description detaillee du besoin *</label>
+                        <label class="form-label fw-semibold small text-dark">Description detaillee du chantier *</label>
                         {{ form.description }}
                         {% if form.description.errors %}
                             <div class="text-danger small mt-1">{{ form.description.errors|striptags }}</div>
                         {% endif %}
-                        <div class="form-text small">Indiquez la nature des travaux, les contraintes d'acces ou de delai, et si les fournitures sont a la charge de l'artisan.</div>
+                        <div class="form-text small">Precisez la nature exacte des travaux, l etat existant et si les fournitures sont a fournir par l artisan.</div>
                     </div>
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold small text-dark">Ville *</label>
+                            <label class="form-label fw-semibold small text-dark">Ville (Mali) *</label>
                             {{ form.ville }}
                             {% if form.ville.errors %}
                                 <div class="text-danger small mt-1">{{ form.ville.errors|striptags }}</div>
                             {% endif %}
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold small text-dark">Quartier / Commune</label>
+                            <label class="form-label fw-semibold small text-dark">Quartier ou Commune a Bamako</label>
                             {{ form.quartier }}
+                            <div class="form-text small">Ex: Hamdallaye ACI 2000, Faladie, Hippodrome...</div>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-dark">Adresse precise ou repere</label>
+                        <label class="form-label fw-semibold small text-dark">Adresse precise ou repere de proximite</label>
                         {{ form.adresse }}
+                        <div class="form-text small">Visible uniquement par les artisans dont vous acceptez le devis.</div>
                     </div>
 
                     <div class="row g-3 mb-4">
@@ -68,15 +71,15 @@
                             <div class="form-text small">Optionnel. Laissez 0 si vous souhaitez negocier sur devis.</div>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold small text-dark">Date d'intervention souhaitee</label>
+                            <label class="form-label fw-semibold small text-dark">Date d intervention souhaitee</label>
                             {{ form.date_souhaitee }}
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-                        <a href="{% url 'demande_list' %}" class="btn btn-outline-secondary">Annuler</a>
+                        <a href="{% url 'demande_list' %}" class="btn btn-glass">Annuler</a>
                         <button type="submit" class="btn btn-terracotta px-4 fw-bold">
-                            Publier ma demande de service
+                            <i class="bi bi-send me-1"></i>Publier ma demande de service
                         </button>
                     </div>
                 </form>

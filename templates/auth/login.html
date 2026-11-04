@@ -1,29 +1,29 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Connexion - ArtisanConnect{% endblock %}
+{% block title %}Connexion - ArtisanConnect Mali{% endblock %}
 
 {% block content %}
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-5">
-            <div class="card card-custom p-4 border-0 shadow-sm">
+            <div class="card-apple p-4 p-lg-5 bg-white shadow-sm" style="border-radius: var(--ac-radius-xl);">
                 <div class="text-center mb-4">
-                    <img src="{% static 'images/logo.jpg' %}" alt="Logo" class="mb-2" style="height: 60px; border-radius: 8px;">
-                    <h1 class="h4 fw-bold text-dark mb-1">Connexion a ArtisanConnect</h1>
-                    <p class="text-muted small">Accedez a votre espace personnel client ou artisan</p>
+                    <img src="{% static 'images/logo.jpg' %}" alt="Logo ArtisanConnect" class="mb-3" style="height: 56px; border-radius: var(--ac-radius-sm);">
+                    <h1 class="h4 fw-extrabold text-dark mb-1">Connexion a ArtisanConnect</h1>
+                    <p class="text-muted small mb-0">Accedez a votre espace personnel bamakois</p>
                 </div>
 
                 <form method="post" action="{% url 'web_login' %}">
                     {% csrf_token %}
                     {% if form.non_field_errors %}
                         <div class="alert alert-danger small py-2 mb-3">
-                            {{ form.non_field_errors|striptags }}
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i>{{ form.non_field_errors|striptags }}
                         </div>
                     {% endif %}
 
                     <div class="mb-3">
-                        <label class="form-label small fw-semibold text-dark">Adresse email</label>
+                        <label class="form-label small fw-semibold text-dark">Adresse courriel</label>
                         {{ form.email }}
                     </div>
 
@@ -32,25 +32,28 @@
                         {{ form.password }}
                     </div>
 
-                    <div class="d-grid gap-2 mb-3">
+                    <div class="d-grid gap-2 mb-3 pt-2">
                         <button type="submit" class="btn btn-terracotta fw-bold py-2">
-                            Se connecter
+                            <i class="bi bi-box-arrow-in-right me-1"></i>Se connecter
                         </button>
                     </div>
 
                     <div class="text-center small text-muted">
-                        Vous n'avez pas encore de compte ?
+                        Vous n avez pas encore de compte ?
                         <a href="{% url 'web_register' %}" class="fw-bold" style="color: var(--ac-terracotta);">Inscrivez-vous ici</a>
                     </div>
                 </form>
 
-                <!-- Demo helper -->
-                <div class="mt-4 p-3 bg-light rounded-3 small border">
-                    <div class="fw-bold text-dark mb-1">Comptes de test pour evaluation :</div>
-                    <ul class="list-unstyled mb-0 text-muted" style="font-size: 0.8rem;">
-                        <li><strong>Client :</strong> fatou.kone@example.com / <code>Client1234!</code></li>
-                        <li><strong>Artisan :</strong> ibrahim.diop@example.com / <code>Artisan1234!</code></li>
-                        <li><strong>Admin :</strong> admin@artisanconnect.ci / <code>Admin1234!</code></li>
+                <!-- Malian Demo Helper -->
+                <div class="mt-4 p-3 bg-light rounded-3 small border border-light-subtle">
+                    <div class="fw-bold text-dark mb-1 small text-uppercase" style="letter-spacing: 0.04em;">
+                        <i class="bi bi-key me-1 text-terracotta"></i>Comptes de test (Bamako, Mali) :
+                    </div>
+                    <ul class="list-unstyled mb-0 text-muted" style="font-size: 0.78rem;">
+                        <li class="mb-1"><strong>Client (Badala) :</strong> fatoumata.diallo@example.com / <code>Client1234!</code></li>
+                        <li class="mb-1"><strong>Artisan Menuisier (Faladie) :</strong> seydou.coulibaly@example.com / <code>Artisan1234!</code></li>
+                        <li class="mb-1"><strong>Artisan Plombier (Badala) :</strong> mamadou.traore@example.com / <code>Artisan1234!</code></li>
+                        <li><strong>Superviseur Admin :</strong> admin@artisanconnect.ml / <code>Admin1234!</code></li>
                     </ul>
                 </div>
             </div>

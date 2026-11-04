@@ -1,30 +1,32 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Inscription - ArtisanConnect{% endblock %}
+{% block title %}Inscription - ArtisanConnect Mali{% endblock %}
 
 {% block content %}
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-7">
-            <div class="card card-custom p-4 border-0 shadow-sm">
+            <div class="card-apple p-4 p-lg-5 bg-white shadow-sm" style="border-radius: var(--ac-radius-xl);">
                 <div class="text-center mb-4">
-                    <img src="{% static 'images/logo.jpg' %}" alt="Logo" class="mb-2" style="height: 60px; border-radius: 8px;">
-                    <h1 class="h4 fw-bold text-dark mb-1">Creer un compte ArtisanConnect</h1>
-                    <p class="text-muted small">Rejoignez la plateforme et profitez de notre reseau qualifie</p>
+                    <img src="{% static 'images/logo.jpg' %}" alt="Logo ArtisanConnect" class="mb-3" style="height: 56px; border-radius: var(--ac-radius-sm);">
+                    <h1 class="h4 fw-extrabold text-dark mb-1">Creer un compte ArtisanConnect</h1>
+                    <p class="text-muted small mb-0">Rejoignez la communaute des particuliers et artisans d excellence au Mali</p>
                 </div>
 
                 <form method="post" action="{% url 'web_register' %}">
                     {% csrf_token %}
                     {% if form.non_field_errors %}
                         <div class="alert alert-danger small py-2 mb-3">
-                            {{ form.non_field_errors|striptags }}
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i>{{ form.non_field_errors|striptags }}
                         </div>
                     {% endif %}
 
                     <!-- Choix du rôle -->
-                    <div class="mb-4 p-3 bg-light rounded-3 border">
-                        <label class="form-label small fw-bold text-dark d-block mb-2">Quel est votre profil ? *</label>
+                    <div class="mb-4 p-3 bg-light rounded-3 border border-light-subtle">
+                        <label class="form-label small fw-bold text-dark d-block mb-2 text-uppercase" style="letter-spacing: 0.05em;">
+                            <i class="bi bi-person-badge me-1 text-terracotta"></i>Quel est votre profil ? *
+                        </label>
                         <div class="d-flex gap-4">
                             {% for radio in form.role %}
                                 <div class="form-check">
@@ -60,7 +62,7 @@
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label small fw-semibold text-dark">Adresse email *</label>
+                            <label class="form-label small fw-semibold text-dark">Adresse courriel *</label>
                             {{ form.email }}
                             {% if form.email.errors %}
                                 <div class="text-danger small mt-1">{{ form.email.errors|striptags }}</div>
@@ -72,6 +74,7 @@
                             {% if form.phone_number.errors %}
                                 <div class="text-danger small mt-1">{{ form.phone_number.errors|striptags }}</div>
                             {% endif %}
+                            <div class="form-text small">Ex: +223 76 12 34 56</div>
                         </div>
                     </div>
 
@@ -92,39 +95,42 @@
                         </div>
                     </div>
 
-                    <!-- Localisation -->
+                    <!-- Localisation au Mali -->
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label small fw-semibold text-dark">Ville de residence ou d'activite *</label>
+                            <label class="form-label small fw-semibold text-dark">Ville (Mali) *</label>
                             {{ form.ville }}
                             {% if form.ville.errors %}
                                 <div class="text-danger small mt-1">{{ form.ville.errors|striptags }}</div>
                             {% endif %}
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-semibold text-dark">Quartier / Commune</label>
+                            <label class="form-label small fw-semibold text-dark">Quartier ou Commune a Bamako</label>
                             {{ form.quartier }}
+                            <div class="form-text small">Ex: ACI 2000, Faladie, Badalabougou...</div>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label small fw-semibold text-dark">Adresse ou repere</label>
+                        <label class="form-label small fw-semibold text-dark">Adresse ou repere de proximite</label>
                         {{ form.adresse }}
                     </div>
 
                     <!-- Champs spécifiques Artisan -->
                     <div id="artisanFieldsSection" class="p-3 border rounded-3 bg-light mb-4">
-                        <h2 class="h6 fw-bold mb-3" style="color: var(--ac-terracotta);">Informations artisanales professionnelles</h2>
+                        <h2 class="h6 fw-bold mb-3 text-uppercase small" style="color: var(--ac-terracotta); letter-spacing: 0.05em;">
+                            <i class="bi bi-tools me-1"></i>Informations professionnelles artisanales
+                        </h2>
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <label class="form-label small fw-semibold text-dark">Metier principal *</label>
+                                <label class="form-label small fw-semibold text-dark">Corps de metier principal *</label>
                                 {{ form.metier }}
                                 {% if form.metier.errors %}
                                     <div class="text-danger small mt-1">{{ form.metier.errors|striptags }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-md-3">
-                                <label class="form-label small fw-semibold text-dark">Annees d'exp.</label>
+                                <label class="form-label small fw-semibold text-dark">Annees d exp.</label>
                                 {{ form.experience }}
                             </div>
                             <div class="col-md-3">
@@ -134,14 +140,14 @@
                         </div>
 
                         <div class="mb-0">
-                            <label class="form-label small fw-semibold text-dark">Description de vos specialites</label>
+                            <label class="form-label small fw-semibold text-dark">Description de vos specialites & savoir-faire</label>
                             {{ form.description }}
                         </div>
                     </div>
 
-                    <div class="d-grid gap-2 mb-3">
+                    <div class="d-grid gap-2 mb-3 pt-2">
                         <button type="submit" class="btn btn-terracotta fw-bold py-2">
-                            Creer mon compte
+                            <i class="bi bi-check-circle me-1"></i>Creer mon compte ArtisanConnect
                         </button>
                     </div>
 

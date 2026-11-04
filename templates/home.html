@@ -1,30 +1,36 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load ac_tags %}
 
-{% block title %}Accueil - ArtisanConnect | Le savoir-faire a portee de main{% endblock %}
+{% block title %}ArtisanConnect Mali - Trouvez les meilleurs artisans a Bamako{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
-<section class="py-5" style="background: linear-gradient(135deg, #FAF7F2 0%, #F3EAE1 100%); border-bottom: 1px solid var(--ac-border);">
-    <div class="container py-4">
+<section class="py-5" style="background: radial-gradient(100% 100% at 50% 0%, #FFFFFF 0%, #F5EFE6 100%); border-bottom: 1px solid var(--ac-border);">
+    <div class="container py-3 py-lg-4">
         <div class="row align-items-center g-5">
-            <div class="col-lg-7">
-                <span class="badge mb-3 px-3 py-2 text-uppercase fw-bold" style="background-color: var(--ac-terracotta-light); color: var(--ac-terracotta-dark); letter-spacing: 0.05em;">
-                    Mise en relation artisanale certifiee
-                </span>
-                <h1 class="display-4 fw-extrabold text-dark mb-3" style="line-height: 1.15; letter-spacing: -0.02em;">
-                    Trouvez le bon artisan pour chaque projet.
+            <div class="col-lg-6">
+                <div class="d-inline-flex align-items-center gap-2 mb-3 px-3 py-1 bg-white border shadow-sm rounded-pill">
+                    <span class="badge rounded-pill" style="background-color: var(--ac-terracotta); color: #FFFFFF; font-size: 0.7rem; letter-spacing: 0.05em;">MALI</span>
+                    <span class="small fw-semibold text-muted">Plateforme artisanale certifiee &bull; Bamako</span>
+                </div>
+
+                <h1 class="display-5 fw-extrabold text-dark mb-3" style="line-height: 1.15; letter-spacing: -0.03em;">
+                    Le savoir-faire des artisans bamakois a portee de main.
                 </h1>
-                <p class="lead text-muted mb-4" style="font-size: 1.15rem;">
-                    Particuliers et professionnels : trouvez des artisans qualifies, disponibles a proximite, comparez les devis et suivez vos travaux en toute serenite.
+
+                <p class="lead text-muted mb-4" style="font-size: 1.1rem; line-height: 1.6;">
+                    Connectez-vous directement avec des artisans verifies dans votre quartier : menuisiers, plombiers, electriciens solaires, couturiers, peintres et techniciens en climatisation a Bamako.
                 </p>
 
-                <!-- Search Form Box -->
-                <div class="card p-3 shadow-sm border-0" style="border-radius: 14px; background: #FFFFFF; border: 1px solid var(--ac-border) !important;">
+                <!-- Search Card -->
+                <div class="card-apple p-3 mb-4 shadow-sm" style="border-radius: var(--ac-radius-lg); background: #FFFFFF;">
                     <form action="{% url 'artisan_list' %}" method="get" class="row g-2">
                         <div class="col-md-5">
-                            <label class="form-label small fw-bold text-muted mb-1">Metier recherche</label>
-                            <select name="metier" class="form-select border-0 bg-light" style="padding: 0.65rem 0.9rem;">
+                            <label class="form-label small fw-bold text-muted mb-1">
+                                <i class="bi bi-tools me-1 text-terracotta"></i>Corps de metier
+                            </label>
+                            <select name="metier" class="form-select form-select-sm">
                                 <option value="">Tous les metiers</option>
                                 {% for m in metiers %}
                                     <option value="{{ m.id }}">{{ m.nom }}</option>
@@ -32,33 +38,58 @@
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label small fw-bold text-muted mb-1">Localisation (Ville ou quartier)</label>
-                            <input type="text" name="ville" class="form-control border-0 bg-light" placeholder="Ex: Abidjan, Cocody..." style="padding: 0.65rem 0.9rem;">
+                            <label class="form-label small fw-bold text-muted mb-1">
+                                <i class="bi bi-geo-alt me-1 text-terracotta"></i>Quartier a Bamako
+                            </label>
+                            <input type="text" name="ville" class="form-control form-control-sm" placeholder="Ex: ACI 2000, Badala, Faladie...">
                         </div>
                         <div class="col-md-3 d-flex align-items-end">
-                            <button type="submit" class="btn btn-terracotta w-100 fw-bold" style="padding: 0.65rem;">
-                                Rechercher
+                            <button type="submit" class="btn btn-terracotta w-100 btn-sm fw-bold">
+                                <i class="bi bi-search"></i>Rechercher
                             </button>
                         </div>
                     </form>
                 </div>
 
-                <div class="d-flex align-items-center gap-3 mt-4 small text-muted">
-                    <span class="fw-semibold text-dark">Populaire :</span>
-                    <a href="{% url 'artisan_list' %}?q=Plomberie" class="badge text-bg-light border text-decoration-none">Plomberie</a>
-                    <a href="{% url 'artisan_list' %}?q=Menuiserie" class="badge text-bg-light border text-decoration-none">Menuiserie</a>
-                    <a href="{% url 'artisan_list' %}?q=Electricite" class="badge text-bg-light border text-decoration-none">Electricite</a>
-                    <a href="{% url 'artisan_list' %}?q=Couture" class="badge text-bg-light border text-decoration-none">Couture</a>
+                <!-- Quick tags -->
+                <div class="d-flex align-items-center gap-2 flex-wrap small text-muted">
+                    <span class="fw-semibold text-dark">Populaire a Bamako :</span>
+                    <a href="{% url 'artisan_list' %}?q=Menuiserie" class="badge bg-white border text-dark text-decoration-none rounded-pill px-3 py-1 shadow-sm">Menuiserie teck</a>
+                    <a href="{% url 'artisan_list' %}?q=Plomberie" class="badge bg-white border text-dark text-decoration-none rounded-pill px-3 py-1 shadow-sm">Plomberie & surpresseur</a>
+                    <a href="{% url 'artisan_list' %}?q=Electricite" class="badge bg-white border text-dark text-decoration-none rounded-pill px-3 py-1 shadow-sm">Energie solaire</a>
+                    <a href="{% url 'artisan_list' %}?q=Climatisation" class="badge bg-white border text-dark text-decoration-none rounded-pill px-3 py-1 shadow-sm">Climatisation split</a>
                 </div>
             </div>
 
-            <div class="col-lg-5 text-center">
-                <div class="position-relative d-inline-block">
-                    <img src="{% static 'images/logo.jpg' %}" alt="ArtisanConnect" class="img-fluid rounded-4 shadow-lg border border-3 border-white" style="max-height: 400px; object-fit: cover;">
-                    <div class="card p-3 shadow border-0 position-absolute bottom-0 start-0 translate-middle-y bg-white text-start" style="border-radius: 12px; max-width: 230px;">
-                        <span class="small fw-bold text-muted text-uppercase">Garantie qualite</span>
-                        <div class="fw-bold fs-6 text-dark mt-1">Artisans verifies</div>
-                        <div class="small text-muted">Avis authentiques apres chaque prestation terminee.</div>
+            <!-- Hero Visual Collage -->
+            <div class="col-lg-6">
+                <div class="position-relative">
+                    <!-- Main Masterpiece Image -->
+                    <div class="card-apple overflow-hidden shadow-lg border-0" style="border-radius: var(--ac-radius-xl);">
+                        <img src="{% static 'images/generated/hero_atelier.jpg' %}" alt="Maitre artisan ebeniste dans son atelier a Bamako" class="w-100" style="height: 420px; object-fit: cover;">
+                        <div class="position-absolute bottom-0 start-0 end-0 p-4" style="background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(29, 29, 31, 0.85) 100%);">
+                            <div class="d-flex justify-content-between align-items-end text-white">
+                                <div>
+                                    <span class="badge bg-white text-dark small fw-bold px-2 py-1 mb-1">Maitrise artisanale</span>
+                                    <h2 class="h5 fw-bold mb-0 text-white">Atelier d ebenisterie d art</h2>
+                                    <div class="small opacity-75">Faladie SEMA &bull; Bamako</div>
+                                </div>
+                                <div class="text-end">
+                                    <span class="badge-verified bg-success text-white border-0">
+                                        <i class="bi bi-patch-check-fill"></i>Verifie
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Mini Card Client Experience -->
+                    <div class="card-glass position-absolute p-3 d-none d-md-flex align-items-center gap-3 shadow-lg" style="bottom: -24px; left: -20px; max-width: 280px; z-index: 2;">
+                        <img src="{% static 'images/generated/hero_client.jpg' %}" alt="Client satisfait" style="width: 54px; height: 54px; border-radius: var(--ac-radius-md); object-fit: cover;">
+                        <div>
+                            <div class="fw-bold small text-dark">Prestations certifiees</div>
+                            <div class="text-muted" style="font-size: 0.76rem;">Devis clairs, execution conforme et reglement apres satisfaction.</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -66,50 +97,64 @@
     </div>
 </section>
 
-<!-- Stats Bar -->
+<!-- Stats Band -->
 <section class="py-4 bg-white border-bottom">
     <div class="container">
-        <div class="row text-center g-3">
+        <div class="row g-3 text-center align-items-center">
             <div class="col-6 col-md-3">
-                <div class="fs-2 fw-bold" style="color: var(--ac-terracotta);">{{ stats.artisans_count }}</div>
-                <div class="small text-muted fw-semibold text-uppercase">Artisans repertories</div>
+                <div class="fs-2 fw-extrabold tabular-nums" style="color: var(--ac-terracotta);">{{ stats.artisans_count }}</div>
+                <div class="small text-muted fw-bold text-uppercase" style="letter-spacing: 0.05em;">Artisans qualifies</div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="fs-2 fw-bold text-dark">{{ stats.metiers_count }}</div>
-                <div class="small text-muted fw-semibold text-uppercase">Corps de metiers</div>
+                <div class="fs-2 fw-extrabold tabular-nums text-dark">{{ stats.metiers_count }}</div>
+                <div class="small text-muted fw-bold text-uppercase" style="letter-spacing: 0.05em;">Metiers d excellence</div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="fs-2 fw-bold text-dark">{{ stats.demandes_count }}</div>
-                <div class="small text-muted fw-semibold text-uppercase">Demandes de service</div>
+                <div class="fs-2 fw-extrabold tabular-nums text-dark">{{ stats.demandes_count }}</div>
+                <div class="small text-muted fw-bold text-uppercase" style="letter-spacing: 0.05em;">Demandes publiees</div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="fs-2 fw-bold" style="color: #059669;">{{ stats.commandes_count }}</div>
-                <div class="small text-muted fw-semibold text-uppercase">Prestations realisees</div>
+                <div class="fs-2 fw-extrabold tabular-nums" style="color: #059669;">{{ stats.commandes_count }}</div>
+                <div class="small text-muted fw-bold text-uppercase" style="letter-spacing: 0.05em;">Chantiers livres</div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Metiers populaires -->
+<!-- Visual Metiers Exploration -->
 <section class="py-5">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-end mb-4">
+    <div class="container py-2">
+        <div class="d-flex flex-wrap justify-content-between align-items-end mb-4 gap-2">
             <div>
-                <span class="text-uppercase fw-bold small" style="color: var(--ac-terracotta);">Specialites</span>
-                <h2 class="h3 fw-bold mb-0">Explorez par metier</h2>
+                <span class="badge mb-2 px-3 py-1" style="background-color: var(--ac-terracotta-light); color: var(--ac-terracotta); font-weight: 700;">CORPS DE METIERS</span>
+                <h2 class="h3 fw-bold text-dark mb-1">Explorer les savoir-faire au Mali</h2>
+                <p class="text-muted small mb-0">Selectionnez un metier pour decouvrir les artisans disponibles dans votre quartier.</p>
             </div>
-            <a href="{% url 'artisan_list' %}" class="fw-semibold text-decoration-none" style="color: var(--ac-terracotta);">Voir tous les artisans &rarr;</a>
+            <a href="{% url 'artisan_list' %}" class="btn btn-outline-terracotta btn-sm">
+                Voir tous les artisans &rarr;
+            </a>
         </div>
 
-        <div class="row g-3">
+        <div class="row g-4">
             {% for m in metiers %}
-                <div class="col-md-3 col-6">
-                    <a href="{% url 'artisan_list' %}?metier={{ m.id }}" class="card card-custom p-3 text-decoration-none h-100 text-dark">
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                            <span class="badge-metier">{{ m.nom }}</span>
-                            <span class="badge bg-light text-muted border small">{{ m.artisans_count }} pro{{ m.artisans_count|pluralize }}</span>
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <a href="{% url 'artisan_list' %}?metier={{ m.id }}" class="card-apple card-apple-interactive text-decoration-none d-block h-100 position-relative">
+                        <div class="position-relative overflow-hidden" style="height: 190px;">
+                            <img src="{% metier_image m %}" alt="{{ m.nom }}" class="w-100 h-100" style="object-fit: cover; transition: transform 0.35s ease;">
+                            <div class="position-absolute top-0 end-0 m-2">
+                                <span class="badge bg-dark bg-opacity-75 text-white fw-bold rounded-pill px-2 py-1 small">
+                                    {{ m.artisans_count }} pro{{ m.artisans_count|pluralize }}
+                                </span>
+                            </div>
+                            <div class="position-absolute bottom-0 start-0 end-0 p-3" style="background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(29, 29, 31, 0.8) 100%);">
+                                <h3 class="h5 fw-bold text-white mb-0">{{ m.nom }}</h3>
+                            </div>
                         </div>
-                        <p class="small text-muted mb-0 text-truncate" title="{{ m.description }}">{{ m.description|default:"Professionnels du secteur" }}</p>
+                        <div class="p-3 bg-white">
+                            <p class="small text-muted mb-0" style="font-size: 0.82rem; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                {{ m.description|default:"Professionnels du secteur qualifies pour vos travaux." }}
+                            </p>
+                        </div>
                     </a>
                 </div>
             {% endfor %}
@@ -117,109 +162,145 @@
     </div>
 </section>
 
-<!-- Artisans en vedette -->
-<section class="py-5" style="background-color: #FAF8F5;">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-end mb-4">
+<!-- Featured Artisans with Real Portraits -->
+<section class="py-5" style="background-color: #F4EFE6;">
+    <div class="container py-2">
+        <div class="d-flex flex-wrap justify-content-between align-items-end mb-4 gap-2">
             <div>
-                <span class="text-uppercase fw-bold small" style="color: var(--ac-terracotta);">Confiance & Savoir-faire</span>
-                <h2 class="h3 fw-bold mb-0">Artisans recommandes</h2>
+                <span class="badge mb-2 px-3 py-1" style="background-color: var(--ac-terracotta-light); color: var(--ac-terracotta); font-weight: 700;">CONFIANCE & RIGUEUR</span>
+                <h2 class="h3 fw-bold text-dark mb-1">Artisans recommandes a Bamako</h2>
+                <p class="text-muted small mb-0">Profils evalues, verifiables et reconnus pour la qualite de leurs prestations.</p>
             </div>
-            <a href="{% url 'artisan_list' %}" class="fw-semibold text-decoration-none" style="color: var(--ac-terracotta);">Consulter l'annuaire &rarr;</a>
+            <a href="{% url 'artisan_list' %}" class="btn btn-outline-terracotta btn-sm">
+                Consulter l annuaire complet &rarr;
+            </a>
         </div>
 
         <div class="row g-4">
             {% for artisan in featured_artisans %}
                 <div class="col-lg-4 col-md-6">
-                    <div class="card card-custom h-100 p-4 d-flex flex-column">
+                    <div class="card-apple card-apple-interactive h-100 p-4 d-flex flex-column bg-white">
+                        <!-- Top Row: Avatar + Identity + Verified -->
                         <div class="d-flex align-items-start gap-3 mb-3">
-                            <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold fs-5 shadow-sm" style="width: 58px; height: 58px; background: var(--ac-terracotta); flex-shrink: 0;">
-                                {{ artisan.user.first_name|first }}{{ artisan.user.last_name|first }}
-                            </div>
-                            <div class="flex-grow-1">
-                                <h3 class="h5 fw-bold mb-1">{{ artisan.user.get_full_name|default:artisan.user.email }}</h3>
-                                <div class="badge-metier d-inline-block">{{ artisan.metier.nom|default:"Artisan" }}</div>
-                                <div class="small text-muted mt-1">{{ artisan.ville }}{% if artisan.quartier %}, {{ artisan.quartier }}{% endif %}</div>
+                            {% artisan_avatar artisan as avatar_url %}
+                            {% if avatar_url %}
+                                <img src="{{ avatar_url }}" alt="{{ artisan.user.get_full_name }}" class="artisan-avatar-img">
+                            {% else %}
+                                <div class="artisan-avatar-placeholder">
+                                    {{ artisan.user|initials }}
+                                </div>
+                            {% endif %}
+
+                            <div class="flex-grow-1 min-w-0">
+                                <div class="d-flex justify-content-between align-items-start gap-1">
+                                    <h3 class="h6 fw-bold text-dark mb-0 text-truncate">
+                                        {{ artisan.user.get_full_name|default:artisan.user.email }}
+                                    </h3>
+                                    <span class="badge-verified flex-shrink-0">
+                                        <i class="bi bi-patch-check-fill"></i>Verifie
+                                    </span>
+                                </div>
+                                <div class="badge-metier d-inline-block mt-1">
+                                    {{ artisan.metier.nom|default:"Artisan" }}
+                                </div>
+                                <div class="small text-muted mt-1 text-truncate">
+                                    <i class="bi bi-geo-alt me-1"></i>{{ artisan.ville }}{% if artisan.quartier %}, {{ artisan.quartier }}{% endif %}
+                                </div>
                             </div>
                         </div>
 
-                        <p class="small text-muted flex-grow-1 mb-3">
-                            {{ artisan.description|truncatewords:20|default:"Artisan professionnel competent et rigoureux." }}
+                        <!-- Bio / Description -->
+                        <p class="small text-muted flex-grow-1 mb-3" style="line-height: 1.5; font-size: 0.85rem;">
+                            {{ artisan.description|truncatewords:20|default:"Artisan professionnel competent et rigoureux a Bamako." }}
                         </p>
 
-                        <div class="d-flex justify-content-between align-items-center border-top pt-3 mb-3 small">
+                        <!-- Key Metrics Row -->
+                        <div class="d-flex justify-content-between align-items-center small py-2 px-3 bg-light rounded-3 mb-3 border border-light-subtle">
                             <div>
-                                <span class="fw-bold">{{ artisan.experience }} ans</span> d'experience
+                                <span class="text-muted d-block" style="font-size: 0.72rem;">Experience</span>
+                                <strong class="tabular-nums text-dark">{{ artisan.experience }} ans</strong>
                             </div>
-                            <div>
-                                {% if artisan.tarif_indicatif > 0 %}
-                                    A partir de <strong class="text-dark">{{ artisan.tarif_indicatif }} FCFA</strong>
+                            <div class="text-center">
+                                <span class="text-muted d-block" style="font-size: 0.72rem;">Disponibilite</span>
+                                {% if artisan.disponibilite %}
+                                    <span class="text-success fw-bold">Immediat</span>
                                 {% else %}
-                                    <span class="text-muted">Tarif sur devis</span>
+                                    <span class="text-muted">Occupe</span>
+                                {% endif %}
+                            </div>
+                            <div class="text-end">
+                                <span class="text-muted d-block" style="font-size: 0.72rem;">Tarif indicatif</span>
+                                {% if artisan.tarif_indicatif > 0 %}
+                                    <strong class="tabular-nums text-dark">{{ artisan.tarif_indicatif|fcfa }}</strong>
+                                {% else %}
+                                    <span class="text-muted">Sur devis</span>
                                 {% endif %}
                             </div>
                         </div>
 
-                        <div class="d-flex align-items-center justify-content-between pt-2">
-                            <div class="small">
-                                <span class="star-filled fw-bold">&#9733; {{ artisan.note_moyenne|default:"5.0" }}</span>
-                                <span class="text-muted">({{ artisan.nombre_avis }} avis)</span>
+                        <!-- Footer: Rating & Action -->
+                        <div class="d-flex align-items-center justify-content-between pt-2 border-top">
+                            <div>
+                                {% stars artisan.note_moyenne 'sm' %}
+                                <span class="small text-muted ms-1">({{ artisan.nombre_avis|default:"1" }} avis)</span>
                             </div>
-                            <a href="{% url 'artisan_detail' artisan.id %}" class="btn btn-outline-terracotta btn-sm">Voir profil & realisations</a>
+                            <a href="{% url 'artisan_detail' artisan.id %}" class="btn btn-outline-terracotta btn-sm">
+                                Voir profil &rarr;
+                            </a>
                         </div>
                     </div>
                 </div>
             {% empty %}
-                <div class="col-12 text-center py-4">
-                    <p class="text-muted">Aucun artisan en vedette pour le moment.</p>
+                <div class="col-12 py-5 text-center text-muted">
+                    <p>Aucun artisan en vedette pour le moment.</p>
                 </div>
             {% endfor %}
         </div>
     </div>
 </section>
 
-<!-- Comment ca fonctionne -->
-<section class="py-5">
+<!-- How It Works (Apple Clean Process Cards) -->
+<section class="py-5 bg-white">
     <div class="container py-3">
-        <div class="text-center mb-5">
-            <span class="text-uppercase fw-bold small" style="color: var(--ac-terracotta);">Simple et efficace</span>
-            <h2 class="h2 fw-bold">Comment fonctionne ArtisanConnect ?</h2>
-            <p class="text-muted">Une plateforme pensee pour faciliter les echanges du premier contact a la livraison.</p>
+        <div class="text-center mb-5" style="max-width: 680px; margin: 0 auto;">
+            <span class="badge mb-2 px-3 py-1" style="background-color: var(--ac-terracotta-light); color: var(--ac-terracotta); font-weight: 700;">SIMPLE ET SEREIN</span>
+            <h2 class="h2 fw-bold text-dark">Comment fonctionne ArtisanConnect ?</h2>
+            <p class="text-muted">Trois etapes claires et transparentes pour realiser vos travaux a Bamako sans mauvaise surprise.</p>
         </div>
 
         <div class="row g-4">
-            <div class="col-md-4 text-center">
-                <div class="card card-custom p-4 h-100 border-0 shadow-sm">
-                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center text-white fw-bold mb-3 mx-auto" style="width: 52px; height: 52px; background: var(--ac-terracotta);">
+            <div class="col-md-4">
+                <div class="card-apple p-4 h-100 text-center border-0 bg-light">
+                    <div class="d-inline-flex align-items-center justify-content-center text-white fw-bold mb-3 shadow-sm rounded-circle" style="width: 50px; height: 50px; background: var(--ac-terracotta);">
                         1
                     </div>
-                    <h3 class="h5 fw-bold mb-2">Exprimez votre besoin</h3>
-                    <p class="small text-muted mb-0">
-                        Recherchez directement un artisan dans votre zone ou publiez une demande detaillee avec le métier concerne et votre budget.
+                    <h3 class="h5 fw-bold text-dark mb-2">Exprimez votre besoin</h3>
+                    <p class="small text-muted mb-0" style="line-height: 1.55;">
+                        Parcourez l annuaire bamakois ou publiez une demande avec votre quartier, les specifications de vos travaux et votre budget indicatif en FCFA.
                     </p>
                 </div>
             </div>
 
-            <div class="col-md-4 text-center">
-                <div class="card card-custom p-4 h-100 border-0 shadow-sm">
-                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center text-white fw-bold mb-3 mx-auto" style="width: 52px; height: 52px; background: var(--ac-dark);">
+            <div class="col-md-4">
+                <div class="card-apple p-4 h-100 text-center border-0 bg-light">
+                    <div class="d-inline-flex align-items-center justify-content-center text-white fw-bold mb-3 shadow-sm rounded-circle" style="width: 50px; height: 50px; background: var(--ac-dark);">
                         2
                     </div>
-                    <h3 class="h5 fw-bold mb-2">Recevez et comparez les devis</h3>
-                    <p class="small text-muted mb-0">
-                        Les artisans qualifies et disponibles vous soumettent leurs propositions claires (montant, delai d intervention et validite).
+                    <h3 class="h5 fw-bold text-dark mb-2">Recevez et comparez les devis</h3>
+                    <p class="small text-muted mb-0" style="line-height: 1.55;">
+                        Les artisans qualifies et disponibles a proximite etudient votre demande et vous envoient leurs propositions detaillees avec montant et delai d execution.
                     </p>
                 </div>
             </div>
 
-            <div class="col-md-4 text-center">
-                <div class="card card-custom p-4 h-100 border-0 shadow-sm">
-                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center text-white fw-bold mb-3 mx-auto" style="width: 52px; height: 52px; background: #059669;">
+            <div class="col-md-4">
+                <div class="card-apple p-4 h-100 text-center border-0 bg-light">
+                    <div class="d-inline-flex align-items-center justify-content-center text-white fw-bold mb-3 shadow-sm rounded-circle" style="width: 50px; height: 50px; background: #059669;">
                         3
                     </div>
-                    <h3 class="h5 fw-bold mb-2">Suivez et notez la prestation</h3>
-                    <p class="small text-muted mb-0">
-                        Suivez l etat de la commande et attribuez une note et un commentaire pour valoriser les artisans rigoureux.
+                    <h3 class="h5 fw-bold text-dark mb-2">Suivez et evaluez le chantier</h3>
+                    <p class="small text-muted mb-0" style="line-height: 1.55;">
+                        Validez le devis pour activer la commande. Apres reception des travaux, donnez une note et un avis certifie pour valoriser le savoir-faire de l artisan.
                     </p>
                 </div>
             </div>
@@ -227,16 +308,24 @@
     </div>
 </section>
 
-<!-- Call to action -->
-<section class="py-5" style="background: linear-gradient(135deg, #2E1E14 0%, #432B1C 100%); color: #FFFFFF;">
-    <div class="container py-4 text-center">
-        <h2 class="display-6 fw-bold mb-3">Pret a concrétiser vos projets artisanaux ?</h2>
-        <p class="lead text-light mb-4" style="max-width: 650px; margin: 0 auto; opacity: 0.9;">
-            Rejoignez des centaines de particuliers et de professionnels qui font confiance a ArtisanConnect pour tous leurs travaux.
+<!-- Call to Action Banner (Featuring Panoramic Bamako Niger River) -->
+<section class="position-relative overflow-hidden py-5 text-white" style="border-top: 1px solid var(--ac-border);">
+    <img src="{% static 'images/generated/cta_bamako.jpg' %}" alt="Vue panoramique de Bamako et du fleuve Niger" class="position-absolute top-0 start-0 w-100 h-100" style="object-fit: cover; z-index: 1;">
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, rgba(29, 29, 31, 0.92) 0%, rgba(45, 44, 46, 0.88) 100%); z-index: 2;"></div>
+
+    <div class="container position-relative py-5 text-center" style="z-index: 3;">
+        <span class="badge mb-3 px-3 py-1 bg-white bg-opacity-20 text-white rounded-pill">COMMUNES DE BAMAKO &amp; REGIONS DU MALI</span>
+        <h2 class="display-6 fw-bold mb-3 text-white">Pret a concretiser vos projets artisanaux ?</h2>
+        <p class="lead mb-4 mx-auto" style="max-width: 660px; color: rgba(255, 255, 255, 0.85); font-size: 1.15rem;">
+            Particuliers en quete de qualite ou artisans passionnes par leur metier : rejoignez la reference de l artisanat au Mali.
         </p>
         <div class="d-flex justify-content-center gap-3 flex-wrap">
-            <a href="{% url 'web_register' %}?role=CLIENT" class="btn btn-terracotta px-4 py-2">Je cherche un artisan</a>
-            <a href="{% url 'web_register' %}?role=ARTISAN" class="btn btn-outline-light px-4 py-2">Je suis un artisan</a>
+            <a href="{% url 'demande_create' %}" class="btn btn-terracotta px-4 py-3">
+                <i class="bi bi-send me-1"></i>Publier une demande de service
+            </a>
+            <a href="{% url 'web_register' %}?role=ARTISAN" class="btn btn-glass px-4 py-3">
+                <i class="bi bi-briefcase me-1"></i>Devenir artisan partenaire
+            </a>
         </div>
     </div>
 </section>

@@ -12,37 +12,84 @@ from apps.metiers.models import Metier
 
 
 class Command(BaseCommand):
-    help = 'Initialise des donnees realistes de demonstration pour ArtisanConnect.'
+    help = 'Initialise des donnees realistes du Mali (Bamako) pour ArtisanConnect.'
 
     def handle(self, *args, **options):
-        self.stdout.write(self.style.NOTICE('Initialisation des donnees ArtisanConnect...'))
+        self.stdout.write(self.style.NOTICE('Initialisation des donnees ArtisanConnect Mali (Bamako)...'))
 
         # 1. Metiers
         metiers_data = [
-            ('Plomberie', 'Depannage, installation de sanitaires, canalisations et chauffe-eau.'),
-            ('Menuiserie', 'Fabrication de meubles sur mesure, portes, fenetres et parquets.'),
-            ('Electricite', 'Installation, maintenance electrique, mise aux normes et eclairage.'),
-            ('Couture', 'Confection sur mesure, tenues traditionnelles, retouches et ameublement.'),
-            ('Soudure', 'Metallerie, ferronnerie d art, portails, antivols et garde-corps.'),
-            ('Maconnerie', 'Gros oeuvre, cloisons, dallage, finitions et renovations.'),
-            ('Peinture', 'Peinture interieure et exterieure, enduits decoratifs et ravalement.'),
-            ('Climatisation', 'Pose, entretien et recharge de systemes de climatisation split et centralises.'),
-            ('Mecanique', 'Entretien automobile, diagnostic panne et reparations mecaniques.'),
-            ('Coiffure & Esthetique', 'Coiffure a domicile, tresses, soins capillaires et bien-etre.'),
+            (
+                'Menuiserie',
+                'Fabrication de mobilier en bois massif (teck, iroko), cuisines modernes, portes sculptees et parquets.',
+                'metiers/menuiserie.jpg',
+            ),
+            (
+                'Plomberie',
+                'Installation sanitaire, surpresseurs, forages, chauffe-eau solaires et depannage de fuites.',
+                None,
+            ),
+            (
+                'Electricite',
+                'Installations domestiques et industrielles, systemes solaires photovoltaiques et armoires de distribution.',
+                None,
+            ),
+            (
+                'Couture',
+                'Stylisme sur mesure, grands boubous brodes, basin riche, tenues contemporaines en bogolan.',
+                None,
+            ),
+            (
+                'Soudure',
+                'Ferronnerie d art, portails blindes coulissants, antivols ouvrages, rampes et charpentes metalliques.',
+                None,
+            ),
+            (
+                'Maconnerie',
+                'Gros oeuvre, clotures armees, briques vibrées, dallages, finitions et renovations de villas.',
+                'metiers/maconnerie.jpg',
+            ),
+            (
+                'Peinture',
+                'Peintures lessivables interieures, stucco, ravalement de facades anti-intemperies et enduits decoratifs.',
+                'metiers/peinture.jpg',
+            ),
+            (
+                'Climatisation',
+                'Installation de splits inverter, entretien frigorifique, tirage au vide et recharges en gaz ecologique.',
+                'metiers/climatisation.jpg',
+            ),
+            (
+                'Mecanique',
+                'Entretien et revision 4x4, diagnostic valise electronique, refection suspension, boite et freinage.',
+                'metiers/mecanique.jpg',
+            ),
+            (
+                'Coiffure & Esthetique',
+                'Tresses africaines, locks, coiffure de ceremonie, soins capillaires aux huiles et beurres de karite.',
+                'metiers/coiffure.jpg',
+            ),
         ]
 
         metiers_map = {}
-        for nom, desc in metiers_data:
-            metier, _ = Metier.objects.get_or_create(nom=nom, defaults={'description': desc, 'is_active': True})
+        for nom, desc, img in metiers_data:
+            metier, _ = Metier.objects.get_or_create(
+                nom=nom,
+                defaults={'description': desc, 'is_active': True, 'image': img},
+            )
+            if img and not metier.image:
+                metier.image = img
+                metier.save()
             metiers_map[nom] = metier
         self.stdout.write(self.style.SUCCESS(f'{len(metiers_map)} metiers crees ou mis a jour.'))
 
         # 2. Superadmin
         admin, _ = User.objects.get_or_create(
-            email='admin@artisanconnect.ci',
+            email='admin@artisanconnect.ml',
             defaults={
-                'first_name': 'Admin',
-                'last_name': 'ArtisanConnect',
+                'first_name': 'Aminata',
+                'last_name': 'Sangare',
+                'phone_number': '+223 70 00 11 22',
                 'role': 'ADMIN',
                 'is_staff': True,
                 'is_superuser': True,
@@ -51,11 +98,12 @@ class Command(BaseCommand):
         admin.set_password('Admin1234!')
         admin.save()
 
-        # 3. Clients
+        # 3. Clients bamakois
         clients_data = [
-            ('fatou.kone@example.com', 'Fatou', 'Kone', '0701020304', 'Abidjan', 'Cocody', 'Riviera Palmeraie, Rue Ministre'),
-            ('jean.kouassi@example.com', 'Jean', 'Kouassi', '0705060708', 'Abidjan', 'Plateau', 'Boulevard de la Republique'),
-            ('awa.traore@example.com', 'Awa', 'Traore', '0709101112', 'Abidjan', 'Yopougon', 'Quartier Maroc, Carrefour Sable'),
+            ('fatoumata.diallo@example.com', 'Fatoumata', 'Diallo', '+223 76 12 34 56', 'Bamako', 'Badalabougou', 'Rue 105, Porte 24 (pres du fleuve)'),
+            ('modibo.coulibaly@example.com', 'Modibo', 'Coulibaly', '+223 66 45 67 89', 'Bamako', 'Hamdallaye ACI 2000', 'Boulevard 22 Octobre, Immeuble Albaraka'),
+            ('kadidia.traore@example.com', 'Kadidia', 'Traore', '+223 70 89 12 34', 'Bamako', 'Hippodrome', 'Rue Princesse, pres de la Clinique Pasteur'),
+            ('amadou.sanogo@example.com', 'Amadou', 'Sanogo', '+223 75 23 45 67', 'Bamako', 'Faladie SEMA', 'Rue 812, Porte 18'),
         ]
 
         clients_map = {}
@@ -77,44 +125,84 @@ class Command(BaseCommand):
                 defaults={'ville': ville, 'quartier': quartier, 'adresse': adresse},
             )
             clients_map[email] = profile
-        self.stdout.write(self.style.SUCCESS('Clients de demonstration crees.'))
+        self.stdout.write(self.style.SUCCESS('Clients de demonstration bamakois crees.'))
 
-        # 4. Artisans
+        # 4. Artisans bamakois
         artisans_data = [
             (
-                'ibrahim.diop@example.com', 'Ibrahim', 'Diop', '0751525354',
-                'Plomberie', 'Plombier qualifie avec 8 ans d experience. Interventions rapides et garanties pour fuites, chauffe-eau et canalisations.',
-                8, 'Abidjan', 'Cocody', 'Riviera 3, Cite Riviera', 25000,
+                'seydou.coulibaly@example.com', 'Seydou', 'Coulibaly', '+223 76 54 32 10',
+                'Menuiserie',
+                'Maitre menuisier repute a Bamako avec 14 annees d experience. Specialiste du mobilier en bois massif d iroko et teck, cuisines modernes equipees, portes sculptees et parquets.',
+                14, 'Bamako', 'Faladie SEMA', 'Rue 812, Cour des ebenistes', 35000,
+                'artisans/portrait_seydou.jpg',
             ),
             (
-                'moussa.traore@example.com', 'Moussa', 'Traore', '0755565758',
-                'Menuiserie', 'Maitre menuisier specialiste du bois massif, cuisines modernes et meubles de salon haut de gamme.',
-                12, 'Abidjan', 'Marcory', 'Zone 4, Rue du Canal', 40000,
+                'mamadou.traore@example.com', 'Mamadou', 'Traore', '+223 66 78 90 12',
+                'Plomberie',
+                'Plombier chevronne agree. Depannage d urgence, installation de surpresseurs pour forages, ballons chauffe-eau solaires et renovation complete de canalisations et sanitaires.',
+                9, 'Bamako', 'Badalabougou', 'Rue de l Ambassade, Porte 120', 25000,
+                'artisans/portrait_mamadou.jpg',
             ),
             (
-                'salif.ouattara@example.com', 'Salif', 'Ouattara', '0759606162',
-                'Electricite', 'Electricien du batiment et industriel. Realisation d installations neuves et depannages 7j/7.',
-                6, 'Abidjan', 'Treichville', 'Avenue 21, Rue 12', 30000,
+                'oumar.keita@example.com', 'Oumar', 'Keita', '+223 70 34 56 78',
+                'Electricite',
+                'Electricien diplome specialise en energie solaire photovoltaique et armoires tertiaires. Installation de convertisseurs hybrides, inverseurs de secours et securisation de circuits.',
+                11, 'Bamako', 'Hamdallaye ACI 2000', 'Avenue du Mali, Immeuble Sahel', 30000,
+                'artisans/portrait_oumar.jpg',
             ),
             (
-                'aminata.toure@example.com', 'Aminata', 'Toure', '0763646566',
-                'Couture', 'Styliste modeliste passionnee. Creation de tenues traditionnelles, robes de mariee et pret-a-porter sur mesure.',
-                10, 'Abidjan', 'Plateau', 'Immeuble Kharrat, 2e etage', 35000,
+                'aminata.diallo@example.com', 'Aminata', 'Diallo', '+223 75 67 89 01',
+                'Couture',
+                'Styliste-modeliste diplomee. Haute couture bamakaoise, grands boubous brodes fil d or sur basin riche, tailleurs contemporains en bogolan vegetal et tenues d apparat.',
+                12, 'Bamako', 'Hippodrome', 'Rue Princesse, Atelier Amina Couture', 40000,
+                'artisans/portrait_aminata.jpg',
             ),
             (
-                'koffi.yao@example.com', 'Koffi', 'Yao', '0767686970',
-                'Soudure', 'Ferronnier et soudeur certifie. Fabrication de portails blindes, antivols artistiques et hangars.',
-                7, 'Abidjan', 'Yopougon', 'Zone Industrielle Yopougon', 20000,
+                'bakary.diarra@example.com', 'Bakary', 'Diarra', '+223 65 12 34 89',
+                'Soudure',
+                'Ferronnier d art et constructeur metallique. Fabrication sur mesure de portails blindes coulissants, grilles antivols de securite, escaliers en colimacon et pergolas.',
+                15, 'Bamako', 'Niamakoro', 'Voie Express, Cour des Forgerons', 30000,
+                'artisans/portrait_bakary.jpg',
             ),
             (
-                'amadou.diallo@example.com', 'Amadou', 'Diallo', '0771727374',
-                'Peinture', 'Artisan peintre decorateur. Peintures interieures lessivables, stucco et ravalements soignes.',
-                5, 'Abidjan', 'Koumassi', 'Remblais, Terminus 05', 18000,
+                'adama.kone@example.com', 'Adama', 'Kone', '+223 79 45 12 36',
+                'Maconnerie',
+                'Maitre macon et chef de chantier en batiment. Construction de clotures armees, dallettes de passage, elevation briques pleines, crepissage lissé et carrelage exterieur.',
+                13, 'Bamako', 'Sotuba', 'Bord du fleuve Niger, Rue 402', 25000,
+                'artisans/metier_maconnerie.jpg',
+            ),
+            (
+                'souleymane.sidibe@example.com', 'Souleymane', 'Sidibe', '+223 74 33 22 11',
+                'Peinture',
+                'Artisan peintre decorateur batiment. Peintures interieures lessivables, faux marbre, enduits decoratifs et ravalement de facades residentielles resistant aux pluies du Sahel.',
+                8, 'Bamako', 'Daoudabougou', 'Rue 310, pres du marche', 20000,
+                'artisans/metier_peinture.jpg',
+            ),
+            (
+                'drissa.dembele@example.com', 'Drissa', 'Dembele', '+223 69 88 77 66',
+                'Climatisation',
+                'Technicien frigoriste certifie. Pose, diagnostic et depannage de climatiseurs split inverter toutes marques, recharge gaz R410A/R32 et contrats d entretien bureau/maison.',
+                7, 'Bamako', 'Korofina Nord', 'Rue 114, Porte 08', 22000,
+                'artisans/metier_climatisation.jpg',
+            ),
+            (
+                'cheick.camara@example.com', 'Cheick', 'Camara', '+223 71 55 44 33',
+                'Mecanique',
+                'Maitre mecanicien automobile specialiste tout-terrain et berlines. Diagnostic electronique multimarque, suspension robuste Sahel, freinage et refection moteur complete.',
+                16, 'Bamako', 'Sabalibougou', 'Route de Sikasso, Garage de l Amitie', 25000,
+                'artisans/metier_mecanique.jpg',
+            ),
+            (
+                'mariam.kante@example.com', 'Mariam', 'Kante', '+223 78 22 33 44',
+                'Coiffure & Esthetique',
+                'Coiffeuse professionnelle et visagiste a domicile. Maitrise experte des nattes bamakaoises, tresses royales, coiffures de mariee et soins profonds au karite naturel du Mali.',
+                9, 'Bamako', 'Golf Djicoroni', 'Avenue de l Hotel de Ville', 15000,
+                'artisans/metier_coiffure.jpg',
             ),
         ]
 
         artisans_map = {}
-        for email, fn, ln, tel, metier_nom, desc, exp, ville, quartier, adresse, tarif in artisans_data:
+        for email, fn, ln, tel, metier_nom, desc, exp, ville, quartier, adresse, tarif, photo in artisans_data:
             user, created = User.objects.get_or_create(
                 email=email,
                 defaults={
@@ -139,136 +227,326 @@ class Command(BaseCommand):
                     'disponibilite': True,
                     'tarif_indicatif': tarif,
                     'telephone_professionnel': tel,
+                    'photo_profil': photo,
                 },
             )
+            if photo and not artisan.photo_profil:
+                artisan.photo_profil = photo
+                artisan.save()
             artisans_map[email] = artisan
-        self.stdout.write(self.style.SUCCESS('Artisans de demonstration crees.'))
+        self.stdout.write(self.style.SUCCESS(f'{len(artisans_map)} artisans bamakois crees.'))
 
         # 5. Realisations
         realisations_data = [
-            ('ibrahim.diop@example.com', 'Installation sanitaire villa duplex', 'Pose de baignoire balneo, colonne de douche et tuyauterie PER.'),
-            ('ibrahim.diop@example.com', 'Remplacement ballon chauffe-eau 150L', 'Demontage ancien materiel et raccordement securise.'),
-            ('moussa.traore@example.com', 'Table a manger 8 places en teck massif', 'Finition huile naturelle avec 8 chaises coordonnees.'),
-            ('moussa.traore@example.com', 'Dressing sur mesure avec eclairage LED', 'Amenagement complet de chambre parentale avec penderie.'),
-            ('salif.ouattara@example.com', 'Tableau electrique tertiaire mis aux normes', 'Installation de disjoncteurs differentiels et parafoudre.'),
-            ('aminata.toure@example.com', 'Robe de gala en pagne baoule et dentelle', 'Confection soignee pour reception officielle.'),
-            ('koffi.yao@example.com', 'Portail metallique coulissant motorise', 'Structure en acier traite anticorrosion avec motif personnalise.'),
-            ('amadou.diallo@example.com', 'Finition peinture salon effet velours', 'Application enduit de lissage et peinture acrylique satin.'),
+            (
+                'seydou.coulibaly@example.com',
+                'Table a manger 8 places en teck massif',
+                'Plateau de teck sculpte avec 8 chaises coordonnees et finition a la cire d abeille pour une villa a l ACI 2000.',
+                'realisations/hero_atelier.jpg',
+            ),
+            (
+                'seydou.coulibaly@example.com',
+                'Dressing complet sur mesure avec eclairage LED',
+                'Amenagement integral d une chambre parentale avec penderies modulaires, portes coulissantes a persiennes.',
+                None,
+            ),
+            (
+                'mamadou.traore@example.com',
+                'Installation surpresseur et cuve d eau 2000L',
+                'Pose d une pompe automatique avec filtre clarificateur et inverseur reseau pour securiser l approvisionnement.',
+                None,
+            ),
+            (
+                'mamadou.traore@example.com',
+                'Renovation complete plomberie villa duplex',
+                'Tuyauterie PPR haute pression, colonnes de douche thermostatiques et pose d un chauffe-eau solaire.',
+                None,
+            ),
+            (
+                'oumar.keita@example.com',
+                'Kit solaire autonome 5kVA avec batteries lithium',
+                '12 panneaux solaires monocristallins, onduleur hybride haute frequence et bascule automatique anti-coupure.',
+                None,
+            ),
+            (
+                'aminata.diallo@example.com',
+                'Grand boubou de fete en basin riche brode',
+                'Broderie fine au fil d or realisee a la main sur basin getzner teinte indigo pour une ceremonie de mariage.',
+                None,
+            ),
+            (
+                'bakary.diarra@example.com',
+                'Portail coulissant blinde avec motifs mandingues',
+                'Structure en tubes d acier traite anticorrosion et thermolaque noir mat pour entree principale de residence.',
+                None,
+            ),
+            (
+                'adama.kone@example.com',
+                'Cloture d enceinte 45m avec piliers en beton arme',
+                'Elevation en parpaings vibres de 15, chainage haut solide et crepissage soigne resistante aux fortes chaleurs.',
+                'realisations/metier_maconnerie.jpg',
+            ),
+            (
+                'souleymane.sidibe@example.com',
+                'Ravalement facade et peinture satin salon',
+                'Application d une peinture siloxane protectrice anti-poussiere et finition satin veloute dans le sejour.',
+                'realisations/metier_peinture.jpg',
+            ),
+            (
+                'drissa.dembele@example.com',
+                'Installation de 3 climatiseurs split inverter 12000 BTU',
+                'Fixations antivibratiles, tirage au vide soigné et goulottes decoratives pour bureaux d entreprise a l ACI 2000.',
+                'realisations/metier_climatisation.jpg',
+            ),
+            (
+                'cheick.camara@example.com',
+                'Refection suspension et transmission 4x4',
+                'Changement amortisseurs renforcés, biellettes, rotules de direction et vidange complete des ponts.',
+                'realisations/metier_mecanique.jpg',
+            ),
+            (
+                'mariam.kante@example.com',
+                'Parure de coiffure traditionnelle pour mariage civil',
+                'Nattes elaborees et tresses royales avec ornements en perles d ambre et soins nourrissants au karite.',
+                'realisations/metier_coiffure.jpg',
+            ),
         ]
 
-        for email, titre, desc in realisations_data:
+        for email, titre, desc, img in realisations_data:
             artisan = artisans_map.get(email)
             if artisan:
-                Realisation.objects.get_or_create(
+                real, _ = Realisation.objects.get_or_create(
                     artisan=artisan,
                     titre=titre,
-                    defaults={'description': desc},
+                    defaults={'description': desc, 'image': img},
                 )
-        self.stdout.write(self.style.SUCCESS('Realisations de demonstration creees.'))
+                if img and not real.image:
+                    real.image = img
+                    real.save()
+        self.stdout.write(self.style.SUCCESS('Realisations bamakaoises avec photos creees.'))
 
         # 6. Demandes de service
         demande1, _ = DemandeService.objects.get_or_create(
-            titre='Fuite d eau urgente sous evier et buanderie',
+            titre='Fuite sous l evier et baisse de pression du surpresseur',
             defaults={
-                'client': clients_map['fatou.kone@example.com'],
+                'client': clients_map['fatoumata.diallo@example.com'],
                 'metier': metiers_map['Plomberie'],
-                'description': 'Important suintement d eau sous le bac d evier. Necessite un changement de bonde et joint.',
-                'ville': 'Abidjan',
-                'quartier': 'Cocody',
-                'adresse': 'Riviera Palmeraie',
-                'budget_indicatif': 35000,
+                'description': 'Ecoulement permanent sous le meuble d evier et bruit anormal au niveau de la pompe du surpresseur dans la cour.',
+                'ville': 'Bamako',
+                'quartier': 'Badalabougou',
+                'adresse': 'Rue 105, Porte 24',
+                'budget_indicatif': 40000,
                 'date_souhaitee': date.today() + timedelta(days=2),
                 'statut': 'ACCEPTEE',
             },
         )
 
         demande2, _ = DemandeService.objects.get_or_create(
-            titre='Fabrication bibliotheque murale sur mesure',
+            titre='Fabrication d une bibliotheque sur-mesure en bois d iroko',
             defaults={
-                'client': clients_map['jean.kouassi@example.com'],
+                'client': clients_map['modibo.coulibaly@example.com'],
                 'metier': metiers_map['Menuiserie'],
-                'description': 'Bibliotheque en bois clair avec 5 etageres et rangements bas fermes, dimensions 2m50 x 2m20.',
-                'ville': 'Abidjan',
-                'quartier': 'Plateau',
-                'adresse': 'Boulevard de la Republique',
-                'budget_indicatif': 180000,
-                'date_souhaitee': date.today() + timedelta(days=10),
+                'description': 'Grande bibliotheque murale en bois d iroko traite, longueur 3m20 par 2m40 de haut avec compartiments de lecture et rangements bas.',
+                'ville': 'Bamako',
+                'quartier': 'Hamdallaye ACI 2000',
+                'adresse': 'Boulevard 22 Octobre, Residence Albaraka',
+                'budget_indicatif': 250000,
+                'date_souhaitee': date.today() + timedelta(days=12),
                 'statut': 'EN_ATTENTE',
             },
         )
 
         demande3, _ = DemandeService.objects.get_or_create(
-            titre='Confection robe traditionnelle pour bapteme',
+            titre='Installation panneau solaire secours coupures d electricite',
             defaults={
-                'client': clients_map['awa.traore@example.com'],
-                'metier': metiers_map['Couture'],
-                'description': 'Confection ensemble 3 pieces pour ceremonie familiale avec broderies delicates.',
-                'ville': 'Abidjan',
-                'quartier': 'Yopougon',
-                'adresse': 'Quartier Maroc',
-                'budget_indicatif': 50000,
-                'date_souhaitee': date.today() + timedelta(days=14),
-                'statut': 'EN_ATTENTE',
+                'client': clients_map['kadidia.traore@example.com'],
+                'metier': metiers_map['Electricite'],
+                'description': 'Besoin d un onduleur solaire hybride de 3kVA avec batterie pour maintenir ventilateurs, eclairage et refrigerateur pendant les delestages.',
+                'ville': 'Bamako',
+                'quartier': 'Hippodrome',
+                'adresse': 'Rue Princesse',
+                'budget_indicatif': 350000,
+                'date_souhaitee': date.today() + timedelta(days=7),
+                'statut': 'ACCEPTEE',
             },
         )
 
-        # 7. Devis pour demande 1
+        demande4, _ = DemandeService.objects.get_or_create(
+            titre='Confection d une tenue d apparat pour fete de Tabaski',
+            defaults={
+                'client': clients_map['amadou.sanogo@example.com'],
+                'metier': metiers_map['Couture'],
+                'description': 'Confection d un complet 3 pieces en basin riche vert emeraude avec broderies artisanales au col et manches.',
+                'ville': 'Bamako',
+                'quartier': 'Faladie SEMA',
+                'adresse': 'Rue 812, Porte 18',
+                'budget_indicatif': 60000,
+                'date_souhaitee': date.today() + timedelta(days=15),
+                'statut': 'ACCEPTEE',
+            },
+        )
+
+        # 7. Devis
         devis1, _ = Devis.objects.get_or_create(
             demande=demande1,
-            artisan=artisans_map['ibrahim.diop@example.com'],
+            artisan=artisans_map['mamadou.traore@example.com'],
             defaults={
-                'montant': 30000,
-                'description': 'Remplacement du siphon, pose de joints neufs et verification d etancheite.',
+                'montant': 35000,
+                'description': 'Remplacement de la tuyauterie souple d alimentation, joint d etancheite torique et recalibrage du pressostat surpresseur.',
                 'duree_estimee': '3 heures',
                 'validite': date.today() + timedelta(days=7),
                 'statut': 'ACCEPTE',
             },
         )
 
-        # 8. Commande pour devis 1
-        commande1, _ = Commande.objects.get_or_create(
-            devis=devis1,
-            defaults={
-                'client': clients_map['fatou.kone@example.com'],
-                'artisan': artisans_map['ibrahim.diop@example.com'],
-                'statut': 'CONFIRMEE',
-                'date_debut': timezone.now() - timedelta(days=3),
-                'date_fin_reelle': timezone.now() - timedelta(days=2),
-                'commentaires': 'Intervention impeccable, aucune fuite restante.',
-            },
-        )
-
-        # 9. Avis pour commande 1
-        Avis.objects.get_or_create(
-            commande=commande1,
-            defaults={
-                'client': clients_map['fatou.kone@example.com'],
-                'artisan': artisans_map['ibrahim.diop@example.com'],
-                'note': 5,
-                'commentaire': 'Monsieur Diop est tres ponctuel et professionnel. Travail soigne et propre !',
-            },
-        )
-
-        # 10. Devis en attente pour demande 2
-        Devis.objects.get_or_create(
+        devis2, _ = Devis.objects.get_or_create(
             demande=demande2,
-            artisan=artisans_map['moussa.traore@example.com'],
+            artisan=artisans_map['seydou.coulibaly@example.com'],
             defaults={
-                'montant': 165000,
-                'description': 'Bois d iroko traite, etageres renforcies et vernis de protection satin.',
-                'duree_estimee': '7 jours ouvrables',
-                'validite': date.today() + timedelta(days=15),
+                'montant': 235000,
+                'description': 'Fourniture de bois massif d iroko etudie, debitage, poncage fin, assemblage tenon-mortaise et vernis de protection satin.',
+                'duree_estimee': '8 jours ouvrables',
+                'validite': date.today() + timedelta(days=14),
                 'statut': 'EN_ATTENTE',
             },
         )
 
-        self.stdout.write(self.style.SUCCESS('Base de donnees initialisee avec succes !'))
+        devis3, _ = Devis.objects.get_or_create(
+            demande=demande3,
+            artisan=artisans_map['oumar.keita@example.com'],
+            defaults={
+                'montant': 320000,
+                'description': 'Onduleur hybride 3kVA, 2 panneaux 400W, batterie gel 200Ah, coffret de protection parafoudre et raccordement au tableau.',
+                'duree_estimee': '2 jours',
+                'validite': date.today() + timedelta(days=10),
+                'statut': 'ACCEPTE',
+            },
+        )
+
+        devis4, _ = Devis.objects.get_or_create(
+            demande=demande4,
+            artisan=artisans_map['aminata.diallo@example.com'],
+            defaults={
+                'montant': 55000,
+                'description': 'Decoupe stylisee, confection doublée, broderie fil soyeux et boutonniere main. Deux essayages prevus a l atelier.',
+                'duree_estimee': '6 jours',
+                'validite': date.today() + timedelta(days=10),
+                'statut': 'ACCEPTE',
+            },
+        )
+
+        # 8. Commandes
+        commande1, _ = Commande.objects.get_or_create(
+            devis=devis1,
+            defaults={
+                'client': clients_map['fatoumata.diallo@example.com'],
+                'artisan': artisans_map['mamadou.traore@example.com'],
+                'statut': 'CONFIRMEE',
+                'date_debut': timezone.now() - timedelta(days=5),
+                'date_fin_reelle': timezone.now() - timedelta(days=4),
+                'commentaires': 'Intervention rapide et propre. La pression d eau est revenue a la normale.',
+            },
+        )
+
+        commande3, _ = Commande.objects.get_or_create(
+            devis=devis3,
+            defaults={
+                'client': clients_map['kadidia.traore@example.com'],
+                'artisan': artisans_map['oumar.keita@example.com'],
+                'statut': 'EN_COURS',
+                'date_debut': timezone.now() - timedelta(days=1),
+                'commentaires': 'Pose des panneaux sur le toit effectuee, raccordement onduleur en cours.',
+            },
+        )
+
+        commande4, _ = Commande.objects.get_or_create(
+            devis=devis4,
+            defaults={
+                'client': clients_map['amadou.sanogo@example.com'],
+                'artisan': artisans_map['aminata.diallo@example.com'],
+                'statut': 'CONFIRMEE',
+                'date_debut': timezone.now() - timedelta(days=8),
+                'date_fin_reelle': timezone.now() - timedelta(days=2),
+                'commentaires': 'Tenue livree a temps, coupe impeccable.',
+            },
+        )
+
+        # 9. Avis
+        Avis.objects.get_or_create(
+            commande=commande1,
+            defaults={
+                'client': clients_map['fatoumata.diallo@example.com'],
+                'artisan': artisans_map['mamadou.traore@example.com'],
+                'note': 5,
+                'commentaire': 'Mamadou est un plombier extremement rigoureux. Il a regle la panne en moins de deux heures avec le sourire et professionnalisme. Je recommande chaleureusement a Badalabougou !',
+            },
+        )
+
+        Avis.objects.get_or_create(
+            commande=commande4,
+            defaults={
+                'client': clients_map['amadou.sanogo@example.com'],
+                'artisan': artisans_map['aminata.diallo@example.com'],
+                'note': 5,
+                'commentaire': 'Aminata a un don remarquable pour la couture. Les finitions du basin et les broderies sont du niveau haute couture. Tout le monde a complimente la tenue lors de la fete.',
+            },
+        )
+
+        # Avis supplementaire pour Seydou Coulibaly (Menuiserie) via une ancienne commande
+        # Creons une commande confirmee passee pour que la note moyenne et le compteur s'affichent
+        demande_seydou_old, _ = DemandeService.objects.get_or_create(
+            titre='Table en teck 8 places pour salle a manger',
+            defaults={
+                'client': clients_map['fatoumata.diallo@example.com'],
+                'metier': metiers_map['Menuiserie'],
+                'description': 'Commande de table de reception en bois de teck.',
+                'ville': 'Bamako',
+                'quartier': 'Badalabougou',
+                'statut': 'ACCEPTEE',
+            },
+        )
+        devis_seydou_old, _ = Devis.objects.get_or_create(
+            demande=demande_seydou_old,
+            artisan=artisans_map['seydou.coulibaly@example.com'],
+            defaults={
+                'montant': 180000,
+                'description': 'Confection artisanale de table en bois massif de teck.',
+                'statut': 'ACCEPTE',
+            },
+        )
+        cmd_seydou_old, _ = Commande.objects.get_or_create(
+            devis=devis_seydou_old,
+            defaults={
+                'client': clients_map['fatoumata.diallo@example.com'],
+                'artisan': artisans_map['seydou.coulibaly@example.com'],
+                'statut': 'CONFIRMEE',
+            },
+        )
+        Avis.objects.get_or_create(
+            commande=cmd_seydou_old,
+            defaults={
+                'client': clients_map['fatoumata.diallo@example.com'],
+                'artisan': artisans_map['seydou.coulibaly@example.com'],
+                'note': 5,
+                'commentaire': 'Seydou est le meilleur ebeniste de Bamako. La table en teck trone magnifiquement dans notre salon. Le bois est splendide et la finition exemplaire.',
+            },
+        )
+
+        self.stdout.write(self.style.SUCCESS('Base de donnees initialisee avec succes pour le Mali (Bamako) !'))
         self.stdout.write(self.style.NOTICE("""
 Comptes de test disponibles :
-- Administrateur : admin@artisanconnect.ci / Admin1234!
-- Client 1       : fatou.kone@example.com / Client1234!
-- Client 2       : jean.kouassi@example.com / Client1234!
-- Artisan Plombier : ibrahim.diop@example.com / Artisan1234!
-- Artisan Menuisier: moussa.traore@example.com / Artisan1234!
-- Artisan Couturiere: aminata.toure@example.com / Artisan1234!
+- Administrateur   : admin@artisanconnect.ml / Admin1234!
+- Client 1         : fatoumata.diallo@example.com / Client1234! (Badalabougou)
+- Client 2         : modibo.coulibaly@example.com / Client1234! (Hamdallaye ACI 2000)
+- Client 3         : kadidia.traore@example.com / Client1234! (Hippodrome)
+- Artisan Menuisier: seydou.coulibaly@example.com / Artisan1234! (Faladie)
+- Artisan Plombier : mamadou.traore@example.com / Artisan1234! (Badalabougou)
+- Artisan Electricien : oumar.keita@example.com / Artisan1234! (ACI 2000)
+- Artisan Couturiere  : aminata.diallo@example.com / Artisan1234! (Hippodrome)
+- Artisan Soudeur  : bakary.diarra@example.com / Artisan1234! (Niamakoro)
+- Artisan Macon    : adama.kone@example.com / Artisan1234! (Sotuba)
+- Artisan Peintre  : souleymane.sidibe@example.com / Artisan1234! (Daoudabougou)
+- Artisan Climatisation : drissa.dembele@example.com / Artisan1234! (Korofina)
+- Artisan Mecanicien : cheick.camara@example.com / Artisan1234! (Sabalibougou)
+- Artisan Coiffeuse  : mariam.kante@example.com / Artisan1234! (Golf Djicoroni)
 """))
