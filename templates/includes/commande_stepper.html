@@ -1,0 +1,35 @@
+<!-- Project Lifecycle Stepper (Apple 5-Step Visual Progress) -->
+<div class="project-stepper my-3">
+    <div class="project-stepper-track"></div>
+    <div class="project-stepper-bar" style="width: {% if c.statut == 'CONFIRMEE' and c.avis %}100%{% elif c.statut == 'CONFIRMEE' %}85%{% elif c.statut == 'TERMINEE' %}72%{% elif c.statut == 'EN_COURS' %}48%{% else %}24%{% endif %};"></div>
+
+    <!-- Step 1: Devis valide -->
+    <div class="project-stepper-step completed">
+        <div class="project-stepper-node"><i class="bi bi-check-lg"></i></div>
+        <div class="project-stepper-label">Devis valide</div>
+    </div>
+
+    <!-- Step 2: Commande confirmee -->
+    <div class="project-stepper-step {% if c.statut in 'CONFIRMEE EN_COURS TERMINEE' %}completed{% elif c.statut == 'EN_ATTENTE' %}active{% endif %}">
+        <div class="project-stepper-node">{% if c.statut in 'CONFIRMEE EN_COURS TERMINEE' %}<i class="bi bi-check-lg"></i>{% else %}2{% endif %}</div>
+        <div class="project-stepper-label">Commande</div>
+    </div>
+
+    <!-- Step 3: Chantier en cours -->
+    <div class="project-stepper-step {% if c.statut == 'TERMINEE' or c.statut == 'CONFIRMEE' %}completed{% elif c.statut == 'EN_COURS' %}active{% endif %}">
+        <div class="project-stepper-node">{% if c.statut == 'TERMINEE' or c.statut == 'CONFIRMEE' %}<i class="bi bi-check-lg"></i>{% else %}3{% endif %}</div>
+        <div class="project-stepper-label">En cours</div>
+    </div>
+
+    <!-- Step 4: Travaux termines -->
+    <div class="project-stepper-step {% if c.statut == 'CONFIRMEE' %}completed{% elif c.statut == 'TERMINEE' %}active{% endif %}">
+        <div class="project-stepper-node">{% if c.statut == 'CONFIRMEE' %}<i class="bi bi-check-lg"></i>{% else %}4{% endif %}</div>
+        <div class="project-stepper-label">Travaux finis</div>
+    </div>
+
+    <!-- Step 5: Reception & Avis -->
+    <div class="project-stepper-step {% if c.statut == 'CONFIRMEE' and c.avis %}completed{% elif c.statut == 'CONFIRMEE' %}active{% endif %}">
+        <div class="project-stepper-node">{% if c.statut == 'CONFIRMEE' and c.avis %}<i class="bi bi-check-lg"></i>{% else %}5{% endif %}</div>
+        <div class="project-stepper-label">Avis certifie</div>
+    </div>
+</div>

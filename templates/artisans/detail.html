@@ -37,11 +37,17 @@
                     </span>
                     {% if artisan.disponibilite %}
                         <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
-                            <i class="bi bi-circle-fill me-1" style="font-size: 0.5rem;"></i>Disponible
+                            <i class="bi bi-circle-fill me-1" style="font-size: 0.5rem;"></i>Disponible immédiatement
                         </span>
                     {% else %}
                         <span class="badge bg-secondary-subtle text-secondary rounded-pill">Actuellement occupé</span>
                     {% endif %}
+                </div>
+
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                    <span class="badge-reactivite">
+                        <span class="live-pulse-dot"></span> Répond généralement en moins d'1 heure
+                    </span>
                 </div>
 
                 <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
@@ -76,9 +82,12 @@
                 </div>
 
                 {% if artisan.telephone_professionnel %}
-                    <div class="mb-3">
+                    <div class="d-flex flex-column gap-2 mb-3">
+                        <a href="https://wa.me/{{ artisan.telephone_professionnel|phone_clean }}?text=Bonjour%20{{ artisan.user.first_name|default:'l\'artisan' }},%20j'ai%20vu%20votre%20profil%20sur%20ArtisanConnect%20Mali%20et%20souhaite%20un%20renseignement%20pour%20des%20travaux." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp w-100 fw-bold">
+                            <i class="bi bi-whatsapp me-2"></i>Contacter sur WhatsApp
+                        </a>
                         <a href="tel:{{ artisan.telephone_professionnel }}" class="btn btn-glass btn-sm w-100">
-                            <i class="bi bi-telephone me-1 text-success"></i>{{ artisan.telephone_professionnel }}
+                            <i class="bi bi-telephone-fill me-1 text-success"></i>Appeler {{ artisan.telephone_professionnel }}
                         </a>
                     </div>
                 {% endif %}
@@ -120,12 +129,19 @@
                 <div class="row g-3">
                     {% for real in realisations %}
                         <div class="col-md-6">
-                            <div class="card-apple overflow-hidden h-100 border">
-                                {% if real.image %}
-                                    <img src="{{ real.image.url }}" alt="{{ real.titre }}" class="w-100" style="height: 190px; object-fit: cover;">
-                                {% else %}
-                                    <img src="{% static 'images/generated/hero_atelier.jpg' %}" alt="{{ real.titre }}" class="w-100" style="height: 190px; object-fit: cover; opacity: 0.85;">
-                                {% endif %}
+                            <div class="card-apple card-apple-interactive overflow-hidden h-100 border cursor-pointer" role="button" data-bs-toggle="modal" data-bs-target="#realModal{{ real.id }}">
+                                <div class="position-relative">
+                                    {% if real.image %}
+                                        <img src="{{ real.image.url }}" alt="{{ real.titre }}" class="w-100" style="height: 190px; object-fit: cover;">
+                                    {% else %}
+                                        <img src="{% static 'images/generated/hero_atelier.jpg' %}" alt="{{ real.titre }}" class="w-100" style="height: 190px; object-fit: cover; opacity: 0.85;">
+                                    {% endif %}
+                                    <div class="position-absolute top-0 end-0 m-2">
+                                        <span class="badge bg-dark bg-opacity-75 text-white small rounded-pill px-2 py-1">
+                                            <i class="bi bi-arrows-fullscreen me-1"></i>Agrandir
+                                        </span>
+                                    </div>
+                                </div>
                                 <div class="p-3 bg-white">
                                     <h3 class="h6 fw-bold mb-1 text-dark">{{ real.titre }}</h3>
                                     <p class="small text-muted mb-2" style="font-size: 0.82rem; line-height: 1.45;">
@@ -133,6 +149,31 @@
                                     </p>
                                     <div class="small text-muted" style="font-size: 0.74rem;">
                                         <i class="bi bi-calendar3 me-1"></i>Date : {{ real.date_realisation|date:"d F Y" }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Realisation Lightbox Modal -->
+                        <div class="modal fade" id="realModal{{ real.id }}" tabindex="-1" aria-labelledby="realModalLabel{{ real.id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content card-apple border-0">
+                                    <div class="modal-header border-0 pb-0">
+                                        <h5 class="modal-title fw-bold text-dark" id="realModalLabel{{ real.id }}">{{ real.titre }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% if real.image %}
+                                            <img src="{{ real.image.url }}" alt="{{ real.titre }}" class="w-100 rounded-3 shadow-sm mb-3" style="max-height: 480px; object-fit: cover;">
+                                        {% else %}
+                                            <img src="{% static 'images/generated/hero_atelier.jpg' %}" alt="{{ real.titre }}" class="w-100 rounded-3 shadow-sm mb-3" style="max-height: 480px; object-fit: cover;">
+                                        {% endif %}
+                                        <p class="text-muted mb-2" style="line-height: 1.6;">{{ real.description|default:"Projet achevé avec rigueur et savoir-faire artisanal à Bamako." }}</p>
+                                        <div class="d-flex align-items-center gap-3 text-muted small">
+                                            <span><i class="bi bi-person me-1"></i>Artisan : {{ artisan.user.get_full_name }}</span>
+                                            <span>&bull;</span>
+                                            <span><i class="bi bi-calendar3 me-1"></i>Réalisé le {{ real.date_realisation|date:"d F Y" }}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

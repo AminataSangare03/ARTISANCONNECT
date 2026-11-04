@@ -122,8 +122,13 @@
                                             <i class="bi bi-patch-check-fill"></i>Vérifié
                                         </span>
                                     </div>
-                                    <div class="badge-metier d-inline-block mt-1">
-                                        {{ artisan.metier.nom|default:"Artisan" }}
+                                    <div class="d-flex align-items-center gap-1 mt-1 flex-wrap">
+                                        <div class="badge-metier d-inline-block">
+                                            {{ artisan.metier.nom|default:"Artisan" }}
+                                        </div>
+                                        <span class="badge-reactivite-sm">
+                                            <span class="live-pulse-dot"></span> Dispo
+                                        </span>
                                     </div>
                                     <div class="small text-muted mt-1 text-truncate">
                                         <i class="bi bi-geo-alt me-1"></i>{{ artisan.ville }}{% if artisan.quartier %}, {{ artisan.quartier }}{% endif %}
@@ -157,14 +162,24 @@
                             </div>
 
                             <!-- Bottom Row -->
-                            <div class="d-flex justify-content-between align-items-center pt-1 border-top">
+                            <div class="d-flex justify-content-between align-items-center pt-2 border-top">
                                 <div>
                                     {% stars artisan.note_moyenne 'sm' %}
                                     <span class="small text-muted ms-1">({{ artisan.nombre_avis|default:"1" }})</span>
                                 </div>
-                                <a href="{% url 'artisan_detail' artisan.id %}" class="btn btn-outline-terracotta btn-sm">
-                                    Voir profil
-                                </a>
+                                <div class="d-flex align-items-center gap-1">
+                                    {% if artisan.telephone_professionnel %}
+                                        <a href="https://wa.me/{{ artisan.telephone_professionnel|phone_clean }}?text=Bonjour%20{{ artisan.user.first_name|default:'l\'artisan' }},%20j'ai%20vu%20votre%20profil%20sur%20ArtisanConnect%20Mali." target="_blank" rel="noopener noreferrer" class="btn-action-icon btn-action-whatsapp" title="Écrire sur WhatsApp" aria-label="Contacter sur WhatsApp">
+                                            <i class="bi bi-whatsapp"></i>
+                                        </a>
+                                        <a href="tel:{{ artisan.telephone_professionnel }}" class="btn-action-icon btn-action-call" title="Appeler {{ artisan.telephone_professionnel }}" aria-label="Appeler l'artisan">
+                                            <i class="bi bi-telephone-fill"></i>
+                                        </a>
+                                    {% endif %}
+                                    <a href="{% url 'artisan_detail' artisan.id %}" class="btn btn-outline-terracotta btn-sm">
+                                        Voir profil
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

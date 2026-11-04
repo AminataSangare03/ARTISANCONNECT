@@ -165,3 +165,18 @@ def artisan_avatar(artisan):
 
     return None
 
+
+@register.filter
+def phone_clean(value):
+    """Nettoie un numero de telephone pour format international WhatsApp (ex: 22376543210)."""
+    if not value:
+        return '22370000000'
+    import re
+    digits = re.sub(r'\D', '', str(value))
+    if digits.startswith('00'):
+        digits = digits[2:]
+    if len(digits) == 8:
+        digits = '223' + digits
+    return digits
+
+

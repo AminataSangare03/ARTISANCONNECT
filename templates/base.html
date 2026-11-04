@@ -27,6 +27,15 @@
         })();
     </script>
 
+    <!-- Progressive Web App (PWA) Manifest & Meta -->
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="theme-color" content="#B85433">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ArtisanConnect">
+    <link rel="apple-touch-icon" href="{% static 'images/logo_icon.png' %}">
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -416,6 +425,173 @@
             border-color: var(--ac-terracotta);
             color: var(--ac-terracotta);
             box-shadow: var(--ac-shadow-subtle);
+        }
+
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: #FFFFFF !important;
+            border: 1px solid #1EBE5D;
+            box-shadow: 0 4px 14px rgba(37, 211, 102, 0.25);
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .btn-whatsapp:hover {
+            background-color: #1EBE5D;
+            color: #FFFFFF !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35);
+        }
+        .btn-whatsapp:active {
+            transform: scale(0.96);
+        }
+
+        /* Quick Action Icon Buttons */
+        .btn-action-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            text-decoration: none !important;
+            transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.18s ease, color 0.18s ease;
+        }
+        .btn-action-whatsapp {
+            background: rgba(37, 211, 102, 0.12);
+            color: #16A34A !important;
+            border: 1px solid rgba(37, 211, 102, 0.3);
+        }
+        .btn-action-whatsapp:hover {
+            background: #25D366;
+            color: #FFFFFF !important;
+            transform: scale(1.12) translateY(-1px);
+        }
+        .btn-action-call {
+            background: rgba(184, 84, 51, 0.1);
+            color: var(--ac-terracotta) !important;
+            border: 1px solid rgba(184, 84, 51, 0.25);
+        }
+        .btn-action-call:hover {
+            background: var(--ac-terracotta);
+            color: #FFFFFF !important;
+            transform: scale(1.12) translateY(-1px);
+        }
+
+        /* Reactivity Badge */
+        .badge-reactivite {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #047857;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.28);
+            border-radius: var(--ac-radius-pill);
+            padding: 0.3rem 0.75rem;
+        }
+        [data-theme="dark"] .badge-reactivite {
+            color: #34D399;
+            background: rgba(52, 211, 153, 0.12);
+            border-color: rgba(52, 211, 153, 0.25);
+        }
+
+        .badge-reactivite-sm {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #047857;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.22);
+            border-radius: var(--ac-radius-pill);
+            padding: 0.15rem 0.5rem;
+        }
+        [data-theme="dark"] .badge-reactivite-sm {
+            color: #34D399;
+            background: rgba(52, 211, 153, 0.12);
+            border-color: rgba(52, 211, 153, 0.22);
+        }
+
+        /* Project Lifecycle Stepper Component */
+        .project-stepper {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            position: relative;
+            padding: 0.75rem 0;
+            margin: 0.5rem 0 1rem 0;
+        }
+        .project-stepper-track {
+            position: absolute;
+            top: 24px;
+            left: 8%;
+            right: 8%;
+            height: 3px;
+            background: var(--ac-border-strong);
+            z-index: 1;
+        }
+        .project-stepper-bar {
+            position: absolute;
+            top: 24px;
+            left: 8%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--ac-terracotta), #059669);
+            z-index: 2;
+            transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .project-stepper-step {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            flex: 1;
+        }
+        .project-stepper-node {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--ac-card-bg);
+            border: 2px solid var(--ac-border-strong);
+            color: var(--ac-text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.76rem;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .project-stepper-step.completed .project-stepper-node {
+            background: #059669;
+            border-color: #059669;
+            color: #FFFFFF;
+        }
+        .project-stepper-step.active .project-stepper-node {
+            background: var(--ac-terracotta);
+            border-color: var(--ac-terracotta);
+            color: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(184, 84, 51, 0.2);
+            animation: acPulseNode 2s infinite;
+        }
+        @keyframes acPulseNode {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+        .project-stepper-label {
+            margin-top: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--ac-text-muted);
+            max-width: 90px;
+            line-height: 1.25;
+        }
+        .project-stepper-step.completed .project-stepper-label,
+        .project-stepper-step.active .project-stepper-label {
+            color: var(--ac-text);
+            font-weight: 700;
         }
 
         /* ==========================================================================
@@ -1146,6 +1322,13 @@
 
                 document.querySelectorAll('.card-apple, .footer-trust-card').forEach(function(el) {
                     observer.observe(el);
+                });
+            }
+
+            // Register PWA Service Worker for offline resilience
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register("{% static 'service-worker.js' %}").catch(function() {});
                 });
             }
         });

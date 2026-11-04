@@ -130,7 +130,12 @@
                                     </div>
 
                                     {% if demande.statut == 'EN_ATTENTE' and devis.statut == 'EN_ATTENTE' %}
-                                        <div class="d-flex gap-2 mt-2 mt-md-0">
+                                        <div class="d-flex align-items-center gap-2 mt-2 mt-md-0 flex-wrap">
+                                            {% if devis.artisan.telephone_professionnel %}
+                                                <a href="https://wa.me/{{ devis.artisan.telephone_professionnel|phone_clean }}?text=Bonjour%20{{ devis.artisan.user.first_name|default:'l\'artisan' }},%20j'ai%20reçu%20votre%20devis%20sur%20ArtisanConnect%20pour%20ma%20demande%20'{{ demande.titre|urlencode }}'%20et%20souhaite%20échanger%20avec%20vous." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-sm fw-bold">
+                                                    <i class="bi bi-whatsapp me-1"></i>WhatsApp
+                                                </a>
+                                            {% endif %}
                                             <a href="{% url 'devis_action' devis.id 'refuser' %}" class="btn btn-glass btn-sm text-danger">
                                                 Refuser
                                             </a>

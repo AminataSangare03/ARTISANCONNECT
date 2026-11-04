@@ -156,6 +156,9 @@
                                 </div>
                             </div>
 
+                            <!-- Visual Project Lifecycle Stepper -->
+                            {% include 'includes/commande_stepper.html' %}
+
                             <div class="d-flex flex-wrap justify-content-between align-items-center pt-2 border-top small text-muted">
                                 <div>
                                     {% if c.date_debut %}Début : {{ c.date_debut|date:"d M Y à H:i" }}{% endif %}
