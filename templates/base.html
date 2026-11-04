@@ -321,7 +321,7 @@
         }
 
         .btn-theme-toggle:active {
-            transform: scale(0.92);
+            transform: scale(0.92) rotate(45deg);
         }
 
         /* Show/Hide Icons based on data-theme */
@@ -402,10 +402,31 @@
             color: var(--ac-text);
         }
 
+        .card-apple-interactive {
+            position: relative;
+        }
+
         .card-apple-interactive:hover {
             transform: translateY(-4px);
             box-shadow: var(--ac-shadow-hover);
             border-color: rgba(184, 84, 51, 0.35);
+        }
+
+        .card-apple-interactive::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: skewX(-20deg);
+            pointer-events: none;
+            transition: left 0.75s ease;
+        }
+
+        .card-apple-interactive:hover::after {
+            left: 150%;
         }
 
         .card-glass {
@@ -535,24 +556,23 @@
             color: var(--ac-text);
         }
 
-        /* Scroll-to-Top Floating Button (Centered, Halfway trigger) */
+        /* Scroll-to-Top Floating Button (Centered, Halfway trigger, Arrow Only) */
         .btn-scroll-top {
             position: fixed;
             bottom: 28px;
             left: 50%;
-            transform: translateX(-50%) translateY(28px);
+            transform: translateX(-50%) translateY(28px) scale(0.85);
             z-index: 1045;
+            width: 48px;
+            height: 48px;
+            padding: 0;
+            border-radius: 50%;
             background: var(--ac-terracotta);
             color: #FFFFFF !important;
             border: 1px solid rgba(255, 255, 255, 0.28);
-            border-radius: var(--ac-radius-pill);
-            padding: 0.55rem 1.25rem;
-            font-size: 0.84rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            justify-content: center;
             box-shadow: 0 10px 25px rgba(184, 84, 51, 0.38), 0 3px 8px rgba(0, 0, 0, 0.15);
             cursor: pointer;
             opacity: 0;
@@ -560,8 +580,8 @@
             pointer-events: none;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
-                        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+            transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
                         background 0.2s ease,
                         box-shadow 0.2s ease;
         }
@@ -569,16 +589,24 @@
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
-            transform: translateX(-50%) translateY(0);
+            transform: translateX(-50%) translateY(0) scale(1);
+        }
+        .btn-scroll-top i {
+            font-size: 1.25rem;
+            line-height: 1;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .btn-scroll-top:hover {
             background: var(--ac-terracotta-dark);
-            transform: translateX(-50%) translateY(-2px);
+            transform: translateX(-50%) translateY(-4px) scale(1.08);
             box-shadow: 0 14px 30px rgba(184, 84, 51, 0.48);
             color: #FFFFFF !important;
         }
+        .btn-scroll-top:hover i {
+            transform: translateY(-2px);
+        }
         .btn-scroll-top:active {
-            transform: translateX(-50%) translateY(0) scale(0.97);
+            transform: translateX(-50%) translateY(0) scale(0.94);
         }
         [data-theme="dark"] .btn-scroll-top {
             background: var(--ac-terracotta);
@@ -726,10 +754,25 @@
             font-size: 0.82rem;
             color: var(--ac-footer-muted);
         }
+
+        /* Reading Scroll Progress Bar */
+        .scroll-progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--ac-terracotta), #D97706, #059669);
+            z-index: 1060;
+            pointer-events: none;
+            transition: width 0.08s ease-out;
+        }
     </style>
     {% block extra_head %}{% endblock %}
 </head>
 <body>
+    <!-- Reading Scroll Progress Bar -->
+    <div id="scrollProgressBar" class="scroll-progress-bar" aria-hidden="true"></div>
 
     <!-- Header & Glass Navigation -->
     <header>
@@ -996,10 +1039,9 @@
         </div>
     </footer>
 
-    <!-- Centered Scroll-to-Top Floating Button (Apple Fluid Spring) -->
+    <!-- Centered Circular Scroll-to-Top Floating Button (Arrow Only) -->
     <button id="btnScrollToTop" class="btn-scroll-top" aria-label="Remonter en haut de page" title="Remonter en haut de la page">
-        <i class="bi bi-arrow-up-short fs-5"></i>
-        <span>Haut de page</span>
+        <i class="bi bi-arrow-up"></i>
     </button>
 
     <!-- Bootstrap 5 Bundle JS -->
@@ -1021,19 +1063,34 @@
                 });
             }
 
-            // Centered Scroll-to-Top Button: reveals around halfway down the page
+            // Scroll progress bar & Centered Scroll-to-Top Button
             var btnScrollTop = document.getElementById('btnScrollToTop');
-            if (btnScrollTop) {
-                var updateScrollBtn = function() {
-                    var totalScrollable = document.documentElement.scrollHeight - window.innerHeight;
-                    if (totalScrollable > 300 && window.scrollY >= (totalScrollable * 0.45)) {
+            var scrollProgressBar = document.getElementById('scrollProgressBar');
+
+            var updateScrollState = function() {
+                var totalScrollable = document.documentElement.scrollHeight - window.innerHeight;
+                var currentY = window.scrollY || document.documentElement.scrollTop;
+
+                // Reading Progress Bar
+                if (scrollProgressBar) {
+                    var pct = totalScrollable > 0 ? Math.min(100, Math.max(0, (currentY / totalScrollable) * 100)) : 0;
+                    scrollProgressBar.style.width = pct + '%';
+                }
+
+                // Centered Scroll-to-Top Button: reveals around halfway down the page (45% depth)
+                if (btnScrollTop) {
+                    if (totalScrollable > 300 && currentY >= (totalScrollable * 0.45)) {
                         btnScrollTop.classList.add('visible');
                     } else {
                         btnScrollTop.classList.remove('visible');
                     }
-                };
-                window.addEventListener('scroll', updateScrollBtn, { passive: true });
-                updateScrollBtn();
+                }
+            };
+
+            window.addEventListener('scroll', updateScrollState, { passive: true });
+            updateScrollState();
+
+            if (btnScrollTop) {
                 btnScrollTop.addEventListener('click', function() {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 });

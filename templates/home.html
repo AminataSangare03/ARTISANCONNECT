@@ -54,6 +54,11 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transform: scale(1);
+        transition: transform 7s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .hero-slide.active img {
+        transform: scale(1.06);
     }
     .hero-slide-overlay {
         position: absolute;
@@ -180,6 +185,15 @@
         background-color: var(--ac-terracotta);
         border-color: var(--ac-terracotta);
         color: #FFFFFF !important;
+    }
+
+    /* Process steps interactive animation */
+    .process-step-badge {
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+    }
+    .card-apple:hover .process-step-badge {
+        transform: scale(1.15) rotate(-6deg);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2) !important;
     }
 </style>
 {% endblock %}
@@ -365,19 +379,19 @@
     <div class="container">
         <div class="row g-3 text-center align-items-center">
             <div class="col-6 col-md-3">
-                <div class="fs-2 fw-extrabold tabular-nums" style="color: var(--ac-terracotta);">{{ stats.artisans_count }}</div>
+                <div class="fs-2 fw-extrabold tabular-nums stat-counter" data-target="{{ stats.artisans_count }}" style="color: var(--ac-terracotta);">0</div>
                 <div class="small text-muted fw-bold text-uppercase" style="letter-spacing: 0.05em;">Artisans qualifiés</div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="fs-2 fw-extrabold tabular-nums text-dark">{{ stats.metiers_count }}</div>
+                <div class="fs-2 fw-extrabold tabular-nums text-dark stat-counter" data-target="{{ stats.metiers_count }}">0</div>
                 <div class="small text-muted fw-bold text-uppercase" style="letter-spacing: 0.05em;">Métiers d'excellence</div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="fs-2 fw-extrabold tabular-nums text-dark">{{ stats.demandes_count }}</div>
+                <div class="fs-2 fw-extrabold tabular-nums text-dark stat-counter" data-target="{{ stats.demandes_count }}">0</div>
                 <div class="small text-muted fw-bold text-uppercase" style="letter-spacing: 0.05em;">Demandes publiées</div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="fs-2 fw-extrabold tabular-nums" style="color: #059669;">{{ stats.commandes_count }}</div>
+                <div class="fs-2 fw-extrabold tabular-nums stat-counter" data-target="{{ stats.commandes_count }}" style="color: #059669;">0</div>
                 <div class="small text-muted fw-bold text-uppercase" style="letter-spacing: 0.05em;">Chantiers livrés</div>
             </div>
         </div>
@@ -534,7 +548,7 @@
         <div class="row g-4">
             <div class="col-md-4">
                 <div class="card-apple p-4 h-100 text-center border-0 bg-light">
-                    <div class="d-inline-flex align-items-center justify-content-center text-white fw-bold mb-3 shadow-sm rounded-circle" style="width: 50px; height: 50px; background: var(--ac-terracotta);">
+                    <div class="d-inline-flex align-items-center justify-content-center text-white fw-bold mb-3 shadow-sm rounded-circle process-step-badge" style="width: 50px; height: 50px; background: var(--ac-terracotta);">
                         1
                     </div>
                     <h3 class="h5 fw-bold text-dark mb-2">Exprimez votre besoin</h3>
@@ -546,7 +560,7 @@
 
             <div class="col-md-4">
                 <div class="card-apple p-4 h-100 text-center border-0 bg-light">
-                    <div class="d-inline-flex align-items-center justify-content-center text-white fw-bold mb-3 shadow-sm rounded-circle" style="width: 50px; height: 50px; background: var(--ac-dark);">
+                    <div class="d-inline-flex align-items-center justify-content-center text-white fw-bold mb-3 shadow-sm rounded-circle process-step-badge" style="width: 50px; height: 50px; background: var(--ac-dark);">
                         2
                     </div>
                     <h3 class="h5 fw-bold text-dark mb-2">Recevez et comparez les devis</h3>
@@ -558,7 +572,7 @@
 
             <div class="col-md-4">
                 <div class="card-apple p-4 h-100 text-center border-0 bg-light">
-                    <div class="d-inline-flex align-items-center justify-content-center text-white fw-bold mb-3 shadow-sm rounded-circle" style="width: 50px; height: 50px; background: #059669;">
+                    <div class="d-inline-flex align-items-center justify-content-center text-white fw-bold mb-3 shadow-sm rounded-circle process-step-badge" style="width: 50px; height: 50px; background: #059669;">
                         3
                     </div>
                     <h3 class="h5 fw-bold text-dark mb-2">Suivez et évaluez le chantier</h3>
@@ -670,6 +684,48 @@
         showcase.addEventListener('mouseleave', startAuto);
 
         startAuto();
+
+        // Smooth count-up animation for stats
+        const counters = document.querySelectorAll('.stat-counter');
+        if (counters.length) {
+            const runCounter = (el) => {
+                const target = parseInt(el.getAttribute('data-target'), 10) || 0;
+                if (target === 0) {
+                    el.textContent = '0';
+                    return;
+                }
+                const duration = 1200;
+                const startTime = performance.now();
+
+                function update(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    // easeOutCubic
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    el.textContent = Math.floor(ease * target);
+                    if (progress < 1) {
+                        requestAnimationFrame(update);
+                    } else {
+                        el.textContent = target;
+                    }
+                }
+                requestAnimationFrame(update);
+            };
+
+            if ('IntersectionObserver' in window) {
+                const counterObserver = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            runCounter(entry.target);
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                counters.forEach(c => counterObserver.observe(c));
+            } else {
+                counters.forEach(c => runCounter(c));
+            }
+        }
     });
 </script>
 {% endblock %}
