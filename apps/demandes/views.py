@@ -30,7 +30,7 @@ class DemandeServiceViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         if self.request.user.role != 'CLIENT':
             self.permission_denied(self.request, message='Seuls les clients peuvent publier une demande.')
-        client_profile = Client.objects.get(user=self.request.user)
+        client_profile, _ = Client.objects.get_or_create(user=self.request.user)
         serializer.save(client=client_profile)
 
     def update(self, request, *args, **kwargs):

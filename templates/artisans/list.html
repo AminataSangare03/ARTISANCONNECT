@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Trouver un artisan - ArtisanConnect{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header banner -->
+    <div class="mb-4">
+        <h1 class="h3 fw-bold mb-1">Annuaire des artisans professionnels</h1>
+        <p class="text-muted small">Trouvez des artisans verifies, qualifies et disponibles dans votre zone geographique.</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Sidebar filters -->
+        <div class="col-lg-3">
+            <div class="card card-custom p-3 border-0 shadow-sm sticky-top" style="top: 20px;">
+                <h2 class="h6 fw-bold mb-3 text-uppercase" style="color: var(--ac-terracotta); letter-spacing: 0.05em;">Filtres de recherche</h2>
+                <form action="{% url 'artisan_list' %}" method="get">
+                    <!-- Mot cle -->
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-muted">Nom ou mot-cle</label>
+                        <input type="text" name="q" value="{{ current_q }}" class="form-control form-control-sm" placeholder="Rechercher...">
+                    </div>
+
+                    <!-- Metier -->
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-muted">Metier</label>
+                        <select name="metier" class="form-select form-select-sm">
+                            <option value="">Tous les metiers</option>
+                            {% for m in metiers %}
+                                <option value="{{ m.id }}" {% if current_metier == m.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ m.nom }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Ville -->
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-muted">Ville ou quartier</label>
+                        <input type="text" name="ville" value="{{ current_ville }}" class="form-control form-control-sm" placeholder="Ex: Abidjan, Cocody...">
+                    </div>
+
+                    <!-- Disponibilite -->
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" name="disponible" value="1" id="dispCheck" {% if current_disponible == '1' %}checked{% endif %}>
+                        <label class="form-check-label small" for="dispCheck">
+                            Disponibles immediatement
+                        </label>
+                    </div>
+
+                    <!-- Tri -->
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-muted">Trier par</label>
+                        <select name="sort" class="form-select form-select-sm">
+                            <option value="rating" {% if current_sort == 'rating' %}selected{% endif %}>Meilleures notes</option>
+                            <option value="experience" {% if current_sort == 'experience' %}selected{% endif %}>Annees d'experience</option>
+                            <option value="tarif_asc" {% if current_sort == 'tarif_asc' %}selected{% endif %}>Tarif croissant</option>
+                            <option value="tarif_desc" {% if current_sort == 'tarif_desc' %}selected{% endif %}>Tarif decroissant</option>
+                        </select>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-terracotta btn-sm">Appliquer les filtres</button>
+                        <a href="{% url 'artisan_list' %}" class="btn btn-outline-secondary btn-sm">Reinitialiser</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Artisans Grid -->
+        <div class="col-lg-9">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="small text-muted">
+                    <strong>{{ page_obj.paginator.count }}</strong> artisan{{ page_obj.paginator.count|pluralize }} trouve{{ page_obj.paginator.count|pluralize }}
+                </span>
+            </div>
+
+            <div class="row g-3">
+                {% for artisan in page_obj %}
+                    <div class="col-md-6">
+                        <div class="card card-custom h-100 p-3 d-flex flex-column">
+                            <div class="d-flex gap-3 align-items-start mb-2">
+                                <div class="rounded-circle text-white fw-bold d-flex align-items-center justify-content-center shadow-sm" style="width: 52px; height: 52px; background: var(--ac-terracotta); flex-shrink: 0;">
+                                    {{ artisan.user.first_name|first }}{{ artisan.user.last_name|first }}
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <h2 class="h6 fw-bold mb-0 text-dark">{{ artisan.user.get_full_name|default:artisan.user.email }}</h2>
+                                        {% if artisan.disponibilite %}
+                                            <span class="badge bg-success-subtle text-success small border border-success-subtle">Disponible</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary-subtle text-secondary small">Occupe</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="badge-metier d-inline-block mt-1">{{ artisan.metier.nom|default:"Artisan" }}</div>
+                                    <div class="small text-muted mt-1">{{ artisan.ville }}{% if artisan.quartier %}, {{ artisan.quartier }}{% endif %}</div>
+                                </div>
+                            </div>
+
+                            <p class="small text-muted flex-grow-1 mb-2">
+                                {{ artisan.description|truncatewords:18|default:"Artisan professionnel experimente." }}
+                            </p>
+
+                            <!-- Stats & Realisations count -->
+                            <div class="d-flex justify-content-between align-items-center small py-2 border-top border-bottom mb-3 text-muted">
+                                <div>
+                                    <strong class="text-dark">{{ artisan.experience }}</strong> an{{ artisan.experience|pluralize }} d'exp.
+                                </div>
+                                <div>
+                                    <strong class="text-dark">{{ artisan.realisations.count }}</strong> realisation{{ artisan.realisations.count|pluralize }}
+                                </div>
+                                <div>
+                                    {% if artisan.tarif_indicatif > 0 %}
+                                        <strong class="text-dark">{{ artisan.tarif_indicatif }} FCFA</strong>/j
+                                    {% else %}
+                                        <span>Sur devis</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="small">
+                                    <span class="star-filled fw-bold">&#9733; {{ artisan.note_moyenne|default:"5.0" }}</span>
+                                    <span class="text-muted">({{ artisan.nombre_avis }} avis)</span>
+                                </div>
+                                <a href="{% url 'artisan_detail' artisan.id %}" class="btn btn-outline-terracotta btn-sm">
+                                    Voir profil
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12 py-5 text-center">
+                        <div class="card p-5 border-0 shadow-sm text-center">
+                            <h3 class="h5 fw-bold text-dark mb-2">Aucun artisan ne correspond a vos criteres</h3>
+                            <p class="text-muted small mb-3">Essayez d elargir votre recherche ou de modifier vos filtres.</p>
+                            <div>
+                                <a href="{% url 'artisan_list' %}" class="btn btn-terracotta btn-sm">Afficher tous les artisans</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+                <nav class="mt-4" aria-label="Pagination">
+                    <ul class="pagination pagination-sm justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ current_q }}&metier={{ current_metier }}&ville={{ current_ville }}&disponible={{ current_disponible }}&sort={{ current_sort }}">&laquo; Precedent</a>
+                            </li>
+                        {% endif %}
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <li class="page-item active"><span class="page-link" style="background-color: var(--ac-terracotta); border-color: var(--ac-terracotta);">{{ num }}</span></li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link text-dark" href="?page={{ num }}&q={{ current_q }}&metier={{ current_metier }}&ville={{ current_ville }}&disponible={{ current_disponible }}&sort={{ current_sort }}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ current_q }}&metier={{ current_metier }}&ville={{ current_ville }}&disponible={{ current_disponible }}&sort={{ current_sort }}">Suivant &raquo;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

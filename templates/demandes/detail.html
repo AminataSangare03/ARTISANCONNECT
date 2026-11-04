@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ demande.titre }} - Demande de service | ArtisanConnect{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-muted">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'demande_list' %}" class="text-decoration-none text-muted">Demandes</a></li>
+            <li class="breadcrumb-item active text-dark" aria-current="page">{{ demande.titre|truncatechars:35 }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <!-- Main: Demande details -->
+        <div class="col-lg-8">
+            <div class="card card-custom p-4 mb-4 border-0 shadow-sm">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="badge-metier fs-6">{{ demande.metier.nom }}</span>
+                    <span class="badge-status badge-status-{{ demande.statut|lower }} fs-6">{{ demande.get_statut_display }}</span>
+                </div>
+
+                <h1 class="h3 fw-bold mb-3 text-dark">{{ demande.titre }}</h1>
+
+                <div class="d-flex flex-wrap gap-4 text-muted small py-3 border-top border-bottom mb-3">
+                    <div>
+                        <strong>Client :</strong> {{ demande.client.user.get_full_name|default:demande.client.user.email }}
+                    </div>
+                    <div>
+                        <strong>Localisation :</strong> {{ demande.ville }}{% if demande.quartier %}, {{ demande.quartier }}{% endif %}
+                    </div>
+                    <div>
+                        <strong>Budget indicatif :</strong>
+                        {% if demande.budget_indicatif > 0 %}
+                            <span class="text-dark fw-bold">{{ demande.budget_indicatif }} FCFA</span>
+                        {% else %}
+                            <span>A negocier</span>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <strong>Date souhaitee :</strong>
+                        {% if demande.date_souhaitee %}
+                            {{ demande.date_souhaitee|date:"d M Y" }}
+                        {% else %}
+                            <span>Des que possible</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <h2 class="h6 fw-bold text-uppercase mb-2" style="color: var(--ac-terracotta);">Description du besoin</h2>
+                <p class="text-muted mb-0" style="white-space: pre-line; line-height: 1.6;">
+                    {{ demande.description }}
+                </p>
+
+                {% if demande.adresse and is_owner %}
+                    <div class="mt-3 p-3 bg-light rounded-3 small">
+                        <strong>Adresse complete transmise :</strong> {{ demande.adresse }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Espace Devis reçus (Pour le client propriétaire) -->
+            {% if is_owner %}
+                <div class="card card-custom p-4 border-0 shadow-sm mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="h5 fw-bold mb-0" style="color: var(--ac-terracotta);">Devis recus pour cette demande</h2>
+                        <span class="badge bg-light text-muted border">{{ devis_list.count }} proposition{{ devis_list.count|pluralize }}</span>
+                    </div>
+
+                    <div class="d-flex flex-column gap-3">
+                        {% for devis in devis_list %}
+                            <div class="p-3 border rounded-3 bg-white shadow-none">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="rounded-circle text-white fw-bold d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: var(--ac-terracotta);">
+                                            {{ devis.artisan.user.first_name|first }}
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold text-dark">
+                                                <a href="{% url 'artisan_detail' devis.artisan.id %}" class="text-dark text-decoration-none">
+                                                    {{ devis.artisan.user.get_full_name|default:devis.artisan.user.email }}
+                                                </a>
+                                            </div>
+                                            <div class="small text-muted">{{ devis.artisan.ville }} &bull; {{ devis.artisan.experience }} ans d'exp.</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="fs-5 fw-bold" style="color: var(--ac-terracotta);">{{ devis.montant }} FCFA</div>
+                                        <span class="badge-status badge-status-{{ devis.statut|lower }}">{{ devis.get_statut_display }}</span>
+                                    </div>
+                                </div>
+
+                                <p class="small text-muted mb-2">
+                                    {{ devis.description }}
+                                </p>
+
+                                <div class="d-flex flex-wrap justify-content-between align-items-center small text-muted pt-2 border-top">
+                                    <div>
+                                        {% if devis.duree_estimee %}<span>Duree estimee : <strong>{{ devis.duree_estimee }}</strong></span> &bull; {% endif %}
+                                        {% if devis.validite %}<span>Valide jusqu'au : {{ devis.validite|date:"d M Y" }}</span>{% endif %}
+                                    </div>
+
+                                    {% if demande.statut == 'EN_ATTENTE' and devis.statut == 'EN_ATTENTE' %}
+                                        <div class="d-flex gap-2">
+                                            <a href="{% url 'devis_action' devis.id 'refuser' %}" class="btn btn-outline-danger btn-sm">
+                                                Refuser
+                                            </a>
+                                            <a href="{% url 'devis_action' devis.id 'accepter' %}" class="btn btn-terracotta btn-sm fw-bold">
+                                                Accepter ce devis
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="text-center py-4 text-muted">
+                                <p class="mb-0">Aucun artisan n'a encore formule de devis pour cette demande.</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Formulaire de Devis (Pour l'artisan du métier concerné) -->
+            {% if is_matching_artisan %}
+                <div class="card card-custom p-4 border-0 shadow-sm">
+                    <h2 class="h5 fw-bold mb-3" style="color: var(--ac-terracotta);">Repondre a cette demande de service</h2>
+
+                    {% if existing_devis %}
+                        <div class="alert alert-info mb-0">
+                            <strong>Votre devis a deja ete transmis :</strong>
+                            <div class="mt-2">
+                                Montant propose : <strong>{{ existing_devis.montant }} FCFA</strong> | Statut : <span class="badge-status badge-status-{{ existing_devis.statut|lower }}">{{ existing_devis.get_statut_display }}</span>
+                            </div>
+                            <div class="small mt-1 text-muted">{{ existing_devis.description }}</div>
+                        </div>
+                    {% elif demande.statut != 'EN_ATTENTE' %}
+                        <div class="alert alert-secondary mb-0">
+                            Cette demande a deja ete pourvue ou cloturee.
+                        </div>
+                    {% else %}
+                        <form method="post" action="{% url 'demande_detail' demande.id %}">
+                            {% csrf_token %}
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold text-dark">Montant propose (FCFA) *</label>
+                                    {{ devis_form.montant }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold text-dark">Duree estimee des travaux</label>
+                                    {{ devis_form.duree_estimee }}
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold text-dark">Date limite de validite de l'offre</label>
+                                {{ devis_form.validite }}
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold text-dark">Description des prestations & modalites *</label>
+                                {{ devis_form.description }}
+                            </div>
+
+                            <button type="submit" class="btn btn-terracotta fw-bold">
+                                Envoyer mon devis au client
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="card card-custom p-4 border-0 shadow-sm sticky-top" style="top: 20px;">
+                <h3 class="h6 fw-bold mb-3 text-uppercase" style="color: var(--ac-terracotta); letter-spacing: 0.05em;">Synthese de la demande</h3>
+                <ul class="list-unstyled small text-muted mb-4">
+                    <li class="mb-2"><strong>Statut actuel :</strong> {{ demande.get_statut_display }}</li>
+                    <li class="mb-2"><strong>Metier recherche :</strong> {{ demande.metier.nom }}</li>
+                    <li class="mb-2"><strong>Date de depot :</strong> {{ demande.created_at|date:"d M Y a H:i" }}</li>
+                    <li><strong>Propositions recues :</strong> {{ demande.devis.count }}</li>
+                </ul>
+
+                {% if not user.is_authenticated %}
+                    <div class="p-3 bg-light rounded-3 text-center small mb-3">
+                        <div class="fw-semibold mb-1">Vous etes artisan en {{ demande.metier.nom }} ?</div>
+                        <div class="text-muted mb-3">Connectez-vous pour envoyer votre devis chiffre au client.</div>
+                        <a href="{% url 'web_login' %}?next={{ request.path }}" class="btn btn-terracotta btn-sm w-100">Se connecter</a>
+                    </div>
+                {% endif %}
+
+                <div class="d-grid gap-2">
+                    <a href="{% url 'demande_list' %}" class="btn btn-outline-secondary btn-sm">
+                        &larr; Retour a la liste des demandes
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

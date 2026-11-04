@@ -32,6 +32,8 @@ class DevisViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         if self.request.user.role != 'ARTISAN':
             self.permission_denied(self.request, message='Seuls les artisans peuvent créer des devis.')
+        if not hasattr(self.request.user, 'artisan_profile'):
+            self.permission_denied(self.request, message='Veuillez d\'abord compléter votre profil artisan.')
         artisan = self.request.user.artisan_profile
         demande = serializer.validated_data['demande']
         if demande.metier != artisan.metier:

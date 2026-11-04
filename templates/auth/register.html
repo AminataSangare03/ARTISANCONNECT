@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inscription - ArtisanConnect{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card card-custom p-4 border-0 shadow-sm">
+                <div class="text-center mb-4">
+                    <img src="{% static 'images/logo.jpg' %}" alt="Logo" class="mb-2" style="height: 60px; border-radius: 8px;">
+                    <h1 class="h4 fw-bold text-dark mb-1">Creer un compte ArtisanConnect</h1>
+                    <p class="text-muted small">Rejoignez la plateforme et profitez de notre reseau qualifie</p>
+                </div>
+
+                <form method="post" action="{% url 'web_register' %}">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger small py-2 mb-3">
+                            {{ form.non_field_errors|striptags }}
+                        </div>
+                    {% endif %}
+
+                    <!-- Choix du rôle -->
+                    <div class="mb-4 p-3 bg-light rounded-3 border">
+                        <label class="form-label small fw-bold text-dark d-block mb-2">Quel est votre profil ? *</label>
+                        <div class="d-flex gap-4">
+                            {% for radio in form.role %}
+                                <div class="form-check">
+                                    {{ radio.tag }}
+                                    <label class="form-check-label small fw-semibold" for="{{ radio.id_for_label }}">
+                                        {{ radio.choice_label }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% if form.role.errors %}
+                            <div class="text-danger small mt-1">{{ form.role.errors|striptags }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Identité -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold text-dark">Prenom *</label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <div class="text-danger small mt-1">{{ form.first_name.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold text-dark">Nom de famille *</label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <div class="text-danger small mt-1">{{ form.last_name.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold text-dark">Adresse email *</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="text-danger small mt-1">{{ form.email.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold text-dark">Numero de telephone *</label>
+                            {{ form.phone_number }}
+                            {% if form.phone_number.errors %}
+                                <div class="text-danger small mt-1">{{ form.phone_number.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold text-dark">Mot de passe (8 car. min) *</label>
+                            {{ form.password }}
+                            {% if form.password.errors %}
+                                <div class="text-danger small mt-1">{{ form.password.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold text-dark">Confirmation mot de passe *</label>
+                            {{ form.confirm_password }}
+                            {% if form.confirm_password.errors %}
+                                <div class="text-danger small mt-1">{{ form.confirm_password.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Localisation -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold text-dark">Ville de residence ou d'activite *</label>
+                            {{ form.ville }}
+                            {% if form.ville.errors %}
+                                <div class="text-danger small mt-1">{{ form.ville.errors|striptags }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold text-dark">Quartier / Commune</label>
+                            {{ form.quartier }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-dark">Adresse ou repere</label>
+                        {{ form.adresse }}
+                    </div>
+
+                    <!-- Champs spécifiques Artisan -->
+                    <div id="artisanFieldsSection" class="p-3 border rounded-3 bg-light mb-4">
+                        <h2 class="h6 fw-bold mb-3" style="color: var(--ac-terracotta);">Informations artisanales professionnelles</h2>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold text-dark">Metier principal *</label>
+                                {{ form.metier }}
+                                {% if form.metier.errors %}
+                                    <div class="text-danger small mt-1">{{ form.metier.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label small fw-semibold text-dark">Annees d'exp.</label>
+                                {{ form.experience }}
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label small fw-semibold text-dark">Tarif/j (FCFA)</label>
+                                {{ form.tarif_indicatif }}
+                            </div>
+                        </div>
+
+                        <div class="mb-0">
+                            <label class="form-label small fw-semibold text-dark">Description de vos specialites</label>
+                            {{ form.description }}
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 mb-3">
+                        <button type="submit" class="btn btn-terracotta fw-bold py-2">
+                            Creer mon compte
+                        </button>
+                    </div>
+
+                    <div class="text-center small text-muted">
+                        Vous avez deja un compte ?
+                        <a href="{% url 'web_login' %}" class="fw-bold" style="color: var(--ac-terracotta);">Connectez-vous ici</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const roleInputs = document.querySelectorAll('input[name="role"]');
+        const artisanSection = document.getElementById('artisanFieldsSection');
+
+        function toggleArtisanFields() {
+            let selectedRole = 'CLIENT';
+            roleInputs.forEach(input => {
+                if (input.checked) selectedRole = input.value;
+            });
+            if (selectedRole === 'ARTISAN') {
+                artisanSection.style.display = 'block';
+            } else {
+                artisanSection.style.display = 'none';
+            }
+        }
+
+        roleInputs.forEach(input => {
+            input.addEventListener('change', toggleArtisanFields);
+        });
+
+        toggleArtisanFields();
+    });
+</script>
+{% endblock %}

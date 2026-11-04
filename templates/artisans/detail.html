@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ artisan.user.get_full_name|default:artisan.user.email }} - Artisan {{ artisan.metier.nom }} | ArtisanConnect{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-muted">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'artisan_list' %}" class="text-decoration-none text-muted">Artisans</a></li>
+            <li class="breadcrumb-item active text-dark" aria-current="page">{{ artisan.user.get_full_name|default:artisan.user.email }}</li>
+        </ol>
+    </nav>
+
+    <!-- Profile Header Card -->
+    <div class="card card-custom p-4 mb-4 border-0 shadow-sm">
+        <div class="row align-items-center g-4">
+            <div class="col-md-auto text-center">
+                {% if artisan.photo_profil %}
+                    <img src="{{ artisan.photo_profil.url }}" alt="{{ artisan.user.get_full_name }}" class="rounded-circle shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
+                {% else %}
+                    <div class="rounded-circle text-white fw-bold d-flex align-items-center justify-content-center shadow-sm mx-auto" style="width: 100px; height: 100px; font-size: 2.2rem; background: var(--ac-terracotta);">
+                        {{ artisan.user.first_name|first }}{{ artisan.user.last_name|first }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="col-md">
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+                    <h1 class="h3 fw-bold mb-0 text-dark">{{ artisan.user.get_full_name|default:artisan.user.email }}</h1>
+                    {% if artisan.disponibilite %}
+                        <span class="badge bg-success-subtle text-success border border-success-subtle">Disponible pour mission</span>
+                    {% else %}
+                        <span class="badge bg-secondary-subtle text-secondary">Actuellement indisponible</span>
+                    {% endif %}
+                </div>
+
+                <div class="d-flex flex-wrap align-items-center gap-3 mb-2">
+                    <span class="badge-metier fs-6">{{ artisan.metier.nom|default:"Artisan" }}</span>
+                    <span class="text-muted small">
+                        <strong>{{ artisan.ville }}</strong>{% if artisan.quartier %}, {{ artisan.quartier }}{% endif %}{% if artisan.adresse %} ({{ artisan.adresse }}){% endif %}
+                    </span>
+                    <span class="text-muted small">
+                        <strong>{{ artisan.experience }}</strong> annees d'experience
+                    </span>
+                </div>
+
+                <!-- Rating -->
+                <div class="d-flex align-items-center gap-2">
+                    <div class="star-filled fw-bold fs-5">&#9733; {{ avg_rating }}</div>
+                    <span class="text-muted small">({{ avis_count }} avis verifie{{ avis_count|pluralize }})</span>
+                </div>
+            </div>
+
+            <div class="col-md-auto text-md-end border-md-start ps-md-4">
+                <div class="mb-2">
+                    <div class="text-muted small">Tarif indicatif journalier</div>
+                    <div class="fs-4 fw-bold" style="color: var(--ac-terracotta);">
+                        {% if artisan.tarif_indicatif > 0 %}
+                            {{ artisan.tarif_indicatif|floatformat:0 }} FCFA
+                        {% else %}
+                            <span class="fs-6 text-muted">Sur devis</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if artisan.telephone_professionnel %}
+                    <div class="small text-muted mb-3">
+                        Contact pro : <strong class="text-dark">{{ artisan.telephone_professionnel }}</strong>
+                    </div>
+                {% endif %}
+                <a href="{% url 'demande_create' %}?metier={{ artisan.metier.id }}" class="btn btn-terracotta w-100 fw-bold">
+                    Demander un devis
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Main: Bio + Realisations -->
+        <div class="col-lg-8">
+            <!-- Bio -->
+            <div class="card card-custom p-4 mb-4 border-0 shadow-sm">
+                <h2 class="h5 fw-bold mb-3" style="color: var(--ac-terracotta);">Presentation & Competences</h2>
+                <p class="text-muted mb-0" style="white-space: pre-line; line-height: 1.6;">
+                    {{ artisan.description|default:"Cet artisan n'a pas encore redige de description detaillee." }}
+                </p>
+            </div>
+
+            <!-- Portfolio / Realisations -->
+            <div class="card card-custom p-4 mb-4 border-0 shadow-sm">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="h5 fw-bold mb-0" style="color: var(--ac-terracotta);">Realisations & Chantiers recents</h2>
+                    <span class="badge bg-light text-muted border">{{ realisations.count }} projet{{ realisations.count|pluralize }}</span>
+                </div>
+
+                <div class="row g-3">
+                    {% for real in realisations %}
+                        <div class="col-md-6">
+                            <div class="card h-100 border border-light-subtle rounded-3 overflow-hidden shadow-none">
+                                {% if real.image %}
+                                    <img src="{{ real.image.url }}" alt="{{ real.titre }}" class="w-100" style="height: 180px; object-fit: cover;">
+                                {% else %}
+                                    <div class="w-100 d-flex align-items-center justify-content-center text-muted bg-light" style="height: 160px;">
+                                        <div class="text-center p-3">
+                                            <span class="badge text-bg-light border mb-1">Photo de realisation</span>
+                                            <div class="small fw-semibold text-muted">{{ real.titre }}</div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <div class="p-3">
+                                    <h3 class="h6 fw-bold mb-1 text-dark">{{ real.titre }}</h3>
+                                    <p class="small text-muted mb-2">{{ real.description|default:"Projet acheve avec succes." }}</p>
+                                    <div class="small text-muted" style="font-size: 0.75rem;">
+                                        Realise le {{ real.date_realisation|date:"d M Y" }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="col-12 py-4 text-center text-muted">
+                            <p class="mb-0">Cet artisan n'a pas encore partage de photos de realisation.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Avis clients -->
+            <div class="card card-custom p-4 border-0 shadow-sm">
+                <h2 class="h5 fw-bold mb-3" style="color: var(--ac-terracotta);">Avis clients certifies</h2>
+
+                <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3 mb-4">
+                    <div class="display-6 fw-bold" style="color: var(--ac-terracotta);">{{ avg_rating }}</div>
+                    <div>
+                        <div class="star-filled fw-bold fs-5">
+                            &#9733;&#9733;&#9733;&#9733;&#9733;
+                        </div>
+                        <div class="small text-muted">Base sur {{ avis_count }} retour{{ avis_count|pluralize }} apres commande confirmee.</div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column gap-3">
+                    {% for avis in avis_list %}
+                        <div class="p-3 border rounded-3 bg-white">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <div class="fw-bold text-dark small">
+                                    {{ avis.client.user.get_full_name|default:avis.client.user.email }}
+                                </div>
+                                <div class="star-filled small fw-bold">
+                                    {{ avis.note }}/5 &#9733;
+                                </div>
+                            </div>
+                            <p class="small text-muted mb-1">{{ avis.commentaire|default:"Prestation realisee avec satisfaction." }}</p>
+                            <div class="text-muted" style="font-size: 0.72rem;">
+                                Le {{ avis.created_at|date:"d M Y a H:i" }}
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted small mb-0">Aucun avis publie pour le moment.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Actions -->
+        <div class="col-lg-4">
+            <div class="card card-custom p-4 border-0 shadow-sm sticky-top" style="top: 20px;">
+                <h3 class="h6 fw-bold mb-3 text-uppercase" style="color: var(--ac-terracotta); letter-spacing: 0.05em;">Contacter cet artisan</h3>
+                <p class="small text-muted mb-3">
+                    Pour solliciter une intervention, publiez votre demande de service. L'artisan pourra vous repondre par un devis chiffre et personnalise.
+                </p>
+                <div class="d-grid gap-2 mb-3">
+                    <a href="{% url 'demande_create' %}?metier={{ artisan.metier.id }}" class="btn btn-terracotta fw-bold">
+                        Publier une demande de service
+                    </a>
+                </div>
+                <hr class="my-3">
+                <div class="small text-muted">
+                    <div class="mb-2"><strong>Zone couverte :</strong> {{ artisan.ville }}{% if artisan.quartier %}, {{ artisan.quartier }}{% endif %}</div>
+                    <div class="mb-2"><strong>Specialite :</strong> {{ artisan.metier.nom }}</div>
+                    <div><strong>Garantie :</strong> Echanges et devis transparents avant toute validation.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

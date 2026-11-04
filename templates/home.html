@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Accueil - ArtisanConnect | Le savoir-faire a portee de main{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="py-5" style="background: linear-gradient(135deg, #FAF7F2 0%, #F3EAE1 100%); border-bottom: 1px solid var(--ac-border);">
+    <div class="container py-4">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <span class="badge mb-3 px-3 py-2 text-uppercase fw-bold" style="background-color: var(--ac-terracotta-light); color: var(--ac-terracotta-dark); letter-spacing: 0.05em;">
+                    Mise en relation artisanale certifiee
+                </span>
+                <h1 class="display-4 fw-extrabold text-dark mb-3" style="line-height: 1.15; letter-spacing: -0.02em;">
+                    Trouvez le bon artisan pour chaque projet.
+                </h1>
+                <p class="lead text-muted mb-4" style="font-size: 1.15rem;">
+                    Particuliers et professionnels : trouvez des artisans qualifies, disponibles a proximite, comparez les devis et suivez vos travaux en toute serenite.
+                </p>
+
+                <!-- Search Form Box -->
+                <div class="card p-3 shadow-sm border-0" style="border-radius: 14px; background: #FFFFFF; border: 1px solid var(--ac-border) !important;">
+                    <form action="{% url 'artisan_list' %}" method="get" class="row g-2">
+                        <div class="col-md-5">
+                            <label class="form-label small fw-bold text-muted mb-1">Metier recherche</label>
+                            <select name="metier" class="form-select border-0 bg-light" style="padding: 0.65rem 0.9rem;">
+                                <option value="">Tous les metiers</option>
+                                {% for m in metiers %}
+                                    <option value="{{ m.id }}">{{ m.nom }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold text-muted mb-1">Localisation (Ville ou quartier)</label>
+                            <input type="text" name="ville" class="form-control border-0 bg-light" placeholder="Ex: Abidjan, Cocody..." style="padding: 0.65rem 0.9rem;">
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="submit" class="btn btn-terracotta w-100 fw-bold" style="padding: 0.65rem;">
+                                Rechercher
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="d-flex align-items-center gap-3 mt-4 small text-muted">
+                    <span class="fw-semibold text-dark">Populaire :</span>
+                    <a href="{% url 'artisan_list' %}?q=Plomberie" class="badge text-bg-light border text-decoration-none">Plomberie</a>
+                    <a href="{% url 'artisan_list' %}?q=Menuiserie" class="badge text-bg-light border text-decoration-none">Menuiserie</a>
+                    <a href="{% url 'artisan_list' %}?q=Electricite" class="badge text-bg-light border text-decoration-none">Electricite</a>
+                    <a href="{% url 'artisan_list' %}?q=Couture" class="badge text-bg-light border text-decoration-none">Couture</a>
+                </div>
+            </div>
+
+            <div class="col-lg-5 text-center">
+                <div class="position-relative d-inline-block">
+                    <img src="{% static 'images/logo.jpg' %}" alt="ArtisanConnect" class="img-fluid rounded-4 shadow-lg border border-3 border-white" style="max-height: 400px; object-fit: cover;">
+                    <div class="card p-3 shadow border-0 position-absolute bottom-0 start-0 translate-middle-y bg-white text-start" style="border-radius: 12px; max-width: 230px;">
+                        <span class="small fw-bold text-muted text-uppercase">Garantie qualite</span>
+                        <div class="fw-bold fs-6 text-dark mt-1">Artisans verifies</div>
+                        <div class="small text-muted">Avis authentiques apres chaque prestation terminee.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Bar -->
+<section class="py-4 bg-white border-bottom">
+    <div class="container">
+        <div class="row text-center g-3">
+            <div class="col-6 col-md-3">
+                <div class="fs-2 fw-bold" style="color: var(--ac-terracotta);">{{ stats.artisans_count }}</div>
+                <div class="small text-muted fw-semibold text-uppercase">Artisans repertories</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="fs-2 fw-bold text-dark">{{ stats.metiers_count }}</div>
+                <div class="small text-muted fw-semibold text-uppercase">Corps de metiers</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="fs-2 fw-bold text-dark">{{ stats.demandes_count }}</div>
+                <div class="small text-muted fw-semibold text-uppercase">Demandes de service</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="fs-2 fw-bold" style="color: #059669;">{{ stats.commandes_count }}</div>
+                <div class="small text-muted fw-semibold text-uppercase">Prestations realisees</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Metiers populaires -->
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <span class="text-uppercase fw-bold small" style="color: var(--ac-terracotta);">Specialites</span>
+                <h2 class="h3 fw-bold mb-0">Explorez par metier</h2>
+            </div>
+            <a href="{% url 'artisan_list' %}" class="fw-semibold text-decoration-none" style="color: var(--ac-terracotta);">Voir tous les artisans &rarr;</a>
+        </div>
+
+        <div class="row g-3">
+            {% for m in metiers %}
+                <div class="col-md-3 col-6">
+                    <a href="{% url 'artisan_list' %}?metier={{ m.id }}" class="card card-custom p-3 text-decoration-none h-100 text-dark">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="badge-metier">{{ m.nom }}</span>
+                            <span class="badge bg-light text-muted border small">{{ m.artisans_count }} pro{{ m.artisans_count|pluralize }}</span>
+                        </div>
+                        <p class="small text-muted mb-0 text-truncate" title="{{ m.description }}">{{ m.description|default:"Professionnels du secteur" }}</p>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Artisans en vedette -->
+<section class="py-5" style="background-color: #FAF8F5;">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <span class="text-uppercase fw-bold small" style="color: var(--ac-terracotta);">Confiance & Savoir-faire</span>
+                <h2 class="h3 fw-bold mb-0">Artisans recommandes</h2>
+            </div>
+            <a href="{% url 'artisan_list' %}" class="fw-semibold text-decoration-none" style="color: var(--ac-terracotta);">Consulter l'annuaire &rarr;</a>
+        </div>
+
+        <div class="row g-4">
+            {% for artisan in featured_artisans %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="card card-custom h-100 p-4 d-flex flex-column">
+                        <div class="d-flex align-items-start gap-3 mb-3">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold fs-5 shadow-sm" style="width: 58px; height: 58px; background: var(--ac-terracotta); flex-shrink: 0;">
+                                {{ artisan.user.first_name|first }}{{ artisan.user.last_name|first }}
+                            </div>
+                            <div class="flex-grow-1">
+                                <h3 class="h5 fw-bold mb-1">{{ artisan.user.get_full_name|default:artisan.user.email }}</h3>
+                                <div class="badge-metier d-inline-block">{{ artisan.metier.nom|default:"Artisan" }}</div>
+                                <div class="small text-muted mt-1">{{ artisan.ville }}{% if artisan.quartier %}, {{ artisan.quartier }}{% endif %}</div>
+                            </div>
+                        </div>
+
+                        <p class="small text-muted flex-grow-1 mb-3">
+                            {{ artisan.description|truncatewords:20|default:"Artisan professionnel competent et rigoureux." }}
+                        </p>
+
+                        <div class="d-flex justify-content-between align-items-center border-top pt-3 mb-3 small">
+                            <div>
+                                <span class="fw-bold">{{ artisan.experience }} ans</span> d'experience
+                            </div>
+                            <div>
+                                {% if artisan.tarif_indicatif > 0 %}
+                                    A partir de <strong class="text-dark">{{ artisan.tarif_indicatif }} FCFA</strong>
+                                {% else %}
+                                    <span class="text-muted">Tarif sur devis</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between pt-2">
+                            <div class="small">
+                                <span class="star-filled fw-bold">&#9733; {{ artisan.note_moyenne|default:"5.0" }}</span>
+                                <span class="text-muted">({{ artisan.nombre_avis }} avis)</span>
+                            </div>
+                            <a href="{% url 'artisan_detail' artisan.id %}" class="btn btn-outline-terracotta btn-sm">Voir profil & realisations</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center py-4">
+                    <p class="text-muted">Aucun artisan en vedette pour le moment.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Comment ca fonctionne -->
+<section class="py-5">
+    <div class="container py-3">
+        <div class="text-center mb-5">
+            <span class="text-uppercase fw-bold small" style="color: var(--ac-terracotta);">Simple et efficace</span>
+            <h2 class="h2 fw-bold">Comment fonctionne ArtisanConnect ?</h2>
+            <p class="text-muted">Une plateforme pensee pour faciliter les echanges du premier contact a la livraison.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4 text-center">
+                <div class="card card-custom p-4 h-100 border-0 shadow-sm">
+                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center text-white fw-bold mb-3 mx-auto" style="width: 52px; height: 52px; background: var(--ac-terracotta);">
+                        1
+                    </div>
+                    <h3 class="h5 fw-bold mb-2">Exprimez votre besoin</h3>
+                    <p class="small text-muted mb-0">
+                        Recherchez directement un artisan dans votre zone ou publiez une demande detaillee avec le métier concerne et votre budget.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <div class="card card-custom p-4 h-100 border-0 shadow-sm">
+                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center text-white fw-bold mb-3 mx-auto" style="width: 52px; height: 52px; background: var(--ac-dark);">
+                        2
+                    </div>
+                    <h3 class="h5 fw-bold mb-2">Recevez et comparez les devis</h3>
+                    <p class="small text-muted mb-0">
+                        Les artisans qualifies et disponibles vous soumettent leurs propositions claires (montant, delai d intervention et validite).
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <div class="card card-custom p-4 h-100 border-0 shadow-sm">
+                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center text-white fw-bold mb-3 mx-auto" style="width: 52px; height: 52px; background: #059669;">
+                        3
+                    </div>
+                    <h3 class="h5 fw-bold mb-2">Suivez et notez la prestation</h3>
+                    <p class="small text-muted mb-0">
+                        Suivez l etat de la commande et attribuez une note et un commentaire pour valoriser les artisans rigoureux.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to action -->
+<section class="py-5" style="background: linear-gradient(135deg, #2E1E14 0%, #432B1C 100%); color: #FFFFFF;">
+    <div class="container py-4 text-center">
+        <h2 class="display-6 fw-bold mb-3">Pret a concrétiser vos projets artisanaux ?</h2>
+        <p class="lead text-light mb-4" style="max-width: 650px; margin: 0 auto; opacity: 0.9;">
+            Rejoignez des centaines de particuliers et de professionnels qui font confiance a ArtisanConnect pour tous leurs travaux.
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="{% url 'web_register' %}?role=CLIENT" class="btn btn-terracotta px-4 py-2">Je cherche un artisan</a>
+            <a href="{% url 'web_register' %}?role=ARTISAN" class="btn btn-outline-light px-4 py-2">Je suis un artisan</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

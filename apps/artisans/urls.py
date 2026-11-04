@@ -10,10 +10,10 @@ router.register(r'realisations', RealisationViewSet, basename='realisations')
 
 urlpatterns = [
     path('', ArtisanListView.as_view(), name='artisan-list'),
+    path('me/', ArtisanProfileView.as_view(), name='artisan-me'),
+    path('profile/', ArtisanProfileView.as_view(), name='artisan-profile'),
     path('<int:pk>/', ArtisanDetailView.as_view(), name='artisan-detail'),
     path('<int:pk>/avis/', ArtisanAvisListView.as_view(), name='artisan-avis'),
     path('<int:pk>/note/', ArtisanNoteView.as_view(), name='artisan-note'),
-    path('me/', ArtisanProfileView.as_view(), name='artisan-me'),
-    path('profile/', ArtisanProfileView.as_view(), name='artisan-profile'),
     *router.urls,
 ]

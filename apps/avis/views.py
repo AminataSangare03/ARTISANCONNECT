@@ -4,6 +4,8 @@ from rest_framework import filters, generics, viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
+from apps.accounts.models import Client
+
 from .models import Avis
 from .serializers import AvisSerializer
 
@@ -36,7 +38,8 @@ class AvisViewSet(viewsets.ModelViewSet):
             self.permission_denied(self.request, message='Un avis ne peut être publié que pour une commande confirmée.')
         if Avis.objects.filter(commande=commande).exists():
             self.permission_denied(self.request, message='Un seul avis peut être publié pour cette commande.')
-        serializer.save(client=user.client_profile, artisan=commande.artisan)
+        client_profile, _ = Client.objects.get_or_create(user=user)
+        serializer.save(client=client_profile, artisan=commande.artisan)
 
 
 class ArtisanAvisListView(generics.ListAPIView):
@@ -44,7 +47,7 @@ class ArtisanAvisListView(generics.ListAPIView):
     permission_classes = [AllowAny]
 
     def get_queryset(self):
-        artisan_id = self.kwargs['artisan_id']
+        artisan_id = self.kwargs.get('artisan_id') or self.kwargs.get('pk')
         return Avis.objects.filter(artisan_id=artisan_id).select_related('client__user', 'artisan__user', 'commande')
 
 
@@ -52,7 +55,11 @@ class ArtisanNoteView(generics.RetrieveAPIView):
     permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
-        artisan_id = self.kwargs['artisan_id']
+        artisan_id = self.kwargs.get('artisan_id') or self.kwargs.get('pk')
         average = Avis.objects.filter(artisan_id=artisan_id).aggregate(avg_note=models.Avg('note'))['avg_note']
-        return Response({'artisan_id': artisan_id, 'note_moyenne': round(float(average or 0), 2)})
-
+        count = Avis.objects.filter(artisan_id=artisan_id).count()
+        return Response({
+            'artisan_id': int(artisan_id),
+            'note_moyenne': round(float(average or 0), 2),
+            'nombre_avis': count,
+        })

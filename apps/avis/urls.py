@@ -7,7 +7,7 @@ router = DefaultRouter()
 router.register(r'', AvisViewSet, basename='avis')
 
 urlpatterns = [
+    path('artisans/<int:artisan_id>/avis/', ArtisanAvisListView.as_view(), name='artisan-avis-nested'),
+    path('artisans/<int:artisan_id>/note/', ArtisanNoteView.as_view(), name='artisan-note-nested'),
     *router.urls,
-    path('artisans/<int:artisan_id>/avis/', ArtisanAvisListView.as_view(), name='artisan-avis'),
-    path('artisans/<int:artisan_id>/note/', ArtisanNoteView.as_view(), name='artisan-note'),
 ]

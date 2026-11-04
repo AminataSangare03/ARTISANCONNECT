@@ -7,6 +7,6 @@ router = DefaultRouter()
 router.register(r'', DevisViewSet, basename='devis')
 
 urlpatterns = [
-    *router.urls,
     path('mes-devis/', MesDevisView.as_view(), name='mes-devis'),
+    *router.urls,
 ]
