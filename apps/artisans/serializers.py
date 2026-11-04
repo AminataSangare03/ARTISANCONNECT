@@ -34,11 +34,11 @@ class ArtisanSerializer(serializers.ModelSerializer):
         from apps.accounts.serializers import UserSerializer
         return UserSerializer(obj.user).data
 
-    def get_note_moyenne(self, obj):
+    def get_note_moyenne(self, obj) -> float:
         avg = obj.avis_recus.aggregate(avg=Avg('note'))['avg']
         return round(float(avg or 0), 2)
 
-    def get_nombre_avis(self, obj):
+    def get_nombre_avis(self, obj) -> int:
         return obj.avis_recus.count()
 
 
@@ -59,12 +59,12 @@ class ArtisanPublicSerializer(serializers.ModelSerializer):
             'photo_profil', 'telephone_professionnel', 'realisations', 'note_moyenne', 'nombre_avis'
         )
 
-    def get_full_name(self, obj):
+    def get_full_name(self, obj) -> str:
         return obj.user.get_full_name() or obj.user.email
 
-    def get_note_moyenne(self, obj):
+    def get_note_moyenne(self, obj) -> float:
         avg = obj.avis_recus.aggregate(avg=Avg('note'))['avg']
         return round(float(avg or 0), 2)
 
-    def get_nombre_avis(self, obj):
+    def get_nombre_avis(self, obj) -> int:
         return obj.avis_recus.count()

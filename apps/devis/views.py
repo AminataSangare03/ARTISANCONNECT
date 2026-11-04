@@ -21,11 +21,14 @@ class DevisViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.role == 'ADMIN':
+        if not user or not user.is_authenticated:
+            return Devis.objects.none()
+        role = getattr(user, 'role', None)
+        if role == 'ADMIN':
             return Devis.objects.select_related('demande__client__user', 'artisan__user').all()
-        if user.role == 'CLIENT':
+        if role == 'CLIENT':
             return Devis.objects.select_related('demande__client__user', 'artisan__user').filter(demande__client__user=user)
-        if user.role == 'ARTISAN':
+        if role == 'ARTISAN':
             return Devis.objects.select_related('demande__client__user', 'artisan__user').filter(artisan__user=user)
         return Devis.objects.none()
 
@@ -93,8 +96,11 @@ class MesDevisView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        if user.role == 'CLIENT':
+        if not user or not user.is_authenticated:
+            return Devis.objects.none()
+        role = getattr(user, 'role', None)
+        if role == 'CLIENT':
             return Devis.objects.filter(demande__client__user=user).select_related('demande__client__user', 'artisan__user')
-        if user.role == 'ARTISAN':
+        if role == 'ARTISAN':
             return Devis.objects.filter(artisan__user=user).select_related('demande__client__user', 'artisan__user')
         return Devis.objects.none()

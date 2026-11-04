@@ -40,8 +40,8 @@
         inset: 0;
         opacity: 0;
         transform: scale(1.02);
-        transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-                    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
         pointer-events: none;
     }
     .hero-slide.active {
@@ -55,10 +55,10 @@
         height: 100%;
         object-fit: cover;
         transform: scale(1);
-        transition: transform 7s cubic-bezier(0.25, 1, 0.5, 1);
+        transition: transform 3.2s cubic-bezier(0.25, 1, 0.5, 1);
     }
     .hero-slide.active img {
-        transform: scale(1.06);
+        transform: scale(1.05);
     }
     .hero-slide-overlay {
         position: absolute;
@@ -95,18 +95,35 @@
         gap: 6px;
     }
     .hero-showcase-dot {
+        position: relative;
         width: 8px;
         height: 8px;
         border-radius: 9999px;
-        background: rgba(255, 255, 255, 0.45);
+        background: rgba(255, 255, 255, 0.35);
         border: none;
         padding: 0;
         cursor: pointer;
-        transition: all 0.25s ease;
+        overflow: hidden;
+        transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
     }
     .hero-showcase-dot.active {
-        width: 24px;
+        width: 28px;
+        background: rgba(255, 255, 255, 0.35);
+    }
+    .hero-showcase-dot.active::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
         background: #ffffff;
+        animation: heroDotProgress 2.5s linear infinite;
+        transform-origin: left center;
+    }
+    @keyframes heroDotProgress {
+        0% { transform: scaleX(0); }
+        100% { transform: scaleX(1); }
     }
     .hero-nav-arrow {
         position: absolute;
@@ -632,10 +649,10 @@
                 }
             });
             dots.forEach((d, i) => {
+                d.classList.remove('active');
                 if (i === currentIndex) {
+                    void d.offsetWidth;
                     d.classList.add('active');
-                } else {
-                    d.classList.remove('active');
                 }
             });
         }
@@ -650,7 +667,7 @@
 
         function startAuto() {
             stopAuto();
-            timer = setInterval(nextSlide, 4500);
+            timer = setInterval(nextSlide, 2500);
         }
 
         function stopAuto() {

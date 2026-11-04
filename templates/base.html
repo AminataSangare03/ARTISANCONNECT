@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}ArtisanConnect - Le savoir-faire a portee de main | Mali{% endblock %}</title>
 
-    <!-- Theme detection anti-FOUT inline script -->
+    <!-- Theme detection anti-FOUT inline script with system preference -->
     <script>
         (function() {
             try {
@@ -14,6 +14,15 @@
                 var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
                 var theme = savedTheme ? savedTheme : (prefersDark ? 'dark' : 'light');
                 document.documentElement.setAttribute('data-theme', theme);
+
+                // Dynamic listener for OS system theme changes
+                if (window.matchMedia) {
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                        if (!localStorage.getItem('artisanconnect_theme')) {
+                            document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+                        }
+                    });
+                }
             } catch (e) {}
         })();
     </script>
@@ -32,37 +41,42 @@
         :root {
             --ac-transition-theme: background-color 0.28s ease, border-color 0.28s ease, color 0.28s ease, box-shadow 0.28s ease;
 
+            /* Framer Motion Spring Curves */
+            --ac-ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+            --ac-ease-spring-snappy: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ac-ease-spring-gentle: cubic-bezier(0.25, 1, 0.5, 1);
+
             /* Brand Terracotta & Ochre Palette */
             --ac-terracotta: #B85433;
             --ac-terracotta-dark: #943F24;
             --ac-terracotta-light: rgba(184, 84, 51, 0.09);
             --ac-terracotta-surface: #FDF9F5;
 
-            /* Light Mode Tokens (Default) */
+            /* Light Mode Tokens (Refined Warm Ivory & Crisp Onyx Typography) */
             color-scheme: light;
-            --ac-bg: #F7F3EC;
-            --ac-bg-secondary: #EFE8DC;
+            --ac-bg: #F8F6F0;
+            --ac-bg-secondary: #EFE9DE;
             --ac-surface: #FFFFFF;
-            --ac-surface-secondary: #F8F7F4;
+            --ac-surface-secondary: #F6F4ED;
             --ac-card-bg: #FFFFFF;
             --ac-card-subtle-bg: #F9F8F5;
-            --ac-text: #1D1D1F;
-            --ac-text-muted: #6E6E73;
-            --ac-placeholder: #767680;
+            --ac-text: #111827;
+            --ac-text-muted: #475569;
+            --ac-placeholder: #64748B;
             --ac-border: rgba(0, 0, 0, 0.08);
             --ac-border-subtle: rgba(0, 0, 0, 0.04);
-            --ac-border-strong: rgba(0, 0, 0, 0.16);
+            --ac-border-strong: rgba(0, 0, 0, 0.18);
             --ac-input-bg: #FFFFFF;
 
-            --ac-glass-bg: rgba(255, 255, 255, 0.82);
-            --ac-glass-border: rgba(255, 255, 255, 0.6);
+            --ac-glass-bg: rgba(255, 255, 255, 0.85);
+            --ac-glass-border: rgba(255, 255, 255, 0.7);
 
-            --ac-success: #1E824C;
-            --ac-success-light: rgba(30, 130, 76, 0.1);
+            --ac-success: #15803D;
+            --ac-success-light: rgba(21, 128, 61, 0.12);
             --ac-warning: #B45309;
-            --ac-warning-light: rgba(180, 83, 9, 0.1);
-            --ac-danger: #C0392B;
-            --ac-danger-light: rgba(192, 57, 43, 0.1);
+            --ac-warning-light: rgba(180, 83, 9, 0.12);
+            --ac-danger: #B91C1C;
+            --ac-danger-light: rgba(185, 28, 28, 0.12);
 
             /* Concentric Radii */
             --ac-radius-xl: 22px;
@@ -85,51 +99,55 @@
             --ac-footer-card-bg: rgba(255, 255, 255, 0.03);
         }
 
-        /* Dark Mode Tokens (Deep OLED Apple Architecture) */
+        /* Dark Mode Tokens (Deep OLED Obsidian Architecture & Luminous Terracotta Glow) */
         [data-theme="dark"] {
             color-scheme: dark;
-            --ac-terracotta: #D06A46;
-            --ac-terracotta-dark: #DE7B57;
-            --ac-terracotta-light: rgba(208, 106, 70, 0.16);
-            --ac-terracotta-surface: #241A16;
+            --ac-terracotta: #E07A5F;
+            --ac-terracotta-dark: #EA8C73;
+            --ac-terracotta-light: rgba(224, 122, 95, 0.18);
+            --ac-terracotta-surface: #261914;
 
-            --ac-bg: #0C0C0E;
-            --ac-bg-secondary: #141417;
-            --ac-surface: #17171A;
-            --ac-surface-secondary: #1E1E22;
-            --ac-card-bg: #17171A;
-            --ac-card-subtle-bg: #1E1E23;
-            --ac-text: #F4F4F6;
-            --ac-text-muted: #9E9EA8;
-            --ac-placeholder: #8E8E98;
-            --ac-border: rgba(255, 255, 255, 0.09);
-            --ac-border-subtle: rgba(255, 255, 255, 0.05);
-            --ac-border-strong: rgba(255, 255, 255, 0.18);
-            --ac-input-bg: #1C1C20;
+            --ac-bg: #090A0D;
+            --ac-bg-secondary: #121318;
+            --ac-surface: #14151B;
+            --ac-surface-secondary: #1C1E27;
+            --ac-card-bg: #14151B;
+            --ac-card-subtle-bg: #1C1E27;
+            --ac-text: #F8FAFC;
+            --ac-text-muted: #94A3B8;
+            --ac-placeholder: #828EA0;
+            --ac-border: rgba(255, 255, 255, 0.11);
+            --ac-border-subtle: rgba(255, 255, 255, 0.06);
+            --ac-border-strong: rgba(255, 255, 255, 0.22);
+            --ac-input-bg: #1A1A22;
 
-            --ac-glass-bg: rgba(20, 20, 24, 0.85);
-            --ac-glass-border: rgba(255, 255, 255, 0.09);
+            --ac-glass-bg: rgba(18, 18, 24, 0.88);
+            --ac-glass-border: rgba(255, 255, 255, 0.12);
 
-            --ac-shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2);
-            --ac-shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.45), 0 2px 6px -1px rgba(0, 0, 0, 0.3);
-            --ac-shadow-hover: 0 14px 34px -4px rgba(0, 0, 0, 0.65), 0 4px 12px -2px rgba(0, 0, 0, 0.4);
-            --ac-shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+            --ac-shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3);
+            --ac-shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.65), 0 2px 6px -1px rgba(0, 0, 0, 0.45);
+            --ac-shadow-hover: 0 16px 36px -4px rgba(0, 0, 0, 0.8), 0 0 22px -2px rgba(224, 122, 95, 0.18);
+            --ac-shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
 
-            --ac-footer-bg: #080809;
-            --ac-footer-text: #E5DFD7;
-            --ac-footer-muted: #7E7871;
-            --ac-footer-border: rgba(255, 255, 255, 0.06);
-            --ac-footer-card-bg: rgba(255, 255, 255, 0.025);
+            --ac-footer-bg: #070709;
+            --ac-footer-text: #F1ECE6;
+            --ac-footer-muted: #8E877F;
+            --ac-footer-border: rgba(255, 255, 255, 0.07);
+            --ac-footer-card-bg: rgba(255, 255, 255, 0.03);
         }
 
-        /* Dark Mode Global Overrides */
-        [data-theme="dark"] .bg-white { background-color: var(--ac-card-bg) !important; }
-        [data-theme="dark"] .bg-light { background-color: var(--ac-card-subtle-bg) !important; }
-        [data-theme="dark"] .text-dark { color: var(--ac-text) !important; }
+        /* Dark Mode Global Contrast Guarantees */
+        [data-theme="dark"] .bg-white { background-color: var(--ac-card-bg) !important; color: var(--ac-text) !important; }
+        [data-theme="dark"] .bg-light { background-color: var(--ac-card-subtle-bg) !important; color: var(--ac-text) !important; }
+        [data-theme="dark"] .text-dark { color: #FFFFFF !important; }
         [data-theme="dark"] .text-muted { color: var(--ac-text-muted) !important; }
         [data-theme="dark"] .border { border-color: var(--ac-border) !important; }
         [data-theme="dark"] .border-light-subtle { border-color: var(--ac-border-subtle) !important; }
         [data-theme="dark"] .border-secondary { border-color: var(--ac-border) !important; }
+        [data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3,
+        [data-theme="dark"] h4, [data-theme="dark"] h5, [data-theme="dark"] h6 {
+            color: #FFFFFF !important;
+        }
 
         *, *::before, *::after {
             box-sizing: border-box;
@@ -155,23 +173,23 @@
         }
 
         /* ==========================================================================
-           Animations (Apple & Emil Kowalski Principles: spring, subtle, purposeful)
+           Animations (Framer Motion Spring Physics: snappy, fluid, purposeful)
            ========================================================================== */
         @keyframes acFadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(18px);
+                transform: translateY(22px) scale(0.98);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
         @keyframes acScaleIn {
             from {
                 opacity: 0;
-                transform: scale(0.965);
+                transform: scale(0.95);
             }
             to {
                 opacity: 1;
@@ -179,30 +197,41 @@
             }
         }
 
+        @keyframes acFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
         @keyframes acPulseLive {
             0% {
-                box-shadow: 0 0 0 0 rgba(30, 130, 76, 0.45);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
             }
             70% {
-                box-shadow: 0 0 0 8px rgba(30, 130, 76, 0);
+                box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
             }
             100% {
-                box-shadow: 0 0 0 0 rgba(30, 130, 76, 0);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
             }
         }
 
         .animate-fade-up {
-            animation: acFadeInUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation: acFadeInUp 0.58s var(--ac-ease-spring) both;
+            will-change: transform, opacity;
         }
 
         .animate-scale-in {
-            animation: acScaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation: acScaleIn 0.52s var(--ac-ease-spring) both;
+            will-change: transform, opacity;
         }
 
-        .animate-delay-1 { animation-delay: 0.08s; }
-        .animate-delay-2 { animation-delay: 0.16s; }
-        .animate-delay-3 { animation-delay: 0.24s; }
-        .animate-delay-4 { animation-delay: 0.32s; }
+        .animate-float {
+            animation: acFloat 3.6s ease-in-out infinite;
+        }
+
+        .animate-delay-1 { animation-delay: 0.06s; }
+        .animate-delay-2 { animation-delay: 0.12s; }
+        .animate-delay-3 { animation-delay: 0.18s; }
+        .animate-delay-4 { animation-delay: 0.24s; }
 
         .live-pulse-dot {
             display: inline-block;
@@ -1096,16 +1125,24 @@
                 });
             }
 
-            // Scroll reveal animation observer
+            // Scroll reveal animation observer with Framer Motion staggered entrance
             if ('IntersectionObserver' in window) {
                 var observer = new IntersectionObserver(function(entries) {
                     entries.forEach(function(entry) {
                         if (entry.isIntersecting) {
-                            entry.target.classList.add('animate-fade-up');
-                            observer.unobserve(entry.target);
+                            var el = entry.target;
+                            if (el.parentNode) {
+                                var siblings = Array.from(el.parentNode.children);
+                                var sIndex = siblings.indexOf(el);
+                                if (sIndex >= 0) {
+                                    el.style.animationDelay = ((sIndex % 4) * 70) + 'ms';
+                                }
+                            }
+                            el.classList.add('animate-fade-up');
+                            observer.unobserve(el);
                         }
                     });
-                }, { threshold: 0.08 });
+                }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
 
                 document.querySelectorAll('.card-apple, .footer-trust-card').forEach(function(el) {
                     observer.observe(el);

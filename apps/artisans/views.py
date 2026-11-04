@@ -31,6 +31,7 @@ class IsArtisanOwnerOrAdminOrReadOnly(permissions.BasePermission):
 
 class ArtisanProfileView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = ArtisanSerializer
 
     def get(self, request, *args, **kwargs):
         try:

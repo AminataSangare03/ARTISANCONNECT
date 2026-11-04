@@ -40,6 +40,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 class RegisterView(APIView):
     permission_classes = [AllowAny]
+    serializer_class = RegisterSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = RegisterSerializer(data=request.data)
@@ -69,6 +70,7 @@ class LogoutView(APIView):
 
 class MeView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = UserSerializer
 
     def get(self, request, *args, **kwargs):
         return Response(UserSerializer(request.user).data)
@@ -83,6 +85,7 @@ class MeView(APIView):
 
 class PasswordChangeView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = PasswordChangeSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = PasswordChangeSerializer(data=request.data)
@@ -100,6 +103,7 @@ class PasswordChangeView(APIView):
 
 class PasswordResetRequestView(APIView):
     permission_classes = [AllowAny]
+    serializer_class = PasswordResetSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = PasswordResetSerializer(data=request.data)

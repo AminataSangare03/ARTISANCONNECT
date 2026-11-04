@@ -1,6 +1,7 @@
 from django.db import models
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, generics, viewsets
+from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
@@ -19,7 +20,10 @@ class AvisViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.role == 'ADMIN':
+        if not user or not user.is_authenticated:
+            return Avis.objects.none()
+        role = getattr(user, 'role', None)
+        if role == 'ADMIN':
             return Avis.objects.select_related('client__user', 'artisan__user', 'commande').all()
         if user.role == 'CLIENT':
             return Avis.objects.select_related('client__user', 'artisan__user', 'commande').filter(client__user=user)
@@ -51,7 +55,7 @@ class ArtisanAvisListView(generics.ListAPIView):
         return Avis.objects.filter(artisan_id=artisan_id).select_related('client__user', 'artisan__user', 'commande')
 
 
-class ArtisanNoteView(generics.RetrieveAPIView):
+class ArtisanNoteView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):

@@ -17,7 +17,10 @@ class CommandeViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.role == 'ADMIN':
+        if not user or not user.is_authenticated:
+            return Commande.objects.none()
+        role = getattr(user, 'role', None)
+        if role == 'ADMIN':
             return Commande.objects.select_related('client__user', 'artisan__user', 'devis').all()
         if user.role == 'CLIENT':
             return Commande.objects.select_related('client__user', 'artisan__user', 'devis').filter(client__user=user)

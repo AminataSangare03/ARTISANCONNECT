@@ -19,11 +19,14 @@ class DemandeServiceViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.role == 'ADMIN':
+        if not user or not user.is_authenticated:
+            return DemandeService.objects.none()
+        role = getattr(user, 'role', None)
+        if role == 'ADMIN':
             return DemandeService.objects.select_related('client__user', 'metier').all()
-        if user.role == 'CLIENT':
+        if role == 'CLIENT':
             return DemandeService.objects.select_related('client__user', 'metier').filter(client__user=user)
-        if user.role == 'ARTISAN':
+        if role == 'ARTISAN':
             return DemandeService.objects.select_related('client__user', 'metier').filter(metier__artisans__user=user)
         return DemandeService.objects.none()
 
@@ -58,8 +61,11 @@ class MesDemandesView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        if user.role == 'CLIENT':
+        if not user or not user.is_authenticated:
+            return DemandeService.objects.none()
+        role = getattr(user, 'role', None)
+        if role == 'CLIENT':
             return DemandeService.objects.filter(client__user=user).select_related('client__user', 'metier')
-        if user.role == 'ARTISAN':
+        if role == 'ARTISAN':
             return DemandeService.objects.filter(metier__artisans__user=user).select_related('client__user', 'metier')
         return DemandeService.objects.none()
