@@ -2,7 +2,7 @@
 {% load static %}
 {% load ac_tags %}
 
-{% block title %}Demandes de service a Bamako - ArtisanConnect{% endblock %}
+{% block title %}Demandes de service à Bamako - ArtisanConnect{% endblock %}
 
 {% block content %}
 <div class="container py-4">
@@ -14,8 +14,8 @@
                     <li class="breadcrumb-item active text-dark" aria-current="page">Demandes de service</li>
                 </ol>
             </nav>
-            <h1 class="h3 fw-extrabold text-dark mb-1">Demandes de service a Bamako</h1>
-            <p class="text-muted small mb-0">Consultez les projets de particuliers et d entreprises en quete d artisans qualifies.</p>
+            <h1 class="h3 fw-extrabold text-dark mb-1">Demandes de service à Bamako</h1>
+            <p class="text-muted small mb-0">Consultez les projets de particuliers et d'entreprises en quête d'artisans qualifiés.</p>
         </div>
         <div>
             <a href="{% url 'demande_create' %}" class="btn btn-terracotta fw-bold">
@@ -30,19 +30,19 @@
             <div class="col-md-4">
                 <div class="input-group input-group-sm">
                     <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
-                    <input type="text" name="q" value="{{ current_q }}" class="form-control form-control-sm border-start-0" placeholder="Titre, besoin, mot-cle...">
+                    <input type="text" name="q" value="{{ current_q }}" class="form-control form-control-sm border-start-0" placeholder="Titre, besoin, mot-clé...">
                 </div>
             </div>
             <div class="col-md-3">
                 <select name="metier" class="form-select form-select-sm">
-                    <option value="">Tous les metiers</option>
+                    <option value="">Tous les métiers</option>
                     {% for m in metiers %}
                         <option value="{{ m.id }}" {% if current_metier == m.id|stringformat:"s" %}selected{% endif %}>{{ m.nom }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="col-md-3">
-                <input type="text" name="ville" value="{{ current_ville }}" class="form-control form-control-sm" placeholder="Quartier a Bamako...">
+                <input type="text" name="ville" value="{{ current_ville }}" class="form-control form-control-sm" placeholder="Quartier à Bamako...">
             </div>
             <div class="col-md-2 d-flex gap-1">
                 <button type="submit" class="btn btn-terracotta btn-sm w-100">
@@ -87,7 +87,7 @@
                             {% if demande.budget_indicatif > 0 %}
                                 <strong class="tabular-nums text-dark">{{ demande.budget_indicatif|fcfa }}</strong>
                             {% else %}
-                                <span class="text-muted">A negocier</span>
+                                <span class="text-muted">À négocier</span>
                             {% endif %}
                         </div>
                     </div>
@@ -107,7 +107,7 @@
                 <div class="card-apple p-5 text-center bg-white">
                     <i class="bi bi-clipboard-x fs-1 text-muted mb-2"></i>
                     <h3 class="h5 fw-bold text-dark mb-1">Aucune demande de service correspondante</h3>
-                    <p class="text-muted small mb-3">Publiez votre besoin pour recevoir des devis clairs d artisans a Bamako.</p>
+                    <p class="text-muted small mb-3">Publiez votre besoin pour recevoir des devis clairs d'artisans à Bamako.</p>
                     <div>
                         <a href="{% url 'demande_create' %}" class="btn btn-terracotta btn-sm">
                             <i class="bi bi-plus-circle me-1"></i>Publier une demande
@@ -124,7 +124,7 @@
             <ul class="pagination pagination-sm justify-content-center">
                 {% if page_obj.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if current_q %}&q={{ current_q }}{% endif %}{% if current_metier %}&metier={{ current_metier }}{% endif %}{% if current_ville %}&ville={{ current_ville }}{% endif %}">&laquo; Precedent</a>
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if current_q %}&q={{ current_q }}{% endif %}{% if current_metier %}&metier={{ current_metier }}{% endif %}{% if current_ville %}&ville={{ current_ville }}{% endif %}">&laquo; Précédent</a>
                     </li>
                 {% endif %}
                 {% for num in page_obj.paginator.page_range %}

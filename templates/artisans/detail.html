@@ -2,7 +2,7 @@
 {% load static %}
 {% load ac_tags %}
 
-{% block title %}{{ artisan.user.get_full_name|default:artisan.user.email }} - Artisan {{ artisan.metier.nom }} a Bamako | ArtisanConnect{% endblock %}
+{% block title %}{{ artisan.user.get_full_name|default:artisan.user.email }} - Artisan {{ artisan.metier.nom }} à Bamako | ArtisanConnect{% endblock %}
 
 {% block content %}
 <div class="container py-4">
@@ -10,7 +10,7 @@
     <nav aria-label="breadcrumb" class="mb-3">
         <ol class="breadcrumb small">
             <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-muted">Accueil</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'artisan_list' %}" class="text-decoration-none text-muted">Artisans a Bamako</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'artisan_list' %}" class="text-decoration-none text-muted">Artisans à Bamako</a></li>
             <li class="breadcrumb-item active text-dark" aria-current="page">{{ artisan.user.get_full_name|default:artisan.user.email }}</li>
         </ol>
     </nav>
@@ -33,14 +33,14 @@
                 <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
                     <h1 class="h3 fw-extrabold mb-0 text-dark">{{ artisan.user.get_full_name|default:artisan.user.email }}</h1>
                     <span class="badge-verified">
-                        <i class="bi bi-patch-check-fill"></i>Artisan verifie Bamako
+                        <i class="bi bi-patch-check-fill"></i>Artisan vérifié Bamako
                     </span>
                     {% if artisan.disponibilite %}
                         <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
                             <i class="bi bi-circle-fill me-1" style="font-size: 0.5rem;"></i>Disponible
                         </span>
                     {% else %}
-                        <span class="badge bg-secondary-subtle text-secondary rounded-pill">Actuellement occupe</span>
+                        <span class="badge bg-secondary-subtle text-secondary rounded-pill">Actuellement occupé</span>
                     {% endif %}
                 </div>
 
@@ -50,7 +50,7 @@
                         <i class="bi bi-geo-alt me-1"></i>{{ artisan.ville }}{% if artisan.quartier %}, {{ artisan.quartier }}{% endif %}{% if artisan.adresse %} ({{ artisan.adresse }}){% endif %}
                     </span>
                     <span class="badge bg-light text-dark border">
-                        <i class="bi bi-award me-1"></i><strong>{{ artisan.experience }}</strong> annees d experience
+                        <i class="bi bi-award me-1"></i><strong>{{ artisan.experience }}</strong> années d'expérience
                     </span>
                 </div>
 
@@ -58,7 +58,7 @@
                 <div class="d-flex align-items-center gap-2">
                     {% stars avg_rating 'md' %}
                     <span class="fw-bold fs-6 text-dark tabular-nums">{{ avg_rating|rating_display|default:"5,0" }}</span>
-                    <span class="text-muted small">({{ avis_count }} avis verifie{{ avis_count|pluralize }})</span>
+                    <span class="text-muted small">({{ avis_count }} avis vérifié{{ avis_count|pluralize }})</span>
                 </div>
             </div>
 
@@ -70,7 +70,7 @@
                         {% if artisan.tarif_indicatif > 0 %}
                             {{ artisan.tarif_indicatif|floatformat:0 }} FCFA
                         {% else %}
-                            <span class="fs-6 text-muted">Sur devis personnalise</span>
+                            <span class="fs-6 text-muted">Sur devis personnalisé</span>
                         {% endif %}
                     </div>
                 </div>
@@ -96,10 +96,10 @@
             <!-- Bio / Presentation -->
             <div class="card-apple p-4 mb-4 bg-white">
                 <h2 class="h5 fw-bold mb-3 text-dark">
-                    <i class="bi bi-info-circle me-2" style="color: var(--ac-terracotta);"></i>Presentation & Savoir-faire
+                    <i class="bi bi-info-circle me-2" style="color: var(--ac-terracotta);"></i>Présentation & Savoir-faire
                 </h2>
                 <p class="text-muted mb-0" style="white-space: pre-line; line-height: 1.7; font-size: 0.95rem;">
-                    {{ artisan.description|default:"Cet artisan bamakois qualifie met son expertise a votre service pour tous vos chantiers et depannages." }}
+                    {{ artisan.description|default:"Cet artisan bamakois qualifié met son expertise à votre service pour tous vos chantiers et dépannages." }}
                 </p>
             </div>
 
@@ -108,9 +108,9 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
                         <h2 class="h5 fw-bold mb-0 text-dark">
-                            <i class="bi bi-images me-2" style="color: var(--ac-terracotta);"></i>Chantiers & Realisations
+                            <i class="bi bi-images me-2" style="color: var(--ac-terracotta);"></i>Chantiers & Réalisations
                         </h2>
-                        <span class="text-muted small">Exemples de travaux acheves a Bamako</span>
+                        <span class="text-muted small">Exemples de travaux achevés à Bamako</span>
                     </div>
                     <span class="badge bg-light text-muted border rounded-pill px-3 py-1">
                         {{ realisations.count }} projet{{ realisations.count|pluralize }}
@@ -129,7 +129,7 @@
                                 <div class="p-3 bg-white">
                                     <h3 class="h6 fw-bold mb-1 text-dark">{{ real.titre }}</h3>
                                     <p class="small text-muted mb-2" style="font-size: 0.82rem; line-height: 1.45;">
-                                        {{ real.description|default:"Projet realise avec soin dans le respect des delais." }}
+                                        {{ real.description|default:"Projet réalisé avec soin dans le respect des délais." }}
                                     </p>
                                     <div class="small text-muted" style="font-size: 0.74rem;">
                                         <i class="bi bi-calendar3 me-1"></i>Date : {{ real.date_realisation|date:"d F Y" }}
@@ -140,7 +140,7 @@
                     {% empty %}
                         <div class="col-12 py-4 text-center text-muted">
                             <i class="bi bi-camera fs-2 text-muted mb-2"></i>
-                            <p class="mb-0 small">Cet artisan n a pas encore publie de photos de realisations.</p>
+                            <p class="mb-0 small">Cet artisan n'a pas encore publié de photos de réalisations.</p>
                         </div>
                     {% endfor %}
                 </div>
@@ -151,9 +151,9 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
                         <h2 class="h5 fw-bold mb-0 text-dark">
-                            <i class="bi bi-chat-square-quote me-2" style="color: var(--ac-terracotta);"></i>Avis clients certifies
+                            <i class="bi bi-chat-square-quote me-2" style="color: var(--ac-terracotta);"></i>Avis clients certifiés
                         </h2>
-                        <span class="text-muted small">Commentaires deposes apres realisation d une commande</span>
+                        <span class="text-muted small">Commentaires déposés après réalisation d'une commande</span>
                     </div>
                 </div>
 
@@ -165,7 +165,7 @@
                     <div>
                         {% stars avg_rating 'md' %}
                         <div class="small text-muted mt-1">
-                            Base sur <strong class="text-dark">{{ avis_count }}</strong> retour{{ avis_count|pluralize }} apres prestation validee a Bamako.
+                            Basé sur <strong class="text-dark">{{ avis_count }}</strong> retour{{ avis_count|pluralize }} après prestation validée à Bamako.
                         </div>
                     </div>
                 </div>
@@ -180,7 +180,7 @@
                                         {{ a.client.user.get_full_name|default:a.client.user.email }}
                                     </strong>
                                     <span class="badge-verified mt-1">
-                                        <i class="bi bi-check-circle-fill"></i>Commande verifiee
+                                        <i class="bi bi-check-circle-fill"></i>Commande vérifiée
                                     </span>
                                 </div>
                                 <div class="text-end">
@@ -196,7 +196,7 @@
                         </div>
                     {% empty %}
                         <div class="py-4 text-center text-muted">
-                            <p class="small mb-0">Aucun avis publie pour l instant. Soyez le premier a solliciter cet artisan !</p>
+                            <p class="small mb-0">Aucun avis publié pour l'instant. Soyez le premier à solliciter cet artisan !</p>
                         </div>
                     {% endfor %}
                 </div>
@@ -213,15 +213,15 @@
                 <ul class="list-unstyled small mb-0 text-muted d-flex flex-column gap-2">
                     <li class="d-flex align-items-start gap-2">
                         <i class="bi bi-check2-circle text-success fs-6"></i>
-                        <span>Identite et qualifications controlees par nos equipes a Bamako.</span>
+                        <span>Identité et qualifications contrôlées par nos équipes à Bamako.</span>
                     </li>
                     <li class="d-flex align-items-start gap-2">
                         <i class="bi bi-check2-circle text-success fs-6"></i>
-                        <span>Devis transparent et chiffre avant tout engagement de travaux.</span>
+                        <span>Devis transparent et chiffré avant tout engagement de travaux.</span>
                     </li>
                     <li class="d-flex align-items-start gap-2">
                         <i class="bi bi-check2-circle text-success fs-6"></i>
-                        <span>Avis uniquement deposes par des clients ayant effectue une commande confirmee.</span>
+                        <span>Avis uniquement déposés par des clients ayant effectué une commande confirmée.</span>
                     </li>
                 </ul>
             </div>
@@ -229,10 +229,10 @@
             <!-- Interventions Map / District Info -->
             <div class="card-apple p-4 bg-white">
                 <h3 class="h6 fw-bold mb-3 text-uppercase small" style="color: var(--ac-terracotta); letter-spacing: 0.05em;">
-                    <i class="bi bi-geo-alt me-1"></i>Zone d intervention
+                    <i class="bi bi-geo-alt me-1"></i>Zone d'intervention
                 </h3>
                 <p class="small text-muted mb-3">
-                    Cet artisan intervient principalement a <strong>{{ artisan.ville|default:"Bamako" }}</strong> et dans les quartiers voisins :
+                    Cet artisan intervient principalement à <strong>{{ artisan.ville|default:"Bamako" }}</strong> et dans les quartiers voisins :
                 </p>
                 <div class="d-flex flex-wrap gap-1 mb-3">
                     <span class="badge bg-light text-dark border small">{{ artisan.quartier|default:"District de Bamako" }}</span>
@@ -241,7 +241,7 @@
                     <span class="badge bg-light text-dark border small">Commune VI</span>
                 </div>
                 <div class="alert alert-light border small text-muted mb-0">
-                    <i class="bi bi-info-circle me-1"></i>Les deplacements hors Bamako peuvent faire l objet de frais kilometriques mentionnes sur le devis.
+                    <i class="bi bi-info-circle me-1"></i>Les déplacements hors Bamako peuvent faire l'objet de frais kilométriques mentionnés sur le devis.
                 </div>
             </div>
         </div>

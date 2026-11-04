@@ -11,14 +11,14 @@
                 <div class="mb-4">
                     <span class="badge mb-2 px-3 py-1" style="background-color: var(--ac-terracotta-light); color: var(--ac-terracotta); font-weight: 700;">ESPACE CLIENT &bull; BAMAKO</span>
                     <h1 class="h3 fw-extrabold mt-1 mb-2 text-dark">Publier une nouvelle demande de travaux</h1>
-                    <p class="text-muted small mb-0">Decrivez precisement votre besoin pour recevoir des devis sur-mesure d artisans bamakois qualifies.</p>
+                    <p class="text-muted small mb-0">Décrivez précisément votre besoin pour recevoir des devis sur-mesure d'artisans bamakois qualifiés.</p>
                 </div>
 
                 <form method="post" action="{% url 'demande_create' %}">
                     {% csrf_token %}
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-dark">Corps de metier concerne *</label>
+                        <label class="form-label fw-semibold small text-dark">Corps de métier concerné *</label>
                         {{ form.metier }}
                         {% if form.metier.errors %}
                             <div class="text-danger small mt-1">{{ form.metier.errors|striptags }}</div>
@@ -31,16 +31,16 @@
                         {% if form.titre.errors %}
                             <div class="text-danger small mt-1">{{ form.titre.errors|striptags }}</div>
                         {% endif %}
-                        <div class="form-text small">Ex: Remplacement tuyauterie et pose surpresseur Badalabougou</div>
+                        <div class="form-text small">Ex : Remplacement tuyauterie et pose surpresseur Badalabougou</div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-dark">Description detaillee du chantier *</label>
+                        <label class="form-label fw-semibold small text-dark">Description détaillée du chantier *</label>
                         {{ form.description }}
                         {% if form.description.errors %}
                             <div class="text-danger small mt-1">{{ form.description.errors|striptags }}</div>
                         {% endif %}
-                        <div class="form-text small">Precisez la nature exacte des travaux, l etat existant et si les fournitures sont a fournir par l artisan.</div>
+                        <div class="form-text small">Précisez la nature exacte des travaux, l'état existant et si les fournitures sont à fournir par l'artisan.</div>
                     </div>
 
                     <div class="row g-3 mb-3">
@@ -52,26 +52,26 @@
                             {% endif %}
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold small text-dark">Quartier ou Commune a Bamako</label>
+                            <label class="form-label fw-semibold small text-dark">Quartier ou Commune à Bamako</label>
                             {{ form.quartier }}
-                            <div class="form-text small">Ex: Hamdallaye ACI 2000, Faladie, Hippodrome...</div>
+                            <div class="form-text small">Ex : Hamdallaye ACI 2000, Faladié, Hippodrome...</div>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-dark">Adresse precise ou repere de proximite</label>
+                        <label class="form-label fw-semibold small text-dark">Adresse précise ou repère de proximité</label>
                         {{ form.adresse }}
                         <div class="form-text small">Visible uniquement par les artisans dont vous acceptez le devis.</div>
                     </div>
 
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold small text-dark">Budget indicatif estime (FCFA)</label>
+                            <label class="form-label fw-semibold small text-dark">Budget indicatif estimé (FCFA)</label>
                             {{ form.budget_indicatif }}
-                            <div class="form-text small">Optionnel. Laissez 0 si vous souhaitez negocier sur devis.</div>
+                            <div class="form-text small">Optionnel. Laissez 0 si vous souhaitez négocier sur devis.</div>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold small text-dark">Date d intervention souhaitee</label>
+                            <label class="form-label fw-semibold small text-dark">Date d'intervention souhaitée</label>
                             {{ form.date_souhaitee }}
                         </div>
                     </div>

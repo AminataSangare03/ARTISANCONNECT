@@ -9,7 +9,7 @@
     <nav aria-label="breadcrumb" class="mb-3">
         <ol class="breadcrumb small">
             <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-muted">Accueil</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'demande_list' %}" class="text-decoration-none text-muted">Demandes a Bamako</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'demande_list' %}" class="text-decoration-none text-muted">Demandes à Bamako</a></li>
             <li class="breadcrumb-item active text-dark" aria-current="page">{{ demande.titre|truncatechars:35 }}</li>
         </ol>
     </nav>
@@ -41,15 +41,15 @@
                         {% if demande.budget_indicatif > 0 %}
                             <strong class="tabular-nums text-dark">{{ demande.budget_indicatif|fcfa }}</strong>
                         {% else %}
-                            <span class="text-muted">A negocier</span>
+                            <span class="text-muted">À négocier</span>
                         {% endif %}
                     </div>
                     <div>
-                        <span class="d-block text-muted" style="font-size: 0.72rem;">Date souhaitee</span>
+                        <span class="d-block text-muted" style="font-size: 0.72rem;">Date souhaitée</span>
                         {% if demande.date_souhaitee %}
                             <strong class="text-dark"><i class="bi bi-calendar3 me-1"></i>{{ demande.date_souhaitee|date:"d F Y" }}</strong>
                         {% else %}
-                            <span class="text-muted">Des que possible</span>
+                            <span class="text-muted">Dès que possible</span>
                         {% endif %}
                     </div>
                 </div>
@@ -63,7 +63,7 @@
 
                 {% if demande.adresse and is_owner %}
                     <div class="mt-4 p-3 bg-light rounded-3 small border border-light-subtle">
-                        <strong class="text-dark"><i class="bi bi-house me-1"></i>Adresse complete transmise aux artisans :</strong>
+                        <strong class="text-dark"><i class="bi bi-house me-1"></i>Adresse complète transmise aux artisans :</strong>
                         <div class="text-muted mt-1">{{ demande.adresse }}</div>
                     </div>
                 {% endif %}
@@ -75,7 +75,7 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div>
                             <h2 class="h5 fw-bold mb-0 text-dark">
-                                <i class="bi bi-receipt me-2" style="color: var(--ac-terracotta);"></i>Devis recus pour cette demande
+                                <i class="bi bi-receipt me-2" style="color: var(--ac-terracotta);"></i>Devis reçus pour cette demande
                             </h2>
                             <span class="text-muted small">Comparez les propositions transmises par les artisans</span>
                         </div>
@@ -102,10 +102,10 @@
                                                 <a href="{% url 'artisan_detail' devis.artisan.id %}" class="text-dark text-decoration-none">
                                                     {{ devis.artisan.user.get_full_name|default:devis.artisan.user.email }}
                                                 </a>
-                                                <span class="badge-verified ms-1"><i class="bi bi-patch-check-fill"></i>Verifie</span>
+                                                <span class="badge-verified ms-1"><i class="bi bi-patch-check-fill"></i>Vérifié</span>
                                             </div>
                                             <div class="small text-muted">
-                                                {{ devis.artisan.ville }}{% if devis.artisan.quartier %}, {{ devis.artisan.quartier }}{% endif %} &bull; {{ devis.artisan.experience }} ans d exp.
+                                                {{ devis.artisan.ville }}{% if devis.artisan.quartier %}, {{ devis.artisan.quartier }}{% endif %} &bull; {{ devis.artisan.experience }} ans d'exp.
                                             </div>
                                         </div>
                                     </div>
@@ -125,8 +125,8 @@
 
                                 <div class="d-flex flex-wrap justify-content-between align-items-center small text-muted pt-2 border-top">
                                     <div>
-                                        {% if devis.duree_estimee %}<span class="me-3"><i class="bi bi-hourglass-split me-1"></i>Duree : <strong>{{ devis.duree_estimee }}</strong></span>{% endif %}
-                                        {% if devis.validite %}<span><i class="bi bi-calendar-event me-1"></i>Valable jusqu au {{ devis.validite|date:"d M Y" }}</span>{% endif %}
+                                        {% if devis.duree_estimee %}<span class="me-3"><i class="bi bi-hourglass-split me-1"></i>Durée : <strong>{{ devis.duree_estimee }}</strong></span>{% endif %}
+                                        {% if devis.validite %}<span><i class="bi bi-calendar-event me-1"></i>Valable jusqu'au {{ devis.validite|date:"d M Y" }}</span>{% endif %}
                                     </div>
 
                                     {% if demande.statut == 'EN_ATTENTE' and devis.statut == 'EN_ATTENTE' %}
@@ -144,7 +144,7 @@
                         {% empty %}
                             <div class="text-center py-4 text-muted">
                                 <i class="bi bi-inbox fs-2 text-muted mb-2"></i>
-                                <p class="mb-0 small">Aucun artisan n a encore formule de devis pour cette demande.</p>
+                                <p class="mb-0 small">Aucun artisan n'a encore formulé de devis pour cette demande.</p>
                             </div>
                         {% endfor %}
                     </div>
@@ -155,47 +155,47 @@
             {% if is_matching_artisan %}
                 <div class="card-apple p-4 mb-4 bg-white">
                     <h2 class="h5 fw-bold mb-3 text-dark">
-                        <i class="bi bi-send me-2" style="color: var(--ac-terracotta);"></i>Repondre a cette demande de service
+                        <i class="bi bi-send me-2" style="color: var(--ac-terracotta);"></i>Répondre à cette demande de service
                     </h2>
 
                     {% if existing_devis %}
                         <div class="alert alert-info border-0 mb-0">
-                            <strong>Votre devis a deja ete transmis au client :</strong>
+                            <strong>Votre devis a déjà été transmis au client :</strong>
                             <div class="mt-2">
-                                Montant propose : <strong class="tabular-nums">{{ existing_devis.montant|fcfa }}</strong> | Statut : <span class="badge badge-status-{{ existing_devis.statut|lower }} rounded-pill">{{ existing_devis.get_statut_display }}</span>
+                                Montant proposé : <strong class="tabular-nums">{{ existing_devis.montant|fcfa }}</strong> | Statut : <span class="badge badge-status-{{ existing_devis.statut|lower }} rounded-pill">{{ existing_devis.get_statut_display }}</span>
                             </div>
                             <div class="small mt-1 text-muted">{{ existing_devis.description }}</div>
                         </div>
                     {% elif demande.statut != 'EN_ATTENTE' %}
                         <div class="alert alert-secondary border-0 mb-0">
-                            Cette demande a deja ete acceptee ou cloturee.
+                            Cette demande a déjà été acceptée ou clôturée.
                         </div>
                     {% else %}
                         <form method="post" action="{% url 'demande_detail' demande.id %}">
                             {% csrf_token %}
                             <div class="row g-3 mb-3">
                                 <div class="col-md-6">
-                                    <label class="form-label small fw-semibold text-dark">Montant propose (FCFA) *</label>
+                                    <label class="form-label small fw-semibold text-dark">Montant proposé (FCFA) *</label>
                                     {{ devis_form.montant }}
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label small fw-semibold text-dark">Duree estimee des travaux</label>
+                                    <label class="form-label small fw-semibold text-dark">Durée estimée des travaux</label>
                                     {{ devis_form.duree_estimee }}
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label small fw-semibold text-dark">Date limite de validite de l offre</label>
+                                <label class="form-label small fw-semibold text-dark">Date limite de validité de l'offre</label>
                                 {{ devis_form.validite }}
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label small fw-semibold text-dark">Description detaillee de la prestation & engagements *</label>
+                                <label class="form-label small fw-semibold text-dark">Description détaillée de la prestation & engagements *</label>
                                 {{ devis_form.description }}
                             </div>
 
                             <button type="submit" class="btn btn-terracotta fw-bold">
-                                <i class="bi bi-send me-1"></i>Envoyer mon devis chiffre
+                                <i class="bi bi-send me-1"></i>Envoyer mon devis chiffré
                             </button>
                         </form>
                     {% endif %}
@@ -207,7 +207,7 @@
         <div class="col-lg-4">
             <div class="card-apple p-4 sticky-top bg-white" style="top: 80px; z-index: 10;">
                 <h3 class="h6 fw-bold mb-3 text-uppercase small" style="color: var(--ac-terracotta); letter-spacing: 0.05em;">
-                    <i class="bi bi-info-circle me-1"></i>Synthese du dossier
+                    <i class="bi bi-info-circle me-1"></i>Synthèse du dossier
                 </h3>
                 <ul class="list-unstyled small text-muted mb-4 d-flex flex-column gap-2">
                     <li class="d-flex justify-content-between">
@@ -215,7 +215,7 @@
                         <strong class="text-dark">{{ demande.get_statut_display }}</strong>
                     </li>
                     <li class="d-flex justify-content-between">
-                        <span>Metier :</span>
+                        <span>Métier :</span>
                         <strong class="text-dark">{{ demande.metier.nom }}</strong>
                     </li>
                     <li class="d-flex justify-content-between">
@@ -223,15 +223,15 @@
                         <strong class="text-dark">{{ demande.created_at|date:"d M Y" }}</strong>
                     </li>
                     <li class="d-flex justify-content-between">
-                        <span>Devis recus :</span>
+                        <span>Devis reçus :</span>
                         <strong class="text-dark tabular-nums">{{ demande.devis.count }}</strong>
                     </li>
                 </ul>
 
                 {% if not user.is_authenticated %}
                     <div class="p-3 bg-light rounded-3 text-center small mb-3 border border-light-subtle">
-                        <div class="fw-semibold mb-1 text-dark">Vous etes artisan en {{ demande.metier.nom }} a Bamako ?</div>
-                        <div class="text-muted mb-3">Connectez-vous pour transmettre votre devis chiffre directement au client.</div>
+                        <div class="fw-semibold mb-1 text-dark">Vous êtes artisan en {{ demande.metier.nom }} à Bamako ?</div>
+                        <div class="text-muted mb-3">Connectez-vous pour transmettre votre devis chiffré directement au client.</div>
                         <a href="{% url 'web_login' %}?next={{ request.path }}" class="btn btn-terracotta btn-sm w-100">Se connecter</a>
                     </div>
                 {% endif %}

@@ -2,7 +2,7 @@
 {% load static %}
 {% load ac_tags %}
 
-{% block title %}Annuaire des artisans a Bamako, Mali - ArtisanConnect{% endblock %}
+{% block title %}Annuaire des artisans à Bamako, Mali - ArtisanConnect{% endblock %}
 
 {% block content %}
 <div class="container py-4">
@@ -16,8 +16,8 @@
         </nav>
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
             <div>
-                <h1 class="h3 fw-extrabold text-dark mb-1">Artisans professionnels a Bamako</h1>
-                <p class="text-muted small mb-0">Trouvez des artisans qualifies, verifies et disponibles dans les 6 communes du district.</p>
+                <h1 class="h3 fw-extrabold text-dark mb-1">Artisans professionnels à Bamako</h1>
+                <p class="text-muted small mb-0">Trouvez des artisans qualifiés, vérifiés et disponibles dans les 6 communes du district.</p>
             </div>
             <a href="{% url 'demande_create' %}" class="btn btn-terracotta btn-sm">
                 <i class="bi bi-plus-circle"></i>Publier une mission
@@ -36,14 +36,14 @@
                     <!-- Mot cle -->
                     <div class="mb-3">
                         <label class="form-label small fw-semibold text-muted">Recherche textuelle</label>
-                        <input type="text" name="q" value="{{ current_q }}" class="form-control form-control-sm" placeholder="Nom, mot-cle...">
+                        <input type="text" name="q" value="{{ current_q }}" class="form-control form-control-sm" placeholder="Nom, mot-clé...">
                     </div>
 
                     <!-- Metier -->
                     <div class="mb-3">
-                        <label class="form-label small fw-semibold text-muted">Corps de metier</label>
+                        <label class="form-label small fw-semibold text-muted">Corps de métier</label>
                         <select name="metier" class="form-select form-select-sm">
-                            <option value="">Tous les metiers</option>
+                            <option value="">Tous les métiers</option>
                             {% for m in metiers %}
                                 <option value="{{ m.id }}" {% if current_metier == m.id|stringformat:"s" %}selected{% endif %}>
                                     {{ m.nom }}
@@ -55,25 +55,25 @@
                     <!-- Quartier Bamako -->
                     <div class="mb-3">
                         <label class="form-label small fw-semibold text-muted">Quartier ou commune</label>
-                        <input type="text" name="ville" value="{{ current_ville }}" class="form-control form-control-sm" placeholder="Ex: Badalabougou, ACI 2000...">
+                        <input type="text" name="ville" value="{{ current_ville }}" class="form-control form-control-sm" placeholder="Ex : Badalabougou, ACI 2000...">
                     </div>
 
                     <!-- Disponibilite -->
                     <div class="form-check form-switch mb-3">
                         <input class="form-check-input" type="checkbox" name="disponible" value="1" id="dispCheck" {% if current_disponible == '1' %}checked{% endif %}>
                         <label class="form-check-label small fw-semibold" for="dispCheck">
-                            Disponible immediatement
+                            Disponible immédiatement
                         </label>
                     </div>
 
                     <!-- Tri -->
                     <div class="mb-3">
-                        <label class="form-label small fw-semibold text-muted">Ordre d affichage</label>
+                        <label class="form-label small fw-semibold text-muted">Ordre d'affichage</label>
                         <select name="sort" class="form-select form-select-sm">
-                            <option value="rating" {% if current_sort == 'rating' %}selected{% endif %}>Mieux notes</option>
-                            <option value="experience" {% if current_sort == 'experience' %}selected{% endif %}>Annees d experience</option>
+                            <option value="rating" {% if current_sort == 'rating' %}selected{% endif %}>Mieux notés</option>
+                            <option value="experience" {% if current_sort == 'experience' %}selected{% endif %}>Années d'expérience</option>
                             <option value="tarif_asc" {% if current_sort == 'tarif_asc' %}selected{% endif %}>Tarif croissant</option>
-                            <option value="tarif_desc" {% if current_sort == 'tarif_desc' %}selected{% endif %}>Tarif decroissant</option>
+                            <option value="tarif_desc" {% if current_sort == 'tarif_desc' %}selected{% endif %}>Tarif décroissant</option>
                         </select>
                     </div>
 
@@ -82,7 +82,7 @@
                             <i class="bi bi-check-lg"></i>Filtrer
                         </button>
                         <a href="{% url 'artisan_list' %}" class="btn btn-glass btn-sm">
-                            Reinitialiser
+                            Réinitialiser
                         </a>
                     </div>
                 </form>
@@ -93,7 +93,7 @@
         <div class="col-lg-9">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <span class="small text-muted">
-                    <strong class="text-dark tabular-nums">{{ page_obj.paginator.count }}</strong> artisan{{ page_obj.paginator.count|pluralize }} repertorie{{ page_obj.paginator.count|pluralize }} a Bamako
+                    <strong class="text-dark tabular-nums">{{ page_obj.paginator.count }}</strong> artisan{{ page_obj.paginator.count|pluralize }} répertorié{{ page_obj.paginator.count|pluralize }} à Bamako
                 </span>
                 <span class="badge bg-light text-muted border small">Devise : FCFA</span>
             </div>
@@ -119,7 +119,7 @@
                                             {{ artisan.user.get_full_name|default:artisan.user.email }}
                                         </h2>
                                         <span class="badge-verified flex-shrink-0">
-                                            <i class="bi bi-patch-check-fill"></i>Verifie
+                                            <i class="bi bi-patch-check-fill"></i>Vérifié
                                         </span>
                                     </div>
                                     <div class="badge-metier d-inline-block mt-1">
@@ -133,7 +133,7 @@
 
                             <!-- Description -->
                             <p class="small text-muted flex-grow-1 mb-2" style="font-size: 0.84rem; line-height: 1.45;">
-                                {{ artisan.description|truncatewords:16|default:"Artisan qualifie et disponible pour vos projets a Bamako." }}
+                                {{ artisan.description|truncatewords:16|default:"Artisan qualifié et disponible pour vos projets à Bamako." }}
                             </p>
 
                             <!-- Mini Metrics Strip -->
@@ -172,7 +172,7 @@
                     <div class="col-12 py-5 text-center">
                         <div class="card-apple p-5 text-center">
                             <i class="bi bi-search fs-1 text-muted mb-2"></i>
-                            <h3 class="h5 fw-bold text-dark mb-1">Aucun artisan ne correspond a vos criteres</h3>
+                            <h3 class="h5 fw-bold text-dark mb-1">Aucun artisan ne correspond à vos critères</h3>
                             <p class="text-muted small mb-3">Modifiez vos termes de recherche ou supprimez les filtres de quartier.</p>
                             <div>
                                 <a href="{% url 'artisan_list' %}" class="btn btn-terracotta btn-sm">Afficher tous les artisans</a>
@@ -188,7 +188,7 @@
                     <ul class="pagination pagination-sm justify-content-center">
                         {% if page_obj.has_previous %}
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if current_q %}&q={{ current_q }}{% endif %}{% if current_metier %}&metier={{ current_metier }}{% endif %}{% if current_ville %}&ville={{ current_ville }}{% endif %}">&laquo; Precedent</a>
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if current_q %}&q={{ current_q }}{% endif %}{% if current_metier %}&metier={{ current_metier }}{% endif %}{% if current_ville %}&ville={{ current_ville }}{% endif %}">&laquo; Précédent</a>
                             </li>
                         {% endif %}
                         {% for num in page_obj.paginator.page_range %}

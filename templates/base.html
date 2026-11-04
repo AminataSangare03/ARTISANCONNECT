@@ -39,6 +39,7 @@
             --ac-terracotta-surface: #FDF9F5;
 
             /* Light Mode Tokens (Default) */
+            color-scheme: light;
             --ac-bg: #F7F3EC;
             --ac-bg-secondary: #EFE8DC;
             --ac-surface: #FFFFFF;
@@ -47,8 +48,10 @@
             --ac-card-subtle-bg: #F9F8F5;
             --ac-text: #1D1D1F;
             --ac-text-muted: #6E6E73;
+            --ac-placeholder: #767680;
             --ac-border: rgba(0, 0, 0, 0.08);
             --ac-border-subtle: rgba(0, 0, 0, 0.04);
+            --ac-border-strong: rgba(0, 0, 0, 0.16);
             --ac-input-bg: #FFFFFF;
 
             --ac-glass-bg: rgba(255, 255, 255, 0.82);
@@ -84,6 +87,7 @@
 
         /* Dark Mode Tokens (Deep OLED Apple Architecture) */
         [data-theme="dark"] {
+            color-scheme: dark;
             --ac-terracotta: #D06A46;
             --ac-terracotta-dark: #DE7B57;
             --ac-terracotta-light: rgba(208, 106, 70, 0.16);
@@ -97,8 +101,10 @@
             --ac-card-subtle-bg: #1E1E23;
             --ac-text: #F4F4F6;
             --ac-text-muted: #9E9EA8;
+            --ac-placeholder: #8E8E98;
             --ac-border: rgba(255, 255, 255, 0.09);
             --ac-border-subtle: rgba(255, 255, 255, 0.05);
+            --ac-border-strong: rgba(255, 255, 255, 0.18);
             --ac-input-bg: #1C1C20;
 
             --ac-glass-bg: rgba(20, 20, 24, 0.85);
@@ -500,22 +506,84 @@
             border-color: rgba(52, 211, 153, 0.3);
         }
 
-        /* Form Inputs */
+        /* Form Inputs & Contrast Guarantees */
         .form-control, .form-select {
             border-radius: var(--ac-radius-md);
-            border: 1px solid var(--ac-border);
+            border: 1px solid var(--ac-border-strong) !important;
             padding: 0.65rem 0.95rem;
             font-size: 0.95rem;
-            background-color: var(--ac-input-bg);
-            color: var(--ac-text);
+            background-color: var(--ac-input-bg) !important;
+            color: var(--ac-text) !important;
             transition: var(--ac-transition-theme);
         }
+        .form-control::placeholder,
+        input::placeholder,
+        textarea::placeholder {
+            color: var(--ac-placeholder) !important;
+            opacity: 1 !important;
+            font-weight: 400;
+        }
         .form-control:focus, .form-select:focus {
-            border-color: var(--ac-terracotta);
-            background-color: var(--ac-input-bg);
-            color: var(--ac-text);
-            box-shadow: 0 0 0 3px rgba(184, 84, 51, 0.18);
+            border-color: var(--ac-terracotta) !important;
+            background-color: var(--ac-input-bg) !important;
+            color: var(--ac-text) !important;
+            box-shadow: 0 0 0 3px rgba(184, 84, 51, 0.2) !important;
             outline: none;
+        }
+        .form-select option {
+            background-color: var(--ac-card-bg);
+            color: var(--ac-text);
+        }
+
+        /* Scroll-to-Top Floating Button (Centered, Halfway trigger) */
+        .btn-scroll-top {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%) translateY(28px);
+            z-index: 1045;
+            background: var(--ac-terracotta);
+            color: #FFFFFF !important;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            border-radius: var(--ac-radius-pill);
+            padding: 0.55rem 1.25rem;
+            font-size: 0.84rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 10px 25px rgba(184, 84, 51, 0.38), 0 3px 8px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                        background 0.2s ease,
+                        box-shadow 0.2s ease;
+        }
+        .btn-scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(0);
+        }
+        .btn-scroll-top:hover {
+            background: var(--ac-terracotta-dark);
+            transform: translateX(-50%) translateY(-2px);
+            box-shadow: 0 14px 30px rgba(184, 84, 51, 0.48);
+            color: #FFFFFF !important;
+        }
+        .btn-scroll-top:active {
+            transform: translateX(-50%) translateY(0) scale(0.97);
+        }
+        [data-theme="dark"] .btn-scroll-top {
+            background: var(--ac-terracotta);
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6), 0 3px 10px rgba(208, 106, 70, 0.35);
+            border-color: rgba(255, 255, 255, 0.18);
         }
 
         /* Tables */
@@ -671,7 +739,7 @@
                     <img src="{% static 'images/logo_icon.png' %}" alt="ArtisanConnect Logo" class="navbar-brand-logo">
                     <div class="navbar-brand-text">
                         <span class="navbar-brand-name">ArtisanConnect</span>
-                        <span class="navbar-brand-slogan">Le savoir-faire a portee de main &bull; Mali</span>
+                        <span class="navbar-brand-slogan">Le savoir-faire à portée de main &bull; Mali</span>
                     </div>
                 </a>
 
@@ -705,7 +773,7 @@
 
                     <div class="d-flex align-items-center gap-2 flex-wrap">
                         <!-- Theme Toggle Button (Light/Dark Mode) -->
-                        <button class="btn-theme-toggle" id="themeToggleBtn" type="button" aria-label="Basculer entre le mode clair et le mode sombre" title="Basculer le theme clair / sombre">
+                        <button class="btn-theme-toggle" id="themeToggleBtn" type="button" aria-label="Basculer entre le mode clair et le mode sombre" title="Basculer le thème clair / sombre">
                             <i class="bi bi-moon-stars-fill theme-icon-dark" aria-hidden="true"></i>
                             <i class="bi bi-sun-fill theme-icon-light" aria-hidden="true"></i>
                         </button>
@@ -735,7 +803,7 @@
                                     {{ user.first_name|default:user.email }}
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end border-0" style="border-radius: var(--ac-radius-md);">
-                                    <li><span class="dropdown-item-text text-muted small">Role : <strong>{{ user.get_role_display }}</strong></span></li>
+                                    <li><span class="dropdown-item-text text-muted small">Rôle : <strong>{{ user.get_role_display }}</strong></span></li>
                                     <li><span class="dropdown-item-text text-muted small">Zone : <strong>Bamako, Mali</strong></span></li>
                                     <li><hr class="dropdown-divider"></li>
                                     {% if user.role == 'CLIENT' %}
@@ -743,12 +811,12 @@
                                     {% elif user.role == 'ARTISAN' %}
                                         <li><a class="dropdown-item small" href="{% url 'artisan_dashboard' %}"><i class="bi bi-clipboard-data me-2"></i>Tableau de bord</a></li>
                                     {% endif %}
-                                    <li><a class="dropdown-item small text-danger" href="{% url 'web_logout' %}"><i class="bi bi-box-arrow-right me-2"></i>Se deconnecter</a></li>
+                                    <li><a class="dropdown-item small text-danger" href="{% url 'web_logout' %}"><i class="bi bi-box-arrow-right me-2"></i>Se déconnecter</a></li>
                                 </ul>
                             </div>
                         {% else %}
                             <a href="{% url 'web_login' %}" class="btn btn-glass btn-sm">Connexion</a>
-                            <a href="{% url 'web_register' %}" class="btn btn-terracotta btn-sm">Creer un compte</a>
+                            <a href="{% url 'web_register' %}" class="btn btn-terracotta btn-sm">Créer un compte</a>
                         {% endif %}
                     </div>
                 </div>
@@ -798,7 +866,7 @@
                             </div>
                             <div>
                                 <h6 class="fw-bold text-white mb-1 small">Devis clairs en FCFA</h6>
-                                <p class="small mb-0" style="color: var(--ac-footer-muted); line-height: 1.4;">Propositions detaillees et chiffres sans frais caches.</p>
+                                <p class="small mb-0" style="color: var(--ac-footer-muted); line-height: 1.4;">Propositions détaillées et chiffrées sans frais cachés.</p>
                             </div>
                         </div>
                     </div>
@@ -808,8 +876,8 @@
                                 <i class="bi bi-shield-check"></i>
                             </div>
                             <div>
-                                <h6 class="fw-bold text-white mb-1 small">Avis 100% certifies</h6>
-                                <p class="small mb-0" style="color: var(--ac-footer-muted); line-height: 1.4;">Evaluations recueillies apres reception reelle des travaux.</p>
+                                <h6 class="fw-bold text-white mb-1 small">Avis 100% certifiés</h6>
+                                <p class="small mb-0" style="color: var(--ac-footer-muted); line-height: 1.4;">Évaluations recueillies après réception réelle des travaux.</p>
                             </div>
                         </div>
                     </div>
@@ -819,7 +887,7 @@
                                 <i class="bi bi-geo-alt-fill"></i>
                             </div>
                             <div>
-                                <h6 class="fw-bold text-white mb-1 small">Presence locale au Mali</h6>
+                                <h6 class="fw-bold text-white mb-1 small">Présence locale au Mali</h6>
                                 <p class="small mb-0" style="color: var(--ac-footer-muted); line-height: 1.4;">Interventions rapides sur les 6 communes du District.</p>
                             </div>
                         </div>
@@ -838,11 +906,11 @@
                             <img src="{% static 'images/logo_icon.png' %}" alt="Logo ArtisanConnect" style="height: 42px; width: auto; object-fit: contain; background: transparent;">
                             <div>
                                 <span class="fw-bold fs-5 text-white d-block" style="line-height: 1.1;">ArtisanConnect</span>
-                                <span class="small" style="color: var(--ac-footer-muted); letter-spacing: 0.05em; font-size: 0.7rem;">LE SAVOIR-FAIRE A PORTEE DE MAIN &bull; MALI</span>
+                                <span class="small" style="color: var(--ac-footer-muted); letter-spacing: 0.05em; font-size: 0.7rem;">LE SAVOIR-FAIRE À PORTÉE DE MAIN &bull; MALI</span>
                             </div>
                         </div>
                         <p class="small mb-3" style="color: var(--ac-footer-muted); line-height: 1.65; max-width: 360px;">
-                            Plateforme technologique de mise en relation et de suivi operationnel entre particuliers, entreprises et maitres artisans a Bamako.
+                            Plateforme technologique de mise en relation et de suivi opérationnel entre particuliers, entreprises et maîtres artisans à Bamako.
                         </p>
                         <div class="d-flex align-items-center gap-2 mb-2">
                             <span class="live-pulse-dot"></span>
@@ -868,13 +936,13 @@
 
                     <!-- Key Metiers -->
                     <div class="col-lg-3 col-6">
-                        <h6 class="footer-heading">Metiers d excellence</h6>
+                        <h6 class="footer-heading">Métiers d'excellence</h6>
                         <ul class="footer-links">
                             <li><a href="{% url 'artisan_list' %}?q=Menuiserie">Menuiserie teck & iroko</a></li>
                             <li><a href="{% url 'artisan_list' %}?q=Plomberie">Plomberie & surpresseurs</a></li>
                             <li><a href="{% url 'artisan_list' %}?q=Electricite">Kits solaires & inverseurs</a></li>
                             <li><a href="{% url 'artisan_list' %}?q=Couture">Stylisme & basin riche</a></li>
-                            <li><a href="{% url 'artisan_list' %}?q=Soudure">Ferronnerie & portails blindes</a></li>
+                            <li><a href="{% url 'artisan_list' %}?q=Soudure">Ferronnerie & portails blindés</a></li>
                             <li><a href="{% url 'artisan_list' %}?q=Climatisation">Climatisation split inverter</a></li>
                         </ul>
                     </div>
@@ -886,7 +954,7 @@
                             <span class="footer-badge-pill">Hamdallaye ACI 2000</span>
                             <span class="footer-badge-pill">Badalabougou</span>
                             <span class="footer-badge-pill">Hippodrome</span>
-                            <span class="footer-badge-pill">Faladie SEMA</span>
+                            <span class="footer-badge-pill">Faladié SEMA</span>
                             <span class="footer-badge-pill">Korofina Nord</span>
                             <span class="footer-badge-pill">Niamakoro</span>
                             <span class="footer-badge-pill">Sotuba</span>
@@ -894,7 +962,7 @@
                             <span class="footer-badge-pill">Golf Djicoroni</span>
                         </div>
 
-                        <h6 class="footer-heading">Ressources Developpeur</h6>
+                        <h6 class="footer-heading">Ressources Développeur</h6>
                         <div class="d-flex flex-column gap-1 small">
                             <a href="{% url 'swagger-ui' %}" target="_blank" class="text-white text-decoration-none d-inline-flex align-items-center gap-1">
                                 <i class="bi bi-box-arrow-up-right me-1" style="font-size: 0.75rem;"></i>Documentation Swagger OpenAPI
@@ -916,7 +984,7 @@
             <div class="container">
                 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
                     <div>
-                        &copy; {% now "Y" %} ArtisanConnect Mali. Tous droits reserves &bull; Le savoir-faire a portee de main.
+                        &copy; {% now "Y" %} ArtisanConnect Mali. Tous droits réservés &bull; Le savoir-faire à portée de main.
                     </div>
                     <div class="d-flex align-items-center gap-3">
                         <span>Full Python &bull; Django REST Framework</span>
@@ -928,10 +996,16 @@
         </div>
     </footer>
 
+    <!-- Centered Scroll-to-Top Floating Button (Apple Fluid Spring) -->
+    <button id="btnScrollToTop" class="btn-scroll-top" aria-label="Remonter en haut de page" title="Remonter en haut de la page">
+        <i class="bi bi-arrow-up-short fs-5"></i>
+        <span>Haut de page</span>
+    </button>
+
     <!-- Bootstrap 5 Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Theme Switcher & Intersection Scroll Animations Script -->
+    <!-- Theme Switcher, Scroll Animations & Scroll-to-Top Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Theme toggle logic
@@ -944,6 +1018,24 @@
                     try {
                         localStorage.setItem('artisanconnect_theme', nextTheme);
                     } catch (e) {}
+                });
+            }
+
+            // Centered Scroll-to-Top Button: reveals around halfway down the page
+            var btnScrollTop = document.getElementById('btnScrollToTop');
+            if (btnScrollTop) {
+                var updateScrollBtn = function() {
+                    var totalScrollable = document.documentElement.scrollHeight - window.innerHeight;
+                    if (totalScrollable > 300 && window.scrollY >= (totalScrollable * 0.45)) {
+                        btnScrollTop.classList.add('visible');
+                    } else {
+                        btnScrollTop.classList.remove('visible');
+                    }
+                };
+                window.addEventListener('scroll', updateScrollBtn, { passive: true });
+                updateScrollBtn();
+                btnScrollTop.addEventListener('click', function() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             }
 

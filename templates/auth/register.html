@@ -10,8 +10,8 @@
             <div class="card-apple p-4 p-lg-5 bg-white shadow-sm" style="border-radius: var(--ac-radius-xl);">
                 <div class="text-center mb-4">
                     <img src="{% static 'images/logo_icon.png' %}" alt="Logo ArtisanConnect" class="mb-3" style="height: 58px; width: auto; object-fit: contain; background: transparent;">
-                    <h1 class="h4 fw-extrabold text-dark mb-1">Creer un compte ArtisanConnect</h1>
-                    <p class="text-muted small mb-0">Rejoignez la communaute des particuliers et artisans d excellence au Mali</p>
+                    <h1 class="h4 fw-extrabold text-dark mb-1">Créer un compte ArtisanConnect</h1>
+                    <p class="text-muted small mb-0">Rejoignez la communauté des particuliers et artisans d'excellence au Mali</p>
                 </div>
 
                 <form method="post" action="{% url 'web_register' %}">
@@ -45,7 +45,7 @@
                     <!-- Identité -->
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label small fw-semibold text-dark">Prenom *</label>
+                            <label class="form-label small fw-semibold text-dark">Prénom *</label>
                             {{ form.first_name }}
                             {% if form.first_name.errors %}
                                 <div class="text-danger small mt-1">{{ form.first_name.errors|striptags }}</div>
@@ -69,12 +69,12 @@
                             {% endif %}
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-semibold text-dark">Numero de telephone *</label>
+                            <label class="form-label small fw-semibold text-dark">Numéro de téléphone *</label>
                             {{ form.phone_number }}
                             {% if form.phone_number.errors %}
                                 <div class="text-danger small mt-1">{{ form.phone_number.errors|striptags }}</div>
                             {% endif %}
-                            <div class="form-text small">Ex: +223 76 12 34 56</div>
+                            <div class="form-text small">Ex : +223 76 12 34 56</div>
                         </div>
                     </div>
 
@@ -105,14 +105,14 @@
                             {% endif %}
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-semibold text-dark">Quartier ou Commune a Bamako</label>
+                            <label class="form-label small fw-semibold text-dark">Quartier ou Commune à Bamako</label>
                             {{ form.quartier }}
-                            <div class="form-text small">Ex: ACI 2000, Faladie, Badalabougou...</div>
+                            <div class="form-text small">Ex : ACI 2000, Faladié, Badalabougou...</div>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label small fw-semibold text-dark">Adresse ou repere de proximite</label>
+                        <label class="form-label small fw-semibold text-dark">Adresse ou repère de proximité</label>
                         {{ form.adresse }}
                     </div>
 
@@ -123,14 +123,14 @@
                         </h2>
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <label class="form-label small fw-semibold text-dark">Corps de metier principal *</label>
+                                <label class="form-label small fw-semibold text-dark">Corps de métier principal *</label>
                                 {{ form.metier }}
                                 {% if form.metier.errors %}
                                     <div class="text-danger small mt-1">{{ form.metier.errors|striptags }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-md-3">
-                                <label class="form-label small fw-semibold text-dark">Annees d exp.</label>
+                                <label class="form-label small fw-semibold text-dark">Années d'exp.</label>
                                 {{ form.experience }}
                             </div>
                             <div class="col-md-3">
@@ -140,19 +140,19 @@
                         </div>
 
                         <div class="mb-0">
-                            <label class="form-label small fw-semibold text-dark">Description de vos specialites & savoir-faire</label>
+                            <label class="form-label small fw-semibold text-dark">Description de vos spécialités & savoir-faire</label>
                             {{ form.description }}
                         </div>
                     </div>
 
                     <div class="d-grid gap-2 mb-3 pt-2">
                         <button type="submit" class="btn btn-terracotta fw-bold py-2">
-                            <i class="bi bi-check-circle me-1"></i>Creer mon compte ArtisanConnect
+                            <i class="bi bi-check-circle me-1"></i>Créer mon compte ArtisanConnect
                         </button>
                     </div>
 
                     <div class="text-center small text-muted">
-                        Vous avez deja un compte ?
+                        Vous avez déjà un compte ?
                         <a href="{% url 'web_login' %}" class="fw-bold" style="color: var(--ac-terracotta);">Connectez-vous ici</a>
                     </div>
                 </form>
