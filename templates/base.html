@@ -370,6 +370,110 @@
         [data-theme="dark"] .theme-icon-light { display: inline-block; font-size: 0.95rem; color: #FBBF24; }
 
         /* ==========================================================================
+           Mobile Navigation Header & Apple Hamburger Pill
+           ========================================================================== */
+        @media (max-width: 991.98px) {
+            .navbar-apple {
+                padding: 0.65rem 0.9rem;
+            }
+            .navbar-brand-logo {
+                height: 36px;
+            }
+            .navbar-brand-name {
+                font-size: 1.15rem;
+            }
+            .navbar-brand-slogan {
+                font-size: 0.58rem;
+                letter-spacing: 0.04em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-brand-slogan {
+                display: none !important;
+            }
+            .navbar-brand-wrap {
+                gap: 8px;
+            }
+        }
+
+        .btn-mobile-hamburger {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border-radius: var(--ac-radius-pill);
+            background: var(--ac-card-subtle-bg);
+            border: 1px solid var(--ac-border-strong);
+            color: var(--ac-text);
+            cursor: pointer;
+            transition: transform 0.22s var(--ac-ease-spring),
+                        background-color 0.2s ease,
+                        border-color 0.2s ease,
+                        box-shadow 0.2s ease;
+        }
+
+        .btn-mobile-hamburger:hover {
+            background: var(--ac-terracotta-light);
+            border-color: var(--ac-terracotta);
+            transform: scale(1.05);
+        }
+
+        .btn-mobile-hamburger:active {
+            transform: scale(0.92);
+        }
+
+        .btn-mobile-hamburger:focus-visible {
+            outline: 2px solid var(--ac-terracotta);
+            outline-offset: 2px;
+        }
+
+        .hamburger-box {
+            width: 19px;
+            height: 13px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hamburger-line {
+            display: block;
+            width: 100%;
+            height: 2px;
+            border-radius: 9999px;
+            background-color: var(--ac-text);
+            transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                        background-color 0.2s ease,
+                        transform 0.22s ease;
+        }
+
+        .hamburger-line.line-2 {
+            width: 70%;
+            align-self: flex-start;
+        }
+
+        .btn-mobile-hamburger:hover .hamburger-line {
+            background-color: var(--ac-terracotta);
+        }
+
+        .btn-mobile-hamburger:hover .hamburger-line.line-2 {
+            width: 100%;
+        }
+
+        [data-theme="dark"] .btn-mobile-hamburger {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        [data-theme="dark"] .btn-mobile-hamburger:hover {
+            background: var(--ac-terracotta-light);
+            border-color: var(--ac-terracotta);
+        }
+
+        /* ==========================================================================
            Buttons (Apple Spring Feedback)
            ========================================================================== */
         .btn {
@@ -1084,7 +1188,7 @@
     <!-- Header & Glass Navigation -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-apple">
-            <div class="container">
+            <div class="container d-flex align-items-center justify-content-between">
                 <a class="navbar-brand-wrap" href="{% url 'home' %}">
                     <img src="{% static 'images/logo_icon.png' %}" alt="ArtisanConnect Logo" class="navbar-brand-logo">
                     <div class="navbar-brand-text">
@@ -1093,10 +1197,21 @@
                     </div>
                 </a>
 
-                <!-- Mobile Hamburger toggler triggering the Bottom-Up Drawer -->
-                <button class="navbar-toggler border-0 shadow-none d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenuBottomDrawer" aria-controls="mobileMenuBottomDrawer" aria-label="Menu principal">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                <!-- Mobile Action Cluster (Theme Switcher + Bespoke Apple Hamburger Pill) -->
+                <div class="d-flex align-items-center gap-2 d-lg-none">
+                    <button class="btn-theme-toggle" id="themeToggleMobileBtn" type="button" aria-label="Basculer entre le mode clair et le mode sombre" title="Basculer le thème clair / sombre">
+                        <i class="bi bi-moon-stars-fill theme-icon-dark" aria-hidden="true"></i>
+                        <i class="bi bi-sun-fill theme-icon-light" aria-hidden="true"></i>
+                    </button>
+
+                    <button class="btn-mobile-hamburger" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenuBottomDrawer" aria-controls="mobileMenuBottomDrawer" aria-label="Menu principal">
+                        <div class="hamburger-box" aria-hidden="true">
+                            <span class="hamburger-line line-1"></span>
+                            <span class="hamburger-line line-2"></span>
+                            <span class="hamburger-line line-3"></span>
+                        </div>
+                    </button>
+                </div>
 
                 <!-- Desktop Navigation Menu -->
                 <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarMain">
@@ -1484,6 +1599,10 @@
             var themeBtn = document.getElementById('themeToggleBtn');
             if (themeBtn) {
                 themeBtn.addEventListener('click', toggleTheme);
+            }
+            var mobileThemeBtn = document.getElementById('themeToggleMobileBtn');
+            if (mobileThemeBtn) {
+                mobileThemeBtn.addEventListener('click', toggleTheme);
             }
             var drawerThemeBtn = document.getElementById('themeToggleDrawerBtn');
             if (drawerThemeBtn) {
