@@ -3,8 +3,6 @@ from django.urls import reverse
 
 from apps.accounts.models import Client, User
 from apps.artisans.models import Artisan, Realisation
-from apps.avis.models import Avis
-from apps.commandes.models import Commande
 from apps.demandes.models import DemandeService
 from apps.devis.models import Devis
 from apps.metiers.models import Metier

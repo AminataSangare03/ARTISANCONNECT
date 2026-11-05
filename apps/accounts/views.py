@@ -6,9 +6,9 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .models import Client, User
+from .models import Client
 from .serializers import (
     PasswordChangeSerializer,
     PasswordResetSerializer,

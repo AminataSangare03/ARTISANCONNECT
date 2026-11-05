@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 
-from apps.accounts.models import Client, User
+from apps.accounts.models import User
 from apps.artisans.models import Artisan, Realisation
 from apps.avis.models import Avis
 from apps.demandes.models import DemandeService

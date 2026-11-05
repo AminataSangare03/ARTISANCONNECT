@@ -1,12 +1,8 @@
 from django.test import TestCase
 from rest_framework.test import APIClient
 
-from apps.accounts.models import Client, User
+from apps.accounts.models import User
 from apps.artisans.models import Artisan, Realisation
-from apps.avis.models import Avis
-from apps.commandes.models import Commande
-from apps.demandes.models import DemandeService
-from apps.devis.models import Devis
 from apps.metiers.models import Metier
 
 
