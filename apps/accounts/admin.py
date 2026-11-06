@@ -1,12 +1,14 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 
 from .models import Client, User
 
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
-    list_display = ('email', 'first_name', 'last_name', 'role', 'is_active', 'date_joined')
+    list_display = ('email', 'first_name', 'last_name', 'role_badge', 'statut_badge', 'date_joined')
     search_fields = ('email', 'first_name', 'last_name')
     list_filter = ('role', 'is_active')
     ordering = ('-date_joined',)
@@ -20,6 +22,22 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {'classes': ('wide',), 'fields': ('email', 'first_name', 'last_name', 'password1', 'password2', 'role')}),
     )
+
+    @admin.display(description='Rôle')
+    def role_badge(self, obj):
+        colors = {
+            'ADMIN': 'ac-badge-admin',
+            'ARTISAN': 'ac-badge-artisan',
+            'CLIENT': 'ac-badge-client',
+        }
+        cls = colors.get(obj.role, 'ac-badge-muted')
+        return format_html('<span class="ac-badge {}">{}</span>', cls, obj.get_role_display())
+
+    @admin.display(description='Statut')
+    def statut_badge(self, obj):
+        if obj.is_active:
+            return mark_safe('<span class="ac-badge ac-badge-success">Actif</span>')
+        return mark_safe('<span class="ac-badge ac-badge-danger">Inactif</span>')
 
 
 @admin.register(Client)

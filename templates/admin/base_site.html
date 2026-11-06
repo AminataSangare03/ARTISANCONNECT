@@ -1,0 +1,35 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | {{ site_title|default:"ArtisanConnect Administration" }}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/admin_custom.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+{% endblock %}
+
+{% block branding %}
+<div id="site-name" style="display: flex; align-items: center; gap: 12px;">
+    <a href="{% url 'admin:index' %}" style="display: inline-flex; align-items: center; gap: 10px; text-decoration: none;">
+        <img src="{% static 'images/logo_icon.png' %}" alt="ArtisanConnect Logo" style="height: 38px; width: auto; object-fit: contain;">
+        <div>
+            <div style="font-weight: 800; font-size: 1.25rem; color: var(--ac-terracotta); line-height: 1.1; letter-spacing: -0.025em;">ArtisanConnect</div>
+            <div style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ac-text-muted); font-weight: 600;">Supervision Mali &bull; Bamako</div>
+        </div>
+    </a>
+    <span class="admin-header-badge d-none d-sm-inline-flex">
+        <span class="admin-pulse-dot"></span>
+        <span>Système actif</span>
+    </span>
+</div>
+{% endblock %}
+
+{% block nav-global %}
+<div style="display: flex; align-items: center; gap: 10px;">
+    <a href="/" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; color: var(--ac-terracotta); background: var(--ac-surface-subtle); border: 1px solid var(--ac-border); padding: 0.35rem 0.85rem; border-radius: 9999px; text-decoration: none;">
+        <i class="bi bi-box-arrow-up-right" style="font-size: 0.75rem;"></i>
+        <span>Voir le site</span>
+    </a>
+</div>
+{% endblock %}

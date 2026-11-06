@@ -1,0 +1,61 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block bodyclass %}{{ block.super }} login{% endblock %}
+
+{% block usertools %}{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block nav-breadcrumbs %}{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div style="max-width: 440px; margin: 3rem auto; padding: 2.5rem; background: var(--ac-surface); border: 1px solid var(--ac-border); border-radius: 16px; box-shadow: var(--ac-card-shadow);">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <img src="{% static 'images/logo_icon.png' %}" alt="ArtisanConnect" style="height: 52px; margin-bottom: 1rem;">
+        <h2 style="font-weight: 800; font-size: 1.4rem; color: var(--ac-terracotta); margin-bottom: 0.25rem;">Espace Superviseur</h2>
+        <p style="color: var(--ac-text-muted); font-size: 0.85rem; margin: 0;">Administration centrale &bull; Bamako, Mali</p>
+    </div>
+
+    {% if form.errors and not form.non_field_errors %}
+        <p class="errornote" style="background: rgba(239, 68, 68, 0.12); color: #DC2626; border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; margin-bottom: 1.25rem;">
+            {% blocktranslate count counter=form.errors.items|length %}Veuillez corriger l'erreur ci-dessous.{% plural %}Veuillez corriger les erreurs ci-dessous.{% endblocktranslate %}
+        </p>
+    {% endif %}
+
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            <p class="errornote" style="background: rgba(239, 68, 68, 0.12); color: #DC2626; border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; margin-bottom: 1.25rem;">
+                {{ error }}
+            </p>
+        {% endfor %}
+    {% endif %}
+
+    <form action="{{ app_path }}" method="post" id="login-form">
+        {% csrf_token %}
+        <div style="margin-bottom: 1.2rem;">
+            <label for="id_username" style="display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--ac-text);">Adresse email</label>
+            {{ form.username }}
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+            <label for="id_password" style="display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--ac-text);">Mot de passe</label>
+            {{ form.password }}
+            <input type="hidden" name="next" value="{{ next }}">
+        </div>
+
+        <div style="margin-top: 1.5rem;">
+            <input type="submit" value="Accéder à la supervision" style="width: 100%; padding: 0.75rem !important; font-size: 0.95rem !important;">
+        </div>
+    </form>
+
+    <div style="text-align: center; margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--ac-border);">
+        <a href="/" style="font-size: 0.85rem; color: var(--ac-terracotta); text-decoration: none; font-weight: 600;">
+            &larr; Retour à l'accueil ArtisanConnect
+        </a>
+    </div>
+</div>
+{% endblock %}

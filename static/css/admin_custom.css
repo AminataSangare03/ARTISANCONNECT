@@ -1,0 +1,481 @@
+/* ==========================================================================
+   ArtisanConnect - Django Admin Apple Fluid Design System
+   Palettes: Terracotta #B85433, Warm Sand #FAF7F2, Stone & Frosted Glass
+   ========================================================================== */
+
+:root {
+    --ac-terracotta: #B85433;
+    --ac-terracotta-dark: #9E4326;
+    --ac-terracotta-light: #F7EBE6;
+    --ac-terracotta-border: rgba(184, 84, 51, 0.35);
+    
+    --ac-sand: #FAF7F2;
+    --ac-surface: #FFFFFF;
+    --ac-surface-subtle: #F5EFEB;
+    --ac-text: #26201D;
+    --ac-text-muted: #736963;
+    --ac-border: rgba(44, 38, 34, 0.12);
+    --ac-border-strong: rgba(44, 38, 34, 0.22);
+    
+    --ac-header-bg: rgba(250, 247, 242, 0.92);
+    --ac-breadcrumbs-bg: rgba(245, 239, 235, 0.7);
+    --ac-card-shadow: 0 4px 16px rgba(44, 38, 34, 0.05);
+    --ac-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --ac-radius: 12px;
+    --ac-radius-pill: 9999px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --ac-terracotta: #D9774F;
+        --ac-terracotta-dark: #B85433;
+        --ac-terracotta-light: rgba(217, 119, 79, 0.18);
+        --ac-terracotta-border: rgba(217, 119, 79, 0.4);
+        
+        --ac-sand: #12100E;
+        --ac-surface: #1B1715;
+        --ac-surface-subtle: #241F1C;
+        --ac-text: #F4EFEA;
+        --ac-text-muted: #A89F97;
+        --ac-border: rgba(255, 255, 255, 0.12);
+        --ac-border-strong: rgba(255, 255, 255, 0.22);
+        
+        --ac-header-bg: rgba(22, 19, 17, 0.92);
+        --ac-breadcrumbs-bg: rgba(27, 23, 21, 0.85);
+        --ac-card-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+}
+
+:root[data-theme="dark"] {
+    --ac-terracotta: #D9774F;
+    --ac-terracotta-dark: #B85433;
+    --ac-terracotta-light: rgba(217, 119, 79, 0.18);
+    --ac-terracotta-border: rgba(217, 119, 79, 0.4);
+    
+    --ac-sand: #12100E;
+    --ac-surface: #1B1715;
+    --ac-surface-subtle: #241F1C;
+    --ac-text: #F4EFEA;
+    --ac-text-muted: #A89F97;
+    --ac-border: rgba(255, 255, 255, 0.12);
+    --ac-border-strong: rgba(255, 255, 255, 0.22);
+    
+    --ac-header-bg: rgba(22, 19, 17, 0.92);
+    --ac-breadcrumbs-bg: rgba(27, 23, 21, 0.85);
+    --ac-card-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Global Typography & Background */
+body {
+    font-family: var(--ac-font) !important;
+    background-color: var(--ac-sand) !important;
+    color: var(--ac-text) !important;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Header & Translucent Frosted Glass */
+#header {
+    background: var(--ac-header-bg) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    border-bottom: 1px solid var(--ac-border) !important;
+    color: var(--ac-text) !important;
+    padding: 0.85rem 1.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04) !important;
+}
+
+#header a:link, #header a:visited {
+    color: var(--ac-text) !important;
+}
+
+#branding {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+#branding h1 {
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.025em !important;
+    color: var(--ac-terracotta) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#branding h1 a:link, #branding h1 a:visited {
+    color: var(--ac-terracotta) !important;
+    text-decoration: none !important;
+}
+
+.admin-header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--ac-text-muted);
+    background: var(--ac-surface-subtle);
+    border: 1px solid var(--ac-border);
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--ac-radius-pill);
+    margin-left: 8px;
+}
+
+.admin-pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #10B981;
+    display: inline-block;
+}
+
+#user-tools {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+}
+
+#user-tools a {
+    color: var(--ac-terracotta) !important;
+    text-decoration: none !important;
+    padding: 0.35rem 0.75rem !important;
+    border-radius: var(--ac-radius-pill) !important;
+    background: var(--ac-surface-subtle) !important;
+    border: 1px solid var(--ac-border) !important;
+    transition: all 0.18s ease !important;
+}
+
+#user-tools a:hover {
+    background: var(--ac-terracotta) !important;
+    color: #FFFFFF !important;
+    border-color: var(--ac-terracotta) !important;
+}
+
+/* Breadcrumbs */
+div.breadcrumbs {
+    background: var(--ac-breadcrumbs-bg) !important;
+    border-bottom: 1px solid var(--ac-border) !important;
+    color: var(--ac-text-muted) !important;
+    font-size: 0.82rem !important;
+    font-weight: 500 !important;
+    padding: 0.6rem 1.5rem !important;
+}
+
+div.breadcrumbs a {
+    color: var(--ac-terracotta) !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+}
+
+div.breadcrumbs a:hover {
+    text-decoration: underline !important;
+}
+
+/* Main Content Surface */
+#content {
+    padding: 1.5rem 1.75rem !important;
+    max-width: 1440px !important;
+    margin: 0 auto !important;
+}
+
+#content h1 {
+    font-size: 1.6rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
+    color: var(--ac-text) !important;
+    margin-bottom: 1.25rem !important;
+}
+
+/* Dashboard Modules / Apps Cards */
+.module {
+    background: var(--ac-surface) !important;
+    border: 1px solid var(--ac-border) !important;
+    border-radius: var(--ac-radius) !important;
+    box-shadow: var(--ac-card-shadow) !important;
+    margin-bottom: 1.5rem !important;
+    overflow: hidden !important;
+}
+
+.module caption, .module h2 {
+    background: var(--ac-surface-subtle) !important;
+    color: var(--ac-text) !important;
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.03em !important;
+    text-transform: uppercase !important;
+    border-bottom: 1px solid var(--ac-border) !important;
+    padding: 0.75rem 1.25rem !important;
+}
+
+.module table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+}
+
+.module tr {
+    border-bottom: 1px solid var(--ac-border) !important;
+    transition: background 0.15s ease !important;
+}
+
+.module tr:last-child {
+    border-bottom: none !important;
+}
+
+.module tr:hover {
+    background-color: var(--ac-terracotta-light) !important;
+}
+
+.module th, .module td {
+    padding: 0.75rem 1.25rem !important;
+    font-size: 0.9rem !important;
+}
+
+.module th a {
+    color: var(--ac-terracotta) !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+}
+
+.module th a:hover {
+    text-decoration: underline !important;
+}
+
+/* Action Buttons (Apple Spring Feedback) */
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: var(--ac-terracotta) !important;
+    color: #FFFFFF !important;
+    border: 1px solid var(--ac-terracotta) !important;
+    border-radius: var(--ac-radius-pill) !important;
+    padding: 0.5rem 1.25rem !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    letter-spacing: -0.01em !important;
+    cursor: pointer !important;
+    transition: transform 0.16s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.18s ease, box-shadow 0.18s ease !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 2px 6px rgba(184, 84, 51, 0.22) !important;
+}
+
+.button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover, a.button:hover {
+    background: var(--ac-terracotta-dark) !important;
+    border-color: var(--ac-terracotta-dark) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 12px rgba(184, 84, 51, 0.35) !important;
+}
+
+.button:active, input[type=submit]:active, input[type=button]:active, .submit-row input:active, a.button:active {
+    transform: scale(0.96) !important;
+}
+
+.button.default, input[type=submit].default {
+    background: var(--ac-terracotta) !important;
+}
+
+/* Secondary / Deletion Buttons */
+.deletelink {
+    background: rgba(239, 68, 68, 0.1) !important;
+    color: #DC2626 !important;
+    border: 1px solid rgba(239, 68, 68, 0.3) !important;
+    border-radius: var(--ac-radius-pill) !important;
+    padding: 0.45rem 1rem !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: all 0.15s ease !important;
+}
+
+.deletelink:hover {
+    background: #DC2626 !important;
+    color: #FFFFFF !important;
+}
+
+/* Changelist Table & Filters */
+#changelist {
+    background: transparent !important;
+}
+
+#changelist table {
+    background: var(--ac-surface) !important;
+    border: 1px solid var(--ac-border) !important;
+    border-radius: var(--ac-radius) !important;
+    overflow: hidden !important;
+    box-shadow: var(--ac-card-shadow) !important;
+}
+
+#changelist table thead th {
+    background: var(--ac-surface-subtle) !important;
+    color: var(--ac-text) !important;
+    font-weight: 700 !important;
+    font-size: 0.82rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+    border-bottom: 1px solid var(--ac-border) !important;
+    padding: 0.75rem 1rem !important;
+}
+
+#changelist table thead th a {
+    color: var(--ac-text) !important;
+    text-decoration: none !important;
+}
+
+#changelist table tbody tr {
+    transition: background-color 0.15s ease !important;
+    border-bottom: 1px solid var(--ac-border) !important;
+}
+
+#changelist table tbody tr:hover {
+    background-color: var(--ac-terracotta-light) !important;
+}
+
+#changelist table tbody td, #changelist table tbody th {
+    padding: 0.8rem 1rem !important;
+    font-size: 0.88rem !important;
+    vertical-align: middle !important;
+}
+
+/* Filter Sidebar */
+#changelist-filter {
+    background: var(--ac-surface) !important;
+    border: 1px solid var(--ac-border) !important;
+    border-radius: var(--ac-radius) !important;
+    box-shadow: var(--ac-card-shadow) !important;
+    padding: 1.25rem !important;
+}
+
+#changelist-filter h2 {
+    background: transparent !important;
+    color: var(--ac-terracotta) !important;
+    font-size: 0.95rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.01em !important;
+    padding: 0 0 0.75rem 0 !important;
+    border-bottom: 1px solid var(--ac-border) !important;
+    margin-bottom: 1rem !important;
+}
+
+#changelist-filter h3 {
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+    color: var(--ac-text-muted) !important;
+    margin-top: 1rem !important;
+}
+
+#changelist-filter li.selected a {
+    color: var(--ac-terracotta) !important;
+    font-weight: 700 !important;
+}
+
+/* Search Box */
+#searchbar {
+    border: 1px solid var(--ac-border-strong) !important;
+    border-radius: var(--ac-radius-pill) !important;
+    padding: 0.5rem 1.25rem !important;
+    font-size: 0.88rem !important;
+    background: var(--ac-surface) !important;
+    color: var(--ac-text) !important;
+    outline: none !important;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease !important;
+}
+
+#searchbar:focus {
+    border-color: var(--ac-terracotta) !important;
+    box-shadow: 0 0 0 3px var(--ac-terracotta-border) !important;
+}
+
+/* Forms & Input Controls */
+input[type=text], input[type=password], input[type=email], input[type=url], 
+input[type=number], textarea, select {
+    border: 1px solid var(--ac-border-strong) !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 0.85rem !important;
+    font-size: 0.9rem !important;
+    background: var(--ac-surface) !important;
+    color: var(--ac-text) !important;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease !important;
+}
+
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, 
+input[type=url]:focus, input[type=number]:focus, textarea:focus, select:focus {
+    border-color: var(--ac-terracotta) !important;
+    box-shadow: 0 0 0 3px var(--ac-terracotta-border) !important;
+    outline: none !important;
+}
+
+/* Custom Status & Role Badges */
+.ac-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--ac-radius-pill);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+.ac-badge-admin {
+    background-color: rgba(139, 92, 246, 0.15);
+    color: #7C3AED;
+    border: 1px solid rgba(139, 92, 246, 0.35);
+}
+
+.ac-badge-artisan {
+    background-color: var(--ac-terracotta-light);
+    color: var(--ac-terracotta);
+    border: 1px solid var(--ac-terracotta-border);
+}
+
+.ac-badge-client {
+    background-color: rgba(14, 165, 233, 0.15);
+    color: #0284C7;
+    border: 1px solid rgba(14, 165, 233, 0.35);
+}
+
+.ac-badge-success {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.ac-badge-warning {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: #D97706;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.ac-badge-danger {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #DC2626;
+    border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.ac-badge-muted {
+    background-color: rgba(115, 105, 99, 0.15);
+    color: #736963;
+    border: 1px solid rgba(115, 105, 99, 0.3);
+}
+
+/* Thumbnails */
+.ac-admin-thumb {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid var(--ac-border-strong);
+    display: inline-block;
+    vertical-align: middle;
+}

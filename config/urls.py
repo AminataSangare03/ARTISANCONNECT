@@ -4,6 +4,11 @@ from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
+# Administration
+admin.site.site_header = "ArtisanConnect • Supervision Mali"
+admin.site.site_title = "ArtisanConnect Admin"
+admin.site.index_title = "Tableau de bord de supervision"
+
 urlpatterns = [
     # Administration
     path('admin/', admin.site.urls),
