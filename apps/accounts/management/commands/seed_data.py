@@ -87,14 +87,16 @@ class Command(BaseCommand):
         admin, _ = User.objects.get_or_create(
             email='admin@artisanconnect.ml',
             defaults={
-                'first_name': 'Aminata',
-                'last_name': 'Sangare',
+                'first_name': 'MHD',
+                'last_name': 'Sisko',
                 'phone_number': '+223 70 00 11 22',
                 'role': 'ADMIN',
                 'is_staff': True,
                 'is_superuser': True,
             },
         )
+        admin.first_name = 'MHD'
+        admin.last_name = 'Sisko'
         admin.set_password('Admin1234!')
         admin.save()
 

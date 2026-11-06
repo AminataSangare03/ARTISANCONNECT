@@ -278,7 +278,7 @@
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             backdrop-filter: blur(20px) saturate(180%);
             border-bottom: 1px solid var(--ac-border);
-            padding: 0.75rem 1rem;
+            padding: 0.65rem 0;
             transition: var(--ac-transition-theme), box-shadow 0.2s ease, border-color 0.2s ease;
         }
 
@@ -291,15 +291,30 @@
             box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
         }
 
-        .navbar-brand-wrap {
+        /* Fluid intrinsic container: 100% responsive from 320px to 4K displays */
+        .navbar-container {
+            width: 100%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: clamp(0.75rem, 0.45rem + 1.2vw, 2rem);
+            padding-right: clamp(0.75rem, 0.45rem + 1.2vw, 2rem);
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: space-between;
+            gap: clamp(0.5rem, 0.35rem + 0.6vw, 1.5rem);
+        }
+
+        .navbar-brand-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: clamp(8px, 6px + 0.4vw, 12px);
             text-decoration: none;
+            flex-shrink: 0;
         }
 
         .navbar-brand-logo {
-            height: 42px;
+            height: clamp(34px, 30px + 0.6vw, 42px);
             width: auto;
             object-fit: contain;
             background: transparent !important;
@@ -314,31 +329,46 @@
         .navbar-brand-text {
             display: flex;
             flex-direction: column;
+            justify-content: center;
         }
 
         .navbar-brand-name {
             font-weight: 800;
-            font-size: 1.22rem;
+            font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.24rem);
             color: var(--ac-terracotta);
             line-height: 1.1;
             letter-spacing: -0.025em;
+            white-space: nowrap;
         }
 
         .navbar-brand-slogan {
-            font-size: 0.65rem;
+            font-size: 0.62rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: var(--ac-text-muted);
             font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Nav Items & Links */
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            gap: clamp(0.15rem, 0.08rem + 0.25vw, 0.5rem);
+            white-space: nowrap;
         }
 
         .nav-link {
             font-weight: 600;
             color: var(--ac-text);
-            font-size: 0.92rem;
-            padding: 0.48rem 0.85rem !important;
+            font-size: clamp(0.83rem, 0.78rem + 0.16vw, 0.92rem);
+            padding: 0.42rem clamp(0.5rem, 0.35rem + 0.35vw, 0.85rem) !important;
             border-radius: var(--ac-radius-pill);
             transition: all 0.18s ease;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
         }
 
         .nav-link:hover {
@@ -349,6 +379,31 @@
         .nav-link.active {
             color: var(--ac-terracotta) !important;
             background: var(--ac-terracotta-light);
+        }
+
+        /* Navbar Action Cluster (Desktop) */
+        .navbar-actions-cluster {
+            display: flex;
+            align-items: center;
+            gap: clamp(0.35rem, 0.25rem + 0.25vw, 0.65rem);
+            flex-wrap: nowrap !important;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .navbar-actions-cluster .btn {
+            white-space: nowrap;
+            padding: 0.42rem clamp(0.65rem, 0.45rem + 0.35vw, 0.95rem);
+            font-size: clamp(0.81rem, 0.77rem + 0.14vw, 0.88rem);
+        }
+
+        .navbar-user-name {
+            display: inline-block;
+            max-width: 140px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            vertical-align: middle;
         }
 
         /* Theme Toggle Button (Apple Switcher) */
@@ -364,6 +419,7 @@
             color: var(--ac-text);
             cursor: pointer;
             padding: 0;
+            flex-shrink: 0;
             transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease;
         }
 
@@ -385,33 +441,79 @@
         [data-theme="dark"] .theme-icon-light { display: inline-block; font-size: 0.95rem; color: #FBBF24; }
 
         /* ==========================================================================
-           Mobile Navigation Header & Apple Hamburger Pill
+           Responsive Screen Adaptations (Compact PCs to Mobile)
            ========================================================================== */
-        @media (max-width: 991.98px) {
-            .navbar-apple {
-                padding: 0.65rem 0.9rem;
-            }
-            .navbar-brand-logo {
-                height: 36px;
-            }
-            .navbar-brand-name {
-                font-size: 1.15rem;
-            }
-            .navbar-brand-slogan {
-                font-size: 0.58rem;
-                letter-spacing: 0.04em;
-            }
-        }
-
-        @media (max-width: 480px) {
+        /* Screen width < 1250px (Compact Laptops like 13-inch MacBooks, Surface, split-screen) */
+        @media (max-width: 1249.98px) {
             .navbar-brand-slogan {
                 display: none !important;
             }
-            .navbar-brand-wrap {
-                gap: 8px;
+            .navbar-user-name {
+                max-width: 90px;
             }
         }
 
+        /* Screen width between 992px and 1199px (Tightly spaced compact PC screens) */
+        @media (min-width: 992px) and (max-width: 1199.98px) {
+            .navbar-container {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+                gap: 0.5rem;
+            }
+            .navbar-nav {
+                gap: 0.15rem;
+            }
+            .nav-link {
+                padding: 0.38rem 0.52rem !important;
+                font-size: 0.83rem;
+            }
+            .nav-link i {
+                font-size: 0.8rem;
+                margin-right: 0.15rem !important;
+            }
+            .navbar-actions-cluster {
+                gap: 0.35rem;
+            }
+            .navbar-actions-cluster .btn {
+                padding: 0.38rem 0.62rem;
+                font-size: 0.79rem;
+            }
+            .navbar-actions-cluster .btn-label-long {
+                display: none !important;
+            }
+            .navbar-actions-cluster .btn-label-short {
+                display: inline !important;
+            }
+            .navbar-user-name {
+                max-width: 75px;
+            }
+        }
+
+        /* Screens 1200px and up (Standard to large desktop / laptops) */
+        @media (min-width: 1200px) {
+            .navbar-actions-cluster .btn-label-long {
+                display: inline !important;
+            }
+            .navbar-actions-cluster .btn-label-short {
+                display: none !important;
+            }
+        }
+
+        /* Mobile & Tablet (< 992px) */
+        @media (max-width: 991.98px) {
+            .navbar-apple {
+                padding: 0.6rem 0;
+            }
+            .navbar-brand-slogan {
+                display: none !important;
+            }
+            .btn-theme-toggle {
+                width: 36px;
+                height: 36px;
+            }
+        }
+
+        /* Mobile Hamburger Pill */
         .btn-mobile-hamburger {
             display: inline-flex;
             align-items: center;
@@ -486,6 +588,23 @@
         [data-theme="dark"] .btn-mobile-hamburger:hover {
             background: var(--ac-terracotta-light);
             border-color: var(--ac-terracotta);
+        }
+
+        /* Ultra-small phones (< 380px) */
+        @media (max-width: 380px) {
+            .navbar-brand-wrap {
+                gap: 6px;
+            }
+            .navbar-brand-logo {
+                height: 30px;
+            }
+            .navbar-brand-name {
+                font-size: 1rem;
+            }
+            .btn-mobile-hamburger {
+                width: 36px;
+                height: 36px;
+            }
         }
 
         /* ==========================================================================
@@ -1203,7 +1322,7 @@
     <!-- Header & Glass Navigation -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-apple">
-            <div class="container d-flex align-items-center justify-content-between">
+            <div class="navbar-container">
                 <a class="navbar-brand-wrap" href="{% url 'home' %}">
                     <img src="{% static 'images/logo_icon.png' %}" alt="ArtisanConnect Logo" class="navbar-brand-logo">
                     <div class="navbar-brand-text">
@@ -1230,7 +1349,7 @@
 
                 <!-- Desktop Navigation Menu -->
                 <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarMain">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-xl-4 ms-lg-2">
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">
                                 <i class="bi bi-house me-1"></i>Accueil
@@ -1246,14 +1365,9 @@
                                 <i class="bi bi-briefcase me-1"></i>Demandes de service
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'swagger-ui' %}" target="_blank">
-                                <i class="bi bi-code-slash me-1"></i>API Docs
-                            </a>
-                        </li>
                     </ul>
 
-                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <div class="navbar-actions-cluster">
                         <!-- Theme Toggle Button (Light/Dark Mode) -->
                         <button class="btn-theme-toggle" id="themeToggleBtn" type="button" aria-label="Basculer entre le mode clair et le mode sombre" title="Basculer le thème clair / sombre">
                             <i class="bi bi-moon-stars-fill theme-icon-dark" aria-hidden="true"></i>
@@ -1263,26 +1377,33 @@
                         {% if user.is_authenticated %}
                             {% if user.role == 'CLIENT' or user.is_superuser %}
                                 <a href="{% url 'demande_create' %}" class="btn btn-terracotta btn-sm">
-                                    <i class="bi bi-plus-circle"></i>Publier une demande
+                                    <i class="bi bi-plus-circle"></i>
+                                    <span class="btn-label-long">Publier une demande</span>
+                                    <span class="btn-label-short">Demande</span>
                                 </a>
                                 <a href="{% url 'client_dashboard' %}" class="btn btn-outline-terracotta btn-sm">
-                                    <i class="bi bi-speedometer2"></i>Mon Espace
+                                    <i class="bi bi-speedometer2"></i>
+                                    <span class="btn-label-long">Mon Espace</span>
+                                    <span class="btn-label-short">Espace</span>
                                 </a>
                             {% endif %}
                             {% if user.role == 'ARTISAN' or user.is_superuser %}
                                 <a href="{% url 'artisan_dashboard' %}" class="btn btn-terracotta btn-sm">
-                                    <i class="bi bi-tools"></i>Espace Artisan
+                                    <i class="bi bi-tools"></i>
+                                    <span class="btn-label-long">Espace Artisan</span>
+                                    <span class="btn-label-short">Atelier</span>
                                 </a>
                             {% endif %}
                             {% if user.is_superuser %}
                                 <a href="/admin/" class="btn btn-outline-secondary btn-sm" target="_blank">
-                                    <i class="bi bi-shield-lock"></i>Admin
+                                    <i class="bi bi-shield-lock"></i>
+                                    <span>Admin</span>
                                 </a>
                             {% endif %}
                             <div class="dropdown">
                                 <button class="btn btn-glass dropdown-toggle btn-sm shadow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-person-circle me-1 text-muted"></i>
-                                    {{ user.first_name|default:user.email }}
+                                    <span class="navbar-user-name">{{ user.first_name|default:user.email }}</span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end border-0" style="border-radius: var(--ac-radius-md);">
                                     <li><span class="dropdown-item-text text-muted small">Rôle : <strong>{{ user.get_role_display }}</strong></span></li>
@@ -1298,7 +1419,10 @@
                             </div>
                         {% else %}
                             <a href="{% url 'web_login' %}" class="btn btn-glass btn-sm">Connexion</a>
-                            <a href="{% url 'web_register' %}" class="btn btn-terracotta btn-sm">Créer un compte</a>
+                            <a href="{% url 'web_register' %}" class="btn btn-terracotta btn-sm">
+                                <span class="btn-label-long">Créer un compte</span>
+                                <span class="btn-label-short">Inscription</span>
+                            </a>
                         {% endif %}
                     </div>
                 </div>
@@ -1340,10 +1464,7 @@
                     <i class="bi bi-briefcase"></i>
                     <span>Demandes de service</span>
                 </a>
-                <a class="mobile-drawer-link" href="{% url 'swagger-ui' %}" target="_blank">
-                    <i class="bi bi-code-slash"></i>
-                    <span>Documentation API (Swagger)</span>
-                </a>
+
             </div>
 
             <hr class="my-3 opacity-10">
@@ -1548,17 +1669,20 @@
                             <span class="footer-badge-pill">Golf Djicoroni</span>
                         </div>
 
-                        <h6 class="footer-heading">Ressources Développeur</h6>
-                        <div class="d-flex flex-column gap-1 small">
-                            <a href="{% url 'swagger-ui' %}" target="_blank" class="text-white text-decoration-none d-inline-flex align-items-center gap-1">
-                                <i class="bi bi-box-arrow-up-right me-1" style="font-size: 0.75rem;"></i>Documentation Swagger OpenAPI
-                            </a>
-                            <a href="{% url 'redoc' %}" target="_blank" class="text-white text-decoration-none d-inline-flex align-items-center gap-1">
-                                <i class="bi bi-file-code me-1" style="font-size: 0.75rem;"></i>Documentation ReDoc
-                            </a>
-                            <a href="/admin/" target="_blank" class="text-white text-decoration-none d-inline-flex align-items-center gap-1">
-                                <i class="bi bi-shield-lock me-1" style="font-size: 0.75rem;"></i>Portail Superviseur Django
-                            </a>
+                        <h6 class="footer-heading">Garanties & Confiance</h6>
+                        <div class="d-flex flex-column gap-2 small">
+                            <div class="d-flex align-items-center gap-2 text-white-50">
+                                <i class="bi bi-shield-check text-success fs-6"></i>
+                                <span>Artisans qualifiés & notés</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 text-white-50">
+                                <i class="bi bi-lock-fill text-warning fs-6"></i>
+                                <span>Devis clair & paiement direct</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 text-white-50">
+                                <i class="bi bi-telephone-fill text-info fs-6"></i>
+                                <span>Support Bamako : +223 70 00 11 22</span>
+                            </div>
                         </div>
                     </div>
                 </div>
