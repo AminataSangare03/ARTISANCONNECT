@@ -80,8 +80,8 @@
                         <a href="https://wa.me/{{ artisan.telephone_professionnel|phone_clean }}?text=Bonjour%20{{ artisan.user.first_name|default:'l\'artisan' }},%20j'ai%20vu%20votre%20profil%20sur%20ArtisanConnect%20Mali%20et%20souhaite%20un%20renseignement%20pour%20des%20travaux." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp w-100 fw-bold">
                             <i class="bi bi-whatsapp me-2"></i>Contacter sur WhatsApp
                         </a>
-                        <a href="tel:{{ artisan.telephone_professionnel }}" class="btn btn-glass btn-sm w-100">
-                            <i class="bi bi-telephone-fill me-1 text-success"></i>Appeler {{ artisan.telephone_professionnel }}
+                        <a href="tel:{{ artisan.telephone_professionnel }}" class="btn btn-glass btn-sm w-100 justify-content-center" title="Appeler {{ artisan.telephone_professionnel }}">
+                            <i class="bi bi-telephone-fill me-1 text-success"></i>Appeler l'artisan
                         </a>
                     </div>
                 {% endif %}

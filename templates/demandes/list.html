@@ -27,13 +27,13 @@
     <!-- Apple Filter Bar -->
     <div class="card-apple p-3 mb-4 bg-white">
         <form action="{% url 'demande_list' %}" method="get" class="row g-2 align-items-center">
-            <div class="col-md-4">
+            <div class="col-12 col-md-4">
                 <div class="input-group input-group-sm">
                     <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
                     <input type="text" name="q" value="{{ current_q }}" class="form-control form-control-sm border-start-0" placeholder="Titre, besoin, mot-clé...">
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-12 col-sm-6 col-md-3">
                 <select name="metier" class="form-select form-select-sm">
                     <option value="">Tous les métiers</option>
                     {% for m in metiers %}
@@ -41,15 +41,15 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-12 col-sm-6 col-md-3">
                 <input type="text" name="ville" value="{{ current_ville }}" class="form-control form-control-sm" placeholder="Quartier à Bamako...">
             </div>
-            <div class="col-md-2 d-flex gap-1">
-                <button type="submit" class="btn btn-terracotta btn-sm w-100">
-                    <i class="bi bi-funnel"></i>Filtrer
+            <div class="col-12 col-md-2 d-flex gap-2">
+                <button type="submit" class="btn btn-terracotta btn-sm flex-grow-1 justify-content-center">
+                    <i class="bi bi-funnel me-1"></i>Filtrer
                 </button>
-                <a href="{% url 'demande_list' %}" class="btn btn-glass btn-sm">
-                    Reset
+                <a href="{% url 'demande_list' %}" class="btn btn-glass btn-sm justify-content-center" title="Réinitialiser les filtres" aria-label="Réinitialiser">
+                    <i class="bi bi-arrow-counterclockwise"></i>
                 </a>
             </div>
         </form>
