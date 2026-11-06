@@ -44,19 +44,13 @@
                     {% endif %}
                 </div>
 
-                <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-                    <span class="badge-reactivite">
-                        <span class="live-pulse-dot"></span> Répond généralement en moins d'1 heure
-                    </span>
-                </div>
-
                 <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
                     <span class="badge-metier fs-6">{{ artisan.metier.nom|default:"Artisan" }}</span>
                     <span class="badge-location">
                         <i class="bi bi-geo-alt me-1"></i>{{ artisan.ville }}{% if artisan.quartier %}, {{ artisan.quartier }}{% endif %}{% if artisan.adresse %} ({{ artisan.adresse }}){% endif %}
                     </span>
-                    <span class="badge bg-light text-dark border">
-                        <i class="bi bi-award me-1"></i><strong>{{ artisan.experience }}</strong> années d'expérience
+                    <span class="small text-muted ms-1">
+                        <i class="bi bi-award me-1 text-terracotta"></i><strong class="text-dark">{{ artisan.experience }}</strong> an{{ artisan.experience|pluralize }} d'expérience
                     </span>
                 </div>
 
@@ -121,7 +115,7 @@
                         </h2>
                         <span class="text-muted small">Exemples de travaux achevés à Bamako</span>
                     </div>
-                    <span class="badge bg-light text-muted border rounded-pill px-3 py-1">
+                    <span class="small text-muted fw-semibold">
                         {{ realisations.count }} projet{{ realisations.count|pluralize }}
                     </span>
                 </div>
@@ -136,11 +130,6 @@
                                     {% else %}
                                         <img src="{% static 'images/generated/hero_atelier.jpg' %}" alt="{{ real.titre }}" class="w-100" style="height: 190px; object-fit: cover; opacity: 0.85;">
                                     {% endif %}
-                                    <div class="position-absolute top-0 end-0 m-2">
-                                        <span class="badge bg-dark bg-opacity-75 text-white small rounded-pill px-2 py-1">
-                                            <i class="bi bi-arrows-fullscreen me-1"></i>Agrandir
-                                        </span>
-                                    </div>
                                 </div>
                                 <div class="p-3 bg-white">
                                     <h3 class="h6 fw-bold mb-1 text-dark">{{ real.titre }}</h3>
@@ -272,15 +261,9 @@
                 <h3 class="h6 fw-bold mb-3 text-uppercase small" style="color: var(--ac-terracotta); letter-spacing: 0.05em;">
                     <i class="bi bi-geo-alt me-1"></i>Zone d'intervention
                 </h3>
-                <p class="small text-muted mb-3">
-                    Cet artisan intervient principalement à <strong>{{ artisan.ville|default:"Bamako" }}</strong> et dans les quartiers voisins :
+                <p class="small text-muted mb-3" style="line-height: 1.55;">
+                    Cet artisan intervient sur l'ensemble de <strong>{{ artisan.ville|default:"Bamako" }}</strong>{% if artisan.quartier %}, particulièrement dans le secteur de <strong>{{ artisan.quartier }}</strong> et les communes environnantes{% endif %}.
                 </p>
-                <div class="d-flex flex-wrap gap-1 mb-3">
-                    <span class="badge bg-light text-dark border small">{{ artisan.quartier|default:"District de Bamako" }}</span>
-                    <span class="badge bg-light text-dark border small">Commune IV</span>
-                    <span class="badge bg-light text-dark border small">Commune V</span>
-                    <span class="badge bg-light text-dark border small">Commune VI</span>
-                </div>
                 <div class="alert alert-light border small text-muted mb-0">
                     <i class="bi bi-info-circle me-1"></i>Les déplacements hors Bamako peuvent faire l'objet de frais kilométriques mentionnés sur le devis.
                 </div>

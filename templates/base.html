@@ -1205,8 +1205,8 @@
         }
 
         /* ==========================================================================
-           Footer Architecture (Apple Pro Design)
-           ========================================================================== */
+   Executive Modern Footer Architecture
+   ========================================================================== */
         footer.footer-apple {
             background-color: var(--ac-footer-bg);
             color: var(--ac-footer-text);
@@ -1215,42 +1215,53 @@
             transition: var(--ac-transition-theme);
         }
 
-        .footer-trust-band {
-            border-bottom: 1px solid var(--ac-footer-border);
-            padding: 2.5rem 0;
-            background: var(--ac-footer-card-bg);
+        .footer-main-content {
+            padding: 4rem 0 2.75rem 0;
         }
 
-        .footer-trust-card {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
+        .footer-brand-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: -0.02em;
         }
 
-        .footer-trust-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: var(--ac-radius-md);
-            background: rgba(184, 84, 51, 0.15);
-            color: var(--ac-terracotta);
-            display: flex;
+        .footer-brand-desc {
+            color: var(--ac-footer-muted);
+            font-size: 0.86rem;
+            line-height: 1.6;
+            margin-bottom: 1.35rem;
+            max-width: 360px;
+        }
+
+        .footer-contact-item {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            font-size: 1.15rem;
+            gap: 0.65rem;
+            font-size: 0.84rem;
+            color: var(--ac-footer-muted);
+            margin-bottom: 0.45rem;
+            text-decoration: none;
+            transition: color 0.15s ease;
+        }
+
+        .footer-contact-item i {
+            color: var(--ac-terracotta);
+            font-size: 0.95rem;
             flex-shrink: 0;
         }
 
-        .footer-main-content {
-            padding: 4rem 0 2rem 0;
+        .footer-contact-item:hover {
+            color: #FFFFFF;
         }
 
         .footer-heading {
-            font-size: 0.78rem;
+            font-size: 0.74rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: #FFFFFF;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.2rem;
         }
 
         .footer-links {
@@ -1266,38 +1277,62 @@
         .footer-links a {
             color: var(--ac-footer-muted);
             text-decoration: none;
-            font-size: 0.88rem;
-            transition: color 0.15s ease, padding-left 0.15s ease;
+            font-size: 0.85rem;
+            transition: color 0.15s ease, transform 0.15s ease;
             display: inline-block;
         }
 
         .footer-links a:hover {
             color: #FFFFFF;
-            padding-left: 3px;
+            transform: translateX(2px);
         }
 
-        .footer-badge-pill {
-            background: rgba(255, 255, 255, 0.06);
+        .footer-trust-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-trust-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.65rem;
+            margin-bottom: 0.85rem;
             color: var(--ac-footer-muted);
-            font-size: 0.74rem;
-            font-weight: 600;
-            padding: 0.3rem 0.65rem;
-            border-radius: var(--ac-radius-pill);
-            border: 1px solid var(--ac-footer-border);
-            display: inline-block;
-            transition: all 0.15s ease;
+            font-size: 0.84rem;
+            line-height: 1.45;
         }
 
-        .footer-badge-pill:hover {
-            background: rgba(255, 255, 255, 0.12);
-            color: #FFFFFF;
+        .footer-trust-list i {
+            color: var(--ac-terracotta);
+            font-size: 0.95rem;
+            margin-top: 0.12rem;
+            flex-shrink: 0;
         }
 
         .footer-bottom-bar {
             border-top: 1px solid var(--ac-footer-border);
-            padding: 1.5rem 0;
+            padding: 1.35rem 0;
             font-size: 0.82rem;
             color: var(--ac-footer-muted);
+        }
+
+        .footer-legal-links {
+            display: flex;
+            align-items: center;
+            gap: 1.35rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-legal-links a {
+            color: var(--ac-footer-muted);
+            text-decoration: none;
+            font-size: 0.82rem;
+            transition: color 0.15s ease;
+        }
+
+        .footer-legal-links a:hover {
+            color: #FFFFFF;
         }
 
         /* Reading Scroll Progress Bar */
@@ -1458,7 +1493,7 @@
                 <a class="mobile-drawer-link {% if request.resolver_match.url_name in 'artisan_list artisan_detail' %}active{% endif %}" href="{% url 'artisan_list' %}">
                     <i class="bi bi-person-lines-fill"></i>
                     <span class="flex-grow-1">Annuaire Artisans</span>
-                    <span class="badge bg-terracotta-subtle text-terracotta rounded-pill px-2 py-1 small">120+ pros</span>
+                    
                 </a>
                 <a class="mobile-drawer-link {% if request.resolver_match.url_name in 'demande_list demande_detail' %}active{% endif %}" href="{% url 'demande_list' %}">
                     <i class="bi bi-briefcase"></i>
@@ -1481,7 +1516,7 @@
                                     <div class="text-muted" style="font-size: 0.72rem;">{{ user.get_role_display }} &bull; Bamako</div>
                                 </div>
                             </div>
-                            <span class="badge bg-success-subtle text-success rounded-pill px-2 py-1 small">Connecté</span>
+                            
                         </div>
                         <div class="d-grid gap-2">
                             {% if user.role == 'CLIENT' or user.is_superuser %}
@@ -1525,7 +1560,7 @@
                         <i class="bi bi-sun-fill theme-icon-light"></i>
                         <span>Thème de l'interface</span>
                     </span>
-                    <span class="badge bg-secondary-subtle text-secondary rounded-pill px-2 py-1 small" id="drawerThemeLabel">Clair / Sombre</span>
+                    <span class="small text-muted fw-semibold" id="drawerThemeLabel" style="font-size: 0.78rem;">Clair</span>
                 </button>
             </div>
         </div>
@@ -1549,157 +1584,104 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Redesigned Apple Pro Footer -->
+    <!-- Executive Modern Footer -->
     <footer class="footer-apple">
-        <!-- Upper Trust Band -->
-        <div class="footer-trust-band">
-            <div class="container">
-                <div class="row g-4">
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="footer-trust-card">
-                            <div class="footer-trust-icon">
-                                <i class="bi bi-patch-check-fill"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold text-white mb-1 small">Artisans verifies</h6>
-                                <p class="small mb-0" style="color: var(--ac-footer-muted); line-height: 1.4;">Identite, quartier et competences controles a Bamako.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="footer-trust-card">
-                            <div class="footer-trust-icon">
-                                <i class="bi bi-receipt-cutoff"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold text-white mb-1 small">Devis clairs en FCFA</h6>
-                                <p class="small mb-0" style="color: var(--ac-footer-muted); line-height: 1.4;">Propositions détaillées et chiffrées sans frais cachés.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="footer-trust-card">
-                            <div class="footer-trust-icon">
-                                <i class="bi bi-shield-check"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold text-white mb-1 small">Avis 100% certifiés</h6>
-                                <p class="small mb-0" style="color: var(--ac-footer-muted); line-height: 1.4;">Évaluations recueillies après réception réelle des travaux.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="footer-trust-card">
-                            <div class="footer-trust-icon">
-                                <i class="bi bi-geo-alt-fill"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold text-white mb-1 small">Présence locale au Mali</h6>
-                                <p class="small mb-0" style="color: var(--ac-footer-muted); line-height: 1.4;">Interventions rapides sur les 6 communes du District.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Main Footer Links Grid -->
         <div class="footer-main-content">
             <div class="container">
-                <div class="row g-4">
-                    <!-- Brand Column -->
+                <div class="row g-4 g-lg-5">
+                    <!-- Column 1: Brand & Contact -->
                     <div class="col-lg-4 col-md-12">
                         <div class="d-flex align-items-center gap-2 mb-3">
-                            <img src="{% static 'images/logo_icon.png' %}" alt="Logo ArtisanConnect" style="height: 42px; width: auto; object-fit: contain; background: transparent;">
+                            <img src="{% static 'images/logo_icon.png' %}" alt="ArtisanConnect" style="height: 38px; width: auto; object-fit: contain;">
                             <div>
-                                <span class="fw-bold fs-5 text-white d-block" style="line-height: 1.1;">ArtisanConnect</span>
-                                <span class="small" style="color: var(--ac-footer-muted); letter-spacing: 0.05em; font-size: 0.7rem;">LE SAVOIR-FAIRE À PORTÉE DE MAIN &bull; MALI</span>
+                                <span class="footer-brand-title d-block lh-1">ArtisanConnect</span>
+                                <span class="small" style="color: var(--ac-footer-muted); letter-spacing: 0.06em; font-size: 0.68rem; text-transform: uppercase;">Mali &bull; Bamako</span>
                             </div>
                         </div>
-                        <p class="small mb-3" style="color: var(--ac-footer-muted); line-height: 1.65; max-width: 360px;">
-                            Plateforme technologique de mise en relation et de suivi opérationnel entre particuliers, entreprises et maîtres artisans à Bamako.
+                        <p class="footer-brand-desc">
+                            Plateforme de mise en relation de confiance entre particuliers, entreprises et artisans d'excellence qualifi&eacute;s au Mali.
                         </p>
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                            <span class="live-pulse-dot"></span>
-                            <span class="small fw-semibold text-white">Plateforme active &bull; Bamako</span>
-                        </div>
-                        <div class="small" style="color: var(--ac-footer-muted);">
-                            Devise officielle : <strong class="text-white tabular-nums">Franc CFA (XOF)</strong>
+                        <div class="d-flex flex-column gap-1">
+                            <span class="footer-contact-item">
+                                <i class="bi bi-geo-alt-fill"></i>
+                                <span>Bamako, District de Bamako, Mali</span>
+                            </span>
+                            <a href="tel:+22370001122" class="footer-contact-item">
+                                <i class="bi bi-telephone-fill"></i>
+                                <span>+223 70 00 11 22</span>
+                            </a>
+                            <a href="mailto:contact@artisanconnect.ml" class="footer-contact-item">
+                                <i class="bi bi-envelope-fill"></i>
+                                <span>contact@artisanconnect.ml</span>
+                            </a>
                         </div>
                     </div>
 
-                    <!-- Navigation -->
+                    <!-- Column 2: Crafts -->
+                    <div class="col-lg-3 col-6">
+                        <h6 class="footer-heading">M&eacute;tiers d'artisanat</h6>
+                        <ul class="footer-links">
+                            <li><a href="{% url 'artisan_list' %}?q=Menuiserie">Menuiserie &amp; &Eacute;b&eacute;nisterie</a></li>
+                            <li><a href="{% url 'artisan_list' %}?q=Plomberie">Plomberie sanitaire</a></li>
+                            <li><a href="{% url 'artisan_list' %}?q=Electricite">&Eacute;lectricit&eacute; &amp; &Eacute;nergie solaire</a></li>
+                            <li><a href="{% url 'artisan_list' %}?q=Climatisation">Climatisation &amp; Froid</a></li>
+                            <li><a href="{% url 'artisan_list' %}?q=Couture">Couture &amp; Stylisme</a></li>
+                            <li><a href="{% url 'artisan_list' %}?q=Soudure">Soudure &amp; Ferronnerie</a></li>
+                            <li><a href="{% url 'artisan_list' %}?q=Maconnerie">Ma&ccedil;onnerie &amp; B&acirc;timent</a></li>
+                            <li><a href="{% url 'artisan_list' %}?q=Peinture">Peinture &amp; Rev&ecirc;tements</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Column 3: Platform Links -->
                     <div class="col-lg-2 col-6">
                         <h6 class="footer-heading">Plateforme</h6>
                         <ul class="footer-links">
                             <li><a href="{% url 'home' %}">Accueil</a></li>
-                            <li><a href="{% url 'artisan_list' %}">Annuaire Bamako</a></li>
+                            <li><a href="{% url 'artisan_list' %}">Annuaire des artisans</a></li>
                             <li><a href="{% url 'demande_list' %}">Demandes de service</a></li>
                             <li><a href="{% url 'demande_create' %}">Publier une mission</a></li>
-                            <li><a href="{% url 'web_register' %}?role=ARTISAN">Devenir artisan</a></li>
-                            <li><a href="{% url 'web_login' %}">Connexion</a></li>
+                            <li><a href="{% url 'web_register' %}?role=ARTISAN">Espace artisan</a></li>
+                            <li><a href="{% url 'web_login' %}">Connexion au compte</a></li>
                         </ul>
                     </div>
 
-                    <!-- Key Metiers -->
-                    <div class="col-lg-3 col-6">
-                        <h6 class="footer-heading">Métiers d'excellence</h6>
-                        <ul class="footer-links">
-                            <li><a href="{% url 'artisan_list' %}?q=Menuiserie">Menuiserie teck & iroko</a></li>
-                            <li><a href="{% url 'artisan_list' %}?q=Plomberie">Plomberie & surpresseurs</a></li>
-                            <li><a href="{% url 'artisan_list' %}?q=Electricite">Kits solaires & inverseurs</a></li>
-                            <li><a href="{% url 'artisan_list' %}?q=Couture">Stylisme & basin riche</a></li>
-                            <li><a href="{% url 'artisan_list' %}?q=Soudure">Ferronnerie & portails blindés</a></li>
-                            <li><a href="{% url 'artisan_list' %}?q=Climatisation">Climatisation split inverter</a></li>
-                        </ul>
-                    </div>
-
-                    <!-- Districts & Tech -->
+                    <!-- Column 4: Trust & Guarantees -->
                     <div class="col-lg-3 col-md-12">
-                        <h6 class="footer-heading">Communes couvertes</h6>
-                        <div class="d-flex flex-wrap gap-1 mb-4">
-                            <span class="footer-badge-pill">Hamdallaye ACI 2000</span>
-                            <span class="footer-badge-pill">Badalabougou</span>
-                            <span class="footer-badge-pill">Hippodrome</span>
-                            <span class="footer-badge-pill">Faladié SEMA</span>
-                            <span class="footer-badge-pill">Korofina Nord</span>
-                            <span class="footer-badge-pill">Niamakoro</span>
-                            <span class="footer-badge-pill">Sotuba</span>
-                            <span class="footer-badge-pill">Sabalibougou</span>
-                            <span class="footer-badge-pill">Golf Djicoroni</span>
-                        </div>
-
-                        <h6 class="footer-heading">Garanties & Confiance</h6>
-                        <div class="d-flex flex-column gap-2 small">
-                            <div class="d-flex align-items-center gap-2 text-white-50">
-                                <i class="bi bi-shield-check text-success fs-6"></i>
-                                <span>Artisans qualifiés & notés</span>
-                            </div>
-                            <div class="d-flex align-items-center gap-2 text-white-50">
-                                <i class="bi bi-lock-fill text-warning fs-6"></i>
-                                <span>Devis clair & paiement direct</span>
-                            </div>
-                            <div class="d-flex align-items-center gap-2 text-white-50">
-                                <i class="bi bi-telephone-fill text-info fs-6"></i>
-                                <span>Support Bamako : +223 70 00 11 22</span>
-                            </div>
-                        </div>
+                        <h6 class="footer-heading">Engagements &amp; Confiance</h6>
+                        <ul class="footer-trust-list">
+                            <li>
+                                <i class="bi bi-patch-check-fill"></i>
+                                <span><strong>Profils v&eacute;rifi&eacute;s</strong> : identit&eacute;, exp&eacute;rience et localisation contr&ocirc;l&eacute;es.</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-receipt-cutoff"></i>
+                                <span><strong>Devis transparents</strong> : chiffrage clair en Franc CFA (XOF) sans surco&ucirc;t.</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-shield-check"></i>
+                                <span><strong>Avis certifi&eacute;s</strong> : retours authentiques d&eacute;pos&eacute;s apr&egrave;s r&eacute;ception des travaux.</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-headset"></i>
+                                <span><strong>Assistance locale</strong> : &eacute;quipe support joignable 6j/7 &agrave; Bamako.</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Bottom Copyright Bar -->
+        <!-- Clean Legal Bottom Bar -->
         <div class="footer-bottom-bar">
             <div class="container">
                 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
                     <div>
-                        &copy; {% now "Y" %} ArtisanConnect Mali. Tous droits réservés &bull; Le savoir-faire à portée de main.
+                        &copy; {% now "Y" %} ArtisanConnect Mali. Tous droits r&eacute;serv&eacute;s.
                     </div>
-                    <div class="d-flex align-items-center gap-3">
-                        <span>Full Python &bull; Django REST Framework</span>
-                        <span class="d-none d-md-inline">&bull;</span>
-                        <span class="d-none d-md-inline">Apple Fluid Design Architecture</span>
+                    <div class="footer-legal-links">
+                        <a href="{% url 'home' %}">Conditions g&eacute;n&eacute;rales</a>
+                        <a href="{% url 'home' %}">Politique de confidentialit&eacute;</a>
+                        <a href="{% url 'home' %}">Mentions l&eacute;gales</a>
                     </div>
                 </div>
             </div>

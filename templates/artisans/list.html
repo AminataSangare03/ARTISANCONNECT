@@ -91,11 +91,10 @@
 
         <!-- Artisans Grid -->
         <div class="col-lg-9">
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="mb-3">
                 <span class="small text-muted">
                     <strong class="text-dark tabular-nums">{{ page_obj.paginator.count }}</strong> artisan{{ page_obj.paginator.count|pluralize }} répertorié{{ page_obj.paginator.count|pluralize }} à Bamako
                 </span>
-                <span class="badge bg-light text-muted border small">Devise : FCFA</span>
             </div>
 
             <div class="row g-3">
@@ -126,9 +125,6 @@
                                         <div class="badge-metier d-inline-block">
                                             {{ artisan.metier.nom|default:"Artisan" }}
                                         </div>
-                                        <span class="badge-reactivite-sm">
-                                            <span class="live-pulse-dot"></span> Dispo
-                                        </span>
                                     </div>
                                     <div class="small text-muted mt-1 text-truncate">
                                         <i class="bi bi-geo-alt me-1"></i>{{ artisan.ville }}{% if artisan.quartier %}, {{ artisan.quartier }}{% endif %}

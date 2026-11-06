@@ -498,7 +498,7 @@
     <div class="container py-2">
         <div class="d-flex flex-wrap justify-content-between align-items-end mb-4 gap-2">
             <div>
-                <span class="badge mb-2 px-3 py-1" style="background-color: var(--ac-terracotta-light); color: var(--ac-terracotta); font-weight: 700;">CORPS DE MÉTIERS</span>
+                <div class="text-uppercase fw-bold text-terracotta mb-2" style="letter-spacing: 0.08em; font-size: 0.74rem;">Corps de métiers</div>
                 <h2 class="h3 fw-bold text-dark mb-1">Explorer les savoir-faire au Mali</h2>
                 <p class="text-muted small mb-0">Sélectionnez un métier pour découvrir les artisans disponibles dans votre quartier.</p>
             </div>
@@ -513,11 +513,6 @@
                     <a href="{% url 'artisan_list' %}?metier={{ m.id }}" class="card-apple card-apple-interactive text-decoration-none d-block h-100 position-relative">
                         <div class="img-zoom-parent position-relative card-metier-img" style="height: 190px;">
                             <img src="{% metier_image m %}" alt="{{ m.nom }}" class="w-100 h-100" style="object-fit: cover;">
-                            <div class="position-absolute top-0 end-0 m-2">
-                                <span class="badge bg-dark bg-opacity-75 text-white fw-bold rounded-pill px-2 py-1 small" style="font-size: 0.72rem;">
-                                    {{ m.artisans_count }} pro{{ m.artisans_count|pluralize }}
-                                </span>
-                            </div>
                             <div class="position-absolute bottom-0 start-0 end-0 p-2 p-md-3" style="background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(12, 12, 14, 0.88) 100%);">
                                 <h3 class="h6 fw-bold text-white mb-0 card-metier-title">{{ m.nom }}</h3>
                             </div>
@@ -539,7 +534,7 @@
     <div class="container py-2">
         <div class="d-flex flex-wrap justify-content-between align-items-end mb-4 gap-2">
             <div>
-                <span class="badge mb-2 px-3 py-1" style="background-color: var(--ac-terracotta-light); color: var(--ac-terracotta); font-weight: 700;">CONFIANCE & RIGUEUR</span>
+                <div class="text-uppercase fw-bold text-terracotta mb-2" style="letter-spacing: 0.08em; font-size: 0.74rem;">Sélection & rigueur</div>
                 <h2 class="h3 fw-bold text-dark mb-1">Artisans recommandés à Bamako</h2>
                 <p class="text-muted small mb-0">Profils évalués, vérifiables et reconnus pour la qualité de leurs prestations.</p>
             </div>
@@ -635,7 +630,7 @@
 <section class="py-5" style="background: var(--ac-card-bg); border-top: 1px solid var(--ac-border);">
     <div class="container py-3">
         <div class="text-center mb-5" style="max-width: 680px; margin: 0 auto;">
-            <span class="badge mb-2 px-3 py-1" style="background-color: var(--ac-terracotta-light); color: var(--ac-terracotta); font-weight: 700;">SIMPLE ET SEREIN</span>
+            <div class="text-uppercase fw-bold text-terracotta mb-2" style="letter-spacing: 0.08em; font-size: 0.74rem;">Fonctionnement</div>
             <h2 class="h2 fw-bold mb-2" style="color: var(--ac-text);">Comment fonctionne ArtisanConnect ?</h2>
             <p class="text-muted">Trois étapes claires et transparentes pour réaliser vos travaux à Bamako sans mauvaise surprise.</p>
         </div>
@@ -686,7 +681,7 @@
     <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, rgba(12, 12, 14, 0.92) 0%, rgba(24, 23, 26, 0.88) 100%); z-index: 2;"></div>
 
     <div class="container position-relative py-5 text-center" style="z-index: 3;">
-        <span class="badge mb-3 px-3 py-1 bg-white bg-opacity-20 text-white rounded-pill">COMMUNES DE BAMAKO &amp; RÉGIONS DU MALI</span>
+        <div class="text-uppercase fw-bold text-white-50 mb-3" style="letter-spacing: 0.08em; font-size: 0.74rem;">District de Bamako &bull; Régions du Mali</div>
         <h2 class="display-6 fw-bold mb-3 text-white">Prêt à concrétiser vos projets artisanaux ?</h2>
         <p class="lead mb-4 mx-auto" style="max-width: 660px; color: rgba(255, 255, 255, 0.88); font-size: 1.15rem;">
             Particuliers en quête de qualité ou artisans passionnés par leur métier : rejoignez la référence de l'artisanat au Mali.
