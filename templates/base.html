@@ -441,66 +441,46 @@
         [data-theme="dark"] .theme-icon-light { display: inline-block; font-size: 0.95rem; color: #FBBF24; }
 
         /* ==========================================================================
-           Responsive Screen Adaptations (Compact PCs to Mobile)
+           Fluid Responsive Navbar Architecture (PC, HP EliteBook, Laptop, Mobile)
            ========================================================================== */
-        /* Screen width < 1250px (Compact Laptops like 13-inch MacBooks, Surface, split-screen) */
-        @media (max-width: 1249.98px) {
-            .navbar-brand-slogan {
+        @media (min-width: 860px) {
+            .d-nav-desktop {
+                display: flex !important;
+            }
+            .d-nav-mobile {
                 display: none !important;
             }
-            .navbar-user-name {
-                max-width: 90px;
-            }
-        }
-
-        /* Screen width between 992px and 1199px (Tightly spaced compact PC screens) */
-        @media (min-width: 992px) and (max-width: 1199.98px) {
             .navbar-container {
-                padding-left: 0.75rem;
-                padding-right: 0.75rem;
-                gap: 0.5rem;
+                padding-left: clamp(0.75rem, 0.4rem + 0.8vw, 1.75rem);
+                padding-right: clamp(0.75rem, 0.4rem + 0.8vw, 1.75rem);
+                gap: clamp(0.4rem, 0.2rem + 0.5vw, 1.25rem);
             }
             .navbar-nav {
-                gap: 0.15rem;
+                gap: clamp(0.12rem, 0.08rem + 0.2vw, 0.45rem);
             }
             .nav-link {
-                padding: 0.38rem 0.52rem !important;
-                font-size: 0.83rem;
-            }
-            .nav-link i {
-                font-size: 0.8rem;
-                margin-right: 0.15rem !important;
+                font-size: clamp(0.81rem, 0.77rem + 0.1vw, 0.88rem);
+                padding: 0.38rem clamp(0.45rem, 0.3rem + 0.3vw, 0.75rem) !important;
             }
             .navbar-actions-cluster {
-                gap: 0.35rem;
+                gap: clamp(0.35rem, 0.2rem + 0.25vw, 0.6rem);
             }
             .navbar-actions-cluster .btn {
-                padding: 0.38rem 0.62rem;
-                font-size: 0.79rem;
-            }
-            .navbar-actions-cluster .btn-label-long {
-                display: none !important;
-            }
-            .navbar-actions-cluster .btn-label-short {
-                display: inline !important;
+                font-size: clamp(0.81rem, 0.77rem + 0.1vw, 0.86rem);
+                padding: 0.38rem clamp(0.6rem, 0.45rem + 0.3vw, 0.9rem);
             }
             .navbar-user-name {
-                max-width: 75px;
+                max-width: clamp(85px, 60px + 3vw, 140px);
             }
         }
 
-        /* Screens 1200px and up (Standard to large desktop / laptops) */
-        @media (min-width: 1200px) {
-            .navbar-actions-cluster .btn-label-long {
-                display: inline !important;
-            }
-            .navbar-actions-cluster .btn-label-short {
+        @media (max-width: 859.98px) {
+            .d-nav-desktop {
                 display: none !important;
             }
-        }
-
-        /* Mobile & Tablet (< 992px) */
-        @media (max-width: 991.98px) {
+            .d-nav-mobile {
+                display: flex !important;
+            }
             .navbar-apple {
                 padding: 0.6rem 0;
             }
@@ -1386,7 +1366,7 @@
                 </a>
 
                 <!-- Mobile Action Cluster (Theme Switcher + Bespoke Apple Hamburger Pill) -->
-                <div class="d-flex align-items-center gap-2 d-lg-none">
+                <div class="d-flex align-items-center gap-2 d-nav-mobile">
                     <button class="btn-theme-toggle" id="themeToggleMobileBtn" type="button" aria-label="Basculer entre le mode clair et le mode sombre" title="Basculer le thème clair / sombre">
                         <i class="bi bi-moon-stars-fill theme-icon-dark" aria-hidden="true"></i>
                         <i class="bi bi-sun-fill theme-icon-light" aria-hidden="true"></i>
@@ -1402,7 +1382,7 @@
                 </div>
 
                 <!-- Desktop Navigation Menu -->
-                <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarMain">
+                <div class="collapse navbar-collapse d-nav-desktop" id="navbarMain">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-xl-4 ms-lg-2">
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">
@@ -1431,21 +1411,15 @@
                         {% if user.is_authenticated %}
                             {% if user.role == 'CLIENT' or user.is_superuser %}
                                 <a href="{% url 'demande_create' %}" class="btn btn-terracotta btn-sm">
-                                    <i class="bi bi-plus-circle"></i>
-                                    <span class="btn-label-long">Publier une demande</span>
-                                    <span class="btn-label-short">Demande</span>
+                                    <i class="bi bi-plus-circle me-1"></i>Publier une demande
                                 </a>
                                 <a href="{% url 'client_dashboard' %}" class="btn btn-outline-terracotta btn-sm">
-                                    <i class="bi bi-speedometer2"></i>
-                                    <span class="btn-label-long">Mon Espace</span>
-                                    <span class="btn-label-short">Espace</span>
+                                    <i class="bi bi-speedometer2 me-1"></i>Mon Espace
                                 </a>
                             {% endif %}
                             {% if user.role == 'ARTISAN' or user.is_superuser %}
                                 <a href="{% url 'artisan_dashboard' %}" class="btn btn-terracotta btn-sm">
-                                    <i class="bi bi-tools"></i>
-                                    <span class="btn-label-long">Espace Artisan</span>
-                                    <span class="btn-label-short">Atelier</span>
+                                    <i class="bi bi-tools me-1"></i>Espace Artisan
                                 </a>
                             {% endif %}
                             {% if user.is_superuser %}
@@ -1474,8 +1448,7 @@
                         {% else %}
                             <a href="{% url 'web_login' %}" class="btn btn-glass btn-sm">Connexion</a>
                             <a href="{% url 'web_register' %}" class="btn btn-terracotta btn-sm">
-                                <span class="btn-label-long">Créer un compte</span>
-                                <span class="btn-label-short">Inscription</span>
+                                <i class="bi bi-person-plus me-1"></i>Créer un compte
                             </a>
                         {% endif %}
                     </div>
