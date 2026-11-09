@@ -3,6 +3,32 @@
 
 {% block title %}{{ title }} | {{ site_title|default:"ArtisanConnect Administration" }}{% endblock %}
 
+{% block extrahead %}
+{{ block.super }}
+<script>
+    (function() {
+        try {
+            var match = document.cookie.match(/(?:^|;\s*)artisanconnect_theme=([^;]+)/);
+            var cookieTheme = match ? decodeURIComponent(match[1]) : null;
+            var savedTheme = localStorage.getItem('artisanconnect_theme') || cookieTheme || localStorage.getItem('theme');
+            var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            var theme = savedTheme ? savedTheme : (prefersDark ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.dataset.theme = theme;
+            if (cookieTheme !== theme) {
+                document.cookie = 'artisanconnect_theme=' + encodeURIComponent(theme) + '; path=/; max-age=31536000; SameSite=Lax';
+            }
+            if (localStorage.getItem('artisanconnect_theme') !== theme) {
+                localStorage.setItem('artisanconnect_theme', theme);
+            }
+            if (localStorage.getItem('theme') !== theme) {
+                localStorage.setItem('theme', theme);
+            }
+        } catch (e) {}
+    })();
+</script>
+{% endblock %}
+
 {% block extrastyle %}
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'css/admin_custom.css' %}">
@@ -23,9 +49,60 @@
 
 {% block nav-global %}
 <div style="display: flex; align-items: center; gap: 10px;">
+    <button type="button" id="adminThemeToggleBtn" aria-label="Basculer le thème" title="Basculer le thème clair / sombre" style="background: var(--ac-surface-subtle); border: 1px solid var(--ac-border); color: var(--ac-text); width: 34px; height: 34px; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease;">
+        <i class="bi bi-moon-stars admin-theme-icon-dark" style="font-size: 0.9rem;"></i>
+        <i class="bi bi-sun admin-theme-icon-light" style="font-size: 0.95rem; color: #FBBF24;"></i>
+    </button>
     <a href="/" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; color: var(--ac-terracotta); background: var(--ac-surface-subtle); border: 1px solid var(--ac-border); padding: 0.35rem 0.85rem; border-radius: 9999px; text-decoration: none;">
         <i class="bi bi-box-arrow-up-right" style="font-size: 0.75rem;"></i>
         <span>Voir le site</span>
     </a>
 </div>
+<script>
+    (function() {
+        function syncAdminTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.dataset.theme = theme;
+            try {
+                localStorage.setItem('artisanconnect_theme', theme);
+                localStorage.setItem('theme', theme);
+                localStorage.setItem('artisanconnect_theme_manual', 'true');
+                document.cookie = 'artisanconnect_theme=' + encodeURIComponent(theme) + '; path=/; max-age=31536000; SameSite=Lax';
+            } catch (e) {}
+            if (window.BroadcastChannel) {
+                try {
+                    var bc = new BroadcastChannel('artisanconnect_theme_channel');
+                    bc.postMessage({ theme: theme });
+                    bc.close();
+                } catch (e) {}
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var btn = document.getElementById('adminThemeToggleBtn');
+            if (btn) {
+                btn.addEventListener('click', function() {
+                    var current = document.documentElement.getAttribute('data-theme') || 'light';
+                    var next = current === 'dark' ? 'light' : 'dark';
+                    syncAdminTheme(next);
+                });
+            }
+            window.addEventListener('storage', function(e) {
+                if ((e.key === 'artisanconnect_theme' || e.key === 'theme') && e.newValue) {
+                    syncAdminTheme(e.newValue);
+                }
+            });
+            if (window.BroadcastChannel) {
+                try {
+                    var ch = new BroadcastChannel('artisanconnect_theme_channel');
+                    ch.onmessage = function(ev) {
+                        if (ev.data && ev.data.theme) {
+                            syncAdminTheme(ev.data.theme);
+                        }
+                    };
+                } catch (e) {}
+            }
+        });
+    })();
+</script>
 {% endblock %}

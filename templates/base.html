@@ -1,25 +1,42 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="fr" data-theme="light">
+<html lang="fr" data-theme="{{ request.COOKIES.artisanconnect_theme|default:'light' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}ArtisanConnect - Le savoir-faire a portee de main | Mali{% endblock %}</title>
 
-    <!-- Theme detection anti-FOUT inline script with system preference -->
+    <!-- Theme detection anti-FOUT inline script with cookie, localStorage, and system preference synchronization -->
     <script>
         (function() {
             try {
-                var savedTheme = localStorage.getItem('artisanconnect_theme');
+                var match = document.cookie.match(/(?:^|;\s*)artisanconnect_theme=([^;]+)/);
+                var cookieTheme = match ? decodeURIComponent(match[1]) : null;
+                var savedTheme = localStorage.getItem('artisanconnect_theme') || cookieTheme || localStorage.getItem('theme');
                 var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
                 var theme = savedTheme ? savedTheme : (prefersDark ? 'dark' : 'light');
                 document.documentElement.setAttribute('data-theme', theme);
+                document.documentElement.dataset.theme = theme;
 
-                // Dynamic listener for OS system theme changes
+                if (cookieTheme !== theme) {
+                    document.cookie = 'artisanconnect_theme=' + encodeURIComponent(theme) + '; path=/; max-age=31536000; SameSite=Lax';
+                }
+                if (localStorage.getItem('artisanconnect_theme') !== theme) {
+                    localStorage.setItem('artisanconnect_theme', theme);
+                }
+                if (localStorage.getItem('theme') !== theme) {
+                    localStorage.setItem('theme', theme);
+                }
+
                 if (window.matchMedia) {
                     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-                        if (!localStorage.getItem('artisanconnect_theme')) {
-                            document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+                        if (!localStorage.getItem('artisanconnect_theme_manual')) {
+                            var newTheme = e.matches ? 'dark' : 'light';
+                            document.documentElement.setAttribute('data-theme', newTheme);
+                            document.documentElement.dataset.theme = newTheme;
+                            document.cookie = 'artisanconnect_theme=' + encodeURIComponent(newTheme) + '; path=/; max-age=31536000; SameSite=Lax';
+                            localStorage.setItem('artisanconnect_theme', newTheme);
+                            localStorage.setItem('theme', newTheme);
                         }
                     });
                 }
@@ -1699,14 +1716,32 @@
                 }
             };
 
+            function applyTheme(theme, save) {
+                if (!theme) return;
+                document.documentElement.setAttribute('data-theme', theme);
+                document.documentElement.dataset.theme = theme;
+                if (save !== false) {
+                    try {
+                        localStorage.setItem('artisanconnect_theme', theme);
+                        localStorage.setItem('theme', theme);
+                        localStorage.setItem('artisanconnect_theme_manual', 'true');
+                        document.cookie = 'artisanconnect_theme=' + encodeURIComponent(theme) + '; path=/; max-age=31536000; SameSite=Lax';
+                    } catch (e) {}
+                    if (window.BroadcastChannel) {
+                        try {
+                            var bc = new BroadcastChannel('artisanconnect_theme_channel');
+                            bc.postMessage({ theme: theme });
+                            bc.close();
+                        } catch (e) {}
+                    }
+                }
+                updateThemeLabels(theme);
+            }
+
             var toggleTheme = function() {
                 var currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
                 var nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', nextTheme);
-                try {
-                    localStorage.setItem('artisanconnect_theme', nextTheme);
-                } catch (e) {}
-                updateThemeLabels(nextTheme);
+                applyTheme(nextTheme, true);
             };
 
             var themeBtn = document.getElementById('themeToggleBtn');
@@ -1721,6 +1756,24 @@
             if (drawerThemeBtn) {
                 drawerThemeBtn.addEventListener('click', toggleTheme);
             }
+
+            // Real-time synchronization across open tabs and windows
+            window.addEventListener('storage', function(e) {
+                if ((e.key === 'artisanconnect_theme' || e.key === 'theme') && e.newValue) {
+                    applyTheme(e.newValue, false);
+                }
+            });
+            if (window.BroadcastChannel) {
+                try {
+                    var themeChannel = new BroadcastChannel('artisanconnect_theme_channel');
+                    themeChannel.onmessage = function(ev) {
+                        if (ev.data && ev.data.theme) {
+                            applyTheme(ev.data.theme, false);
+                        }
+                    };
+                } catch (e) {}
+            }
+
             updateThemeLabels(document.documentElement.getAttribute('data-theme') || 'light');
 
             // Scroll progress bar & Centered Scroll-to-Top Button

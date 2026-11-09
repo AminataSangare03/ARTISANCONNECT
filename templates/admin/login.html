@@ -14,7 +14,14 @@
 {% block breadcrumbs %}{% endblock %}
 
 {% block content %}
-<div style="max-width: 440px; margin: 3rem auto; padding: 2.5rem; background: var(--ac-surface); border: 1px solid var(--ac-border); border-radius: 16px; box-shadow: var(--ac-card-shadow);">
+<div style="position: relative; max-width: 440px; margin: 3rem auto; padding: 2.5rem; background: var(--ac-surface); border: 1px solid var(--ac-border); border-radius: 16px; box-shadow: var(--ac-card-shadow);">
+    <div style="position: absolute; top: 1.25rem; right: 1.25rem;">
+        <button type="button" id="adminLoginThemeToggleBtn" aria-label="Basculer le thème" title="Basculer le thème clair / sombre" style="background: var(--ac-surface-subtle); border: 1px solid var(--ac-border); color: var(--ac-text); width: 34px; height: 34px; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease;">
+            <i class="bi bi-moon-stars admin-theme-icon-dark" style="font-size: 0.9rem;"></i>
+            <i class="bi bi-sun admin-theme-icon-light" style="font-size: 0.95rem; color: #FBBF24;"></i>
+        </button>
+    </div>
+
     <div style="text-align: center; margin-bottom: 2rem;">
         <img src="{% static 'images/logo_icon.png' %}" alt="ArtisanConnect" style="height: 52px; margin-bottom: 1rem;">
         <h2 style="font-weight: 800; font-size: 1.4rem; color: var(--ac-terracotta); margin-bottom: 0.25rem;">Espace Superviseur</h2>
@@ -58,4 +65,31 @@
         </a>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var btn = document.getElementById('adminLoginThemeToggleBtn');
+        if (btn) {
+            btn.addEventListener('click', function() {
+                var current = document.documentElement.getAttribute('data-theme') || 'light';
+                var next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                document.documentElement.dataset.theme = next;
+                try {
+                    localStorage.setItem('artisanconnect_theme', next);
+                    localStorage.setItem('theme', next);
+                    localStorage.setItem('artisanconnect_theme_manual', 'true');
+                    document.cookie = 'artisanconnect_theme=' + encodeURIComponent(next) + '; path=/; max-age=31536000; SameSite=Lax';
+                } catch(e) {}
+                if (window.BroadcastChannel) {
+                    try {
+                        var bc = new BroadcastChannel('artisanconnect_theme_channel');
+                        bc.postMessage({ theme: next });
+                        bc.close();
+                    } catch (e) {}
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}

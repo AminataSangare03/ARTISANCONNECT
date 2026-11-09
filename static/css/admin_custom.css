@@ -46,7 +46,7 @@
     }
 }
 
-:root[data-theme="dark"] {
+:root[data-theme="dark"], html[data-theme="dark"] {
     --ac-terracotta: #D9774F;
     --ac-terracotta-dark: #B85433;
     --ac-terracotta-light: rgba(217, 119, 79, 0.18);
@@ -479,3 +479,14 @@ input[type=url]:focus, input[type=number]:focus, textarea:focus, select:focus {
     display: inline-block;
     vertical-align: middle;
 }
+
+/* Admin Theme Switcher Pill & Icons */
+#adminThemeToggleBtn:hover, #adminLoginThemeToggleBtn:hover {
+    background: var(--ac-terracotta-light) !important;
+    border-color: var(--ac-terracotta-border) !important;
+}
+
+[data-theme="light"] .admin-theme-icon-light { display: none !important; }
+[data-theme="light"] .admin-theme-icon-dark { display: inline-block !important; }
+[data-theme="dark"] .admin-theme-icon-dark { display: none !important; }
+[data-theme="dark"] .admin-theme-icon-light { display: inline-block !important; color: #FBBF24 !important; }
